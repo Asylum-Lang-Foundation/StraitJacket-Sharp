@@ -2,7 +2,7 @@ extern fn printf(string format, ... args) -> s32;
 
 inline fn hello() {
     int num = 7;
-    printf("Hello, this is Gota!%d\n", num);
+    printf("Hello, this is Gota%d!\n", num);
 }
 
 fn main() {
