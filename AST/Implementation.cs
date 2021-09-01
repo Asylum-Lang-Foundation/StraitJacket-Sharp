@@ -1,0 +1,56 @@
+using System;
+using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
+using LLVMSharp;
+using StraitJacket.Constructs;
+
+namespace StraitJacket.AST {
+
+    public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
+
+        public AsylumVisitResult VisitImplementation_definition([NotNull] AsylumParser.Implementation_definitionContext context)
+        {
+            var ret = new Implementation();
+            ret.Type = context.variable_or_function().Accept(this).VariableOrFunction;
+            if (context.variable_type() != null) {
+                ret.InterfaceToImplement = context.variable_type().Accept(this).VariableType;
+            }
+            CTX.Implementation = ret;
+            foreach (var e in context.implementation_entry()) {
+                e.Accept(this);
+            }
+            CTX.Implementation = null;
+            return new AsylumVisitResult() { Implementation = ret };
+        }
+
+        public AsylumVisitResult VisitImplementationEntryCast([NotNull] AsylumParser.ImplementationEntryCastContext context)
+        {
+            var ret = context.cast_definition().Accept(this).Function;
+            //CTX.Implementation.cast.Add(ret.Name, ret); // TODO: PROPER NAME MANGLING!!!
+            return null;
+        }
+
+        public AsylumVisitResult VisitImplementationEntryConstructor([NotNull] AsylumParser.ImplementationEntryConstructorContext context)
+        {
+            var ret = context.constructor_definition().Accept(this).Function;
+            CTX.Implementation.Functions.Add(ret.ToString(), ret);
+            return null;
+        }
+
+        public AsylumVisitResult VisitImplementationEntryFunction([NotNull] AsylumParser.ImplementationEntryFunctionContext context)
+        {
+            var ret = context.function_definition().Accept(this).Function;
+            CTX.Implementation.Functions.Add(ret.ToString(), ret);
+            return null;
+        }
+
+        public AsylumVisitResult VisitImplementationEntryOperator([NotNull] AsylumParser.ImplementationEntryOperatorContext context)
+        {
+            var ret = context.operator_definition().Accept(this).Function;
+            CTX.Implementation.Operators.Add(ret.Operator, ret);
+            return null;
+        }
+
+    }
+
+}
