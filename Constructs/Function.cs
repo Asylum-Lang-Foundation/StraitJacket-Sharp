@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using LLVMSharp;
 using LLVMSharp.Interop;
@@ -20,7 +21,7 @@ namespace StraitJacket.Constructs {
     }
 
     // Function definition.
-    public class Function : Variable, ICompileableUniversal {
+    public class Function : Variable, ICompileableUniversal, IEqualityComparer<Function> {
         public bool Static;
         public bool Inline;
         public bool Async;
@@ -76,6 +77,28 @@ namespace StraitJacket.Constructs {
             }
             Compiled = true;
             return null;
+        }
+
+        // If signatures are equal.
+        public bool Equals(Function x, Function y)
+        {
+            if (x.ReturnType != y.ReturnType) return false;
+            if (x.Parameters.Count == y.Parameters.Count) {
+                for (int i = 0; i < x.Parameters.Count; i++) {
+                    if (x.Parameters[i] != y.Parameters[i]) return false;
+                }
+            }
+            return false;
+        }
+
+        // For signature checking.
+        public int GetHashCode([DisallowNull] Function obj)
+        {
+            int ret = obj.ReturnType.GetHashCode();
+            foreach (var p in obj.Parameters) {
+                ret *= p.GetHashCode();
+            }
+            return ret;
         }
 
     }

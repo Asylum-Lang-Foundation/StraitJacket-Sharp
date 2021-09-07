@@ -206,8 +206,44 @@ namespace StraitJacket.AST {
 
             }
 
+            // Get parameters.
+            if (context.variable_arguments() != null) {
+                fn.Parameters = context.variable_arguments().Accept(this).Parameters;
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+            } else {
+                fn.Parameters = new List<VarParameter>();
+            }
+    
+            // Get return type.
+            fn.ReturnType = context.variable_type().Accept(this).VariableType;
+
             // TODO: FIX OPERATOR!!!
             fn.Operator = context.@operator().Accept(this).Operator;
+            if (fn.Parameters.Count() == 1) {
+                if (fn.Operator == Operator.Add) fn.Operator = Operator.Pos;
+                else if (fn.Operator == Operator.Sub) fn.Operator = Operator.Neg;
+                else if (fn.Operator == Operator.And) fn.Operator = Operator.Neg;
+            }
+
+            // Error check.
+
+            // Get code.
+            EnterScope("%FNOPERATOR%_" + fn.ToString());
+            fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
+            if (context.expression() != null) {
+                fn.Definition = new CodeStatements() {
+                    Statements = new List<ICompileable>() {
+                        new ReturnStatement() {
+                            ReturnValue = context.expression().Accept(this).Expression
+                        }
+                    }
+                };
+            } else if (context.code_statement() != null) {
+                fn.Definition = new CodeStatements();
+                foreach (var c in context.code_statement()) {
+                    fn.Definition.Statements.Add(c.Accept(this).CodeStatement);
+                }
+            }
             
             // Return function.
             ExitScope();

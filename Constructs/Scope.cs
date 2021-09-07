@@ -8,6 +8,7 @@ namespace StraitJacket.Constructs {
         public string Name;
         public Scope Parent;
         public Dictionary<string, Scope> Children = new Dictionary<string, Scope>();
+        public static Dictionary<VarType, List<Implementation>> Implementations = new Dictionary<VarType, List<Implementation>>();
         private Dictionary<string, Dictionary<string, Function>> Functions = new Dictionary<string, Dictionary<string, Function>>();
         private Dictionary<string, Variable> Variables = new Dictionary<string, Variable>();
         private Dictionary<string, VarType> Types = new Dictionary<string, VarType>();

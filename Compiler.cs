@@ -28,7 +28,9 @@ namespace StraitJacket {
         // Add a file to be compiled.
         public void AddFile(string s) {
             using (StreamReader fileStream = new StreamReader(s)) {
+                ErrorHandler.CurrentFileName = s;
                 AddFile(fileStream.BaseStream);
+                ErrorHandler.CurrentFileName = "NULL FILE";
             }
         }
 
