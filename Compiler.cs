@@ -11,10 +11,12 @@ namespace StraitJacket {
     public class Compiler {
         Visitor visitor;
 
+        // Initialize the ANTLR4 visitor.
         public Compiler() {
             visitor = new Visitor();
         }
 
+        // Add a file to be compiled.
         public void AddFile(Stream s) {
             AntlrInputStream input = new AntlrInputStream(s);
             AsylumLexer lexer = new AsylumLexer(input);
@@ -23,19 +25,21 @@ namespace StraitJacket {
             visitor.VisitInit(parser.init());
         }
 
+        // Add a file to be compiled.
         public void AddFile(string s) {
             using (StreamReader fileStream = new StreamReader(s)) {
                 AddFile(fileStream.BaseStream);
             }
         }
 
+        // Go through the compilation process.
         public LLVMModuleRef Compile(string name) {
             Constructs.AST ast = visitor.CTX.AST;
             ast.MoveVariableDefinitions();
             ast.ResolveVariables();
             ast.ResolveCalls();
             ast.ResolveTypes();
-            var h = ast.Universals[1].Item2.Function.ToString();
+            if (!ErrorHandler.Valid) return null;
             return ast.Compile(name);
         }
 

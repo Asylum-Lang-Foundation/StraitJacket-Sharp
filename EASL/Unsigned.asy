@@ -17,6 +17,7 @@ impl unsigned {
     inline operator |(This a, This b) -> This => (This)llvm("or", a, b);
     inline operator ^(This a, This b) -> This => (This)llvm("xor", a, b);
     inline operator ~(This v) -> This => (This)llvm("not", v);
+    inline operator +(This v) -> This => value;
 
     // Value set operators.
     inline operator =(This v) { value = v.value; }

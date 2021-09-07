@@ -546,34 +546,6 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCode_body([NotNull] AsylumParser.Code_bodyContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>FunctionCallStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionCallStatement([NotNull] AsylumParser.FunctionCallStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FunctionCallStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionCallStatement([NotNull] AsylumParser.FunctionCallStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>ConstructorStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterConstructorStatement([NotNull] AsylumParser.ConstructorStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>ConstructorStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitConstructorStatement([NotNull] AsylumParser.ConstructorStatementContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>VariableDeclarationStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -587,20 +559,6 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVariableDeclarationStatement([NotNull] AsylumParser.VariableDeclarationStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>VariableAssignmentStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVariableAssignmentStatement([NotNull] AsylumParser.VariableAssignmentStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>VariableAssignmentStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVariableAssignmentStatement([NotNull] AsylumParser.VariableAssignmentStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>LoopStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
@@ -671,6 +629,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBreakStatement([NotNull] AsylumParser.BreakStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ContinueStatement</c>
+	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterContinueStatement([NotNull] AsylumParser.ContinueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ContinueStatement</c>
+	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IfStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
@@ -792,6 +764,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTraditionalForLoop([NotNull] AsylumParser.TraditionalForLoopContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>TraditionalForLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TraditionalForLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ForEachLoop</c>
 	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -806,6 +792,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitForEachLoop([NotNull] AsylumParser.ForEachLoopContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ForEachLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ForEachLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AsylumParser.break_statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -817,6 +817,18 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBreak_statement([NotNull] AsylumParser.Break_statementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AsylumParser.continue_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterContinue_statement([NotNull] AsylumParser.Continue_statementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AsylumParser.continue_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitContinue_statement([NotNull] AsylumParser.Continue_statementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="AsylumParser.if_statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -830,17 +842,33 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIf_statement([NotNull] AsylumParser.If_statementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AsylumParser.switch_case"/>.
+	/// Enter a parse tree produced by the <c>SwitchCase</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSwitch_case([NotNull] AsylumParser.Switch_caseContext context) { }
+	public virtual void EnterSwitchCase([NotNull] AsylumParser.SwitchCaseContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AsylumParser.switch_case"/>.
+	/// Exit a parse tree produced by the <c>SwitchCase</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSwitch_case([NotNull] AsylumParser.Switch_caseContext context) { }
+	public virtual void ExitSwitchCase([NotNull] AsylumParser.SwitchCaseContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>SwitchCaseNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>SwitchCaseNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>CaseExpression</c>
 	/// labeled alternative in <see cref="AsylumParser.switch_rule"/>.
@@ -1092,6 +1120,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExprNullCheck([NotNull] AsylumParser.ExprNullCheckContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ExprComma</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExprComma([NotNull] AsylumParser.ExprCommaContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ExprComma</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExprComma([NotNull] AsylumParser.ExprCommaContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprParenthesis</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1119,6 +1161,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExprShift([NotNull] AsylumParser.ExprShiftContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ExprCallReturnedFunction</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ExprCallReturnedFunction</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprAdditive</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
@@ -1288,6 +1344,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExprInteger([NotNull] AsylumParser.ExprIntegerContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ExprAssignment</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExprAssignment([NotNull] AsylumParser.ExprAssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ExprAssignment</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExprAssignment([NotNull] AsylumParser.ExprAssignmentContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprLambda</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1407,6 +1477,34 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVariableDeclareWithTupleInitializer([NotNull] AsylumParser.VariableDeclareWithTupleInitializerContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VariableDeclareWithInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VariableDeclareWithInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VariableDeclareWithTupleInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VariableDeclareWithTupleInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>VariableDeclareWithoutInitializer</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.

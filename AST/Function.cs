@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using StraitJacket.Constructs;
 
+// There is a lot that still needs to be done here, and __thiscall is not even implemented.
 namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
@@ -16,7 +17,7 @@ namespace StraitJacket.AST {
             fn.Extern = true;
             fn.Name = context.IDENTIFIER().GetText();
             fn.Scope = CTX.CurrentScope;
-            fn.Scope.Functions.Add(fn.Name, fn);
+            fn.Scope.AddFunction(fn.Name, fn.Name, fn); // No mangling.
             EnterScope("%FN%_" + fn.Name);
 
             // Get attributes. TODO!!!
@@ -49,6 +50,12 @@ namespace StraitJacket.AST {
             }
 
             // Finished.
+            fn.Type = new VarType() {
+                Type = VarTypeEnum.Primitive,
+                Primitive = Primitives.Function,
+                EmbeddedType = fn.ReturnType,
+                Members = fn.Parameters.Select(x => x.Type).ToArray()
+            };
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
 
@@ -107,15 +114,12 @@ namespace StraitJacket.AST {
 
             // Get code.
             EnterScope("%FN%_" + fn.ToString());
-            fn.Scope.Functions.Add(fn.Name, fn);
+            fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             if (context.expression() != null) {
                 fn.Definition = new CodeStatements() {
-                    Statements = new List<CodeStatement>() {
-                        new CodeStatement() {
-                            Type = CodeStatementType.ReturnStatement,
-                            ReturnStatement = new ReturnStatement() {
-                                ReturnValue = context.expression().Accept(this).Expression
-                            }
+                    Statements = new List<ICompileable>() {
+                        new ReturnStatement() {
+                            ReturnValue = context.expression().Accept(this).Expression
                         }
                     }
                 };
@@ -166,15 +170,12 @@ namespace StraitJacket.AST {
 
             // Get code.
             EnterScope("%FNCONST%_" + fn.ToString());
-            fn.Scope.Functions.Add(fn.ToString(), fn);
+            fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             if (context.expression() != null) {
                 fn.Definition = new CodeStatements() {
-                    Statements = new List<CodeStatement>() {
-                        new CodeStatement() {
-                            Type = CodeStatementType.ReturnStatement,
-                            ReturnStatement = new ReturnStatement() {
-                                ReturnValue = context.expression().Accept(this).Expression
-                            }
+                    Statements = new List<ICompileable>() {
+                        new ReturnStatement() {
+                            ReturnValue = context.expression().Accept(this).Expression
                         }
                     }
                 };
@@ -205,17 +206,13 @@ namespace StraitJacket.AST {
 
             }
 
-            var h = context.@operator().Accept(this);
+            // TODO: FIX OPERATOR!!!
+            fn.Operator = context.@operator().Accept(this).Operator;
             
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
 
-        }
-
-        public AsylumVisitResult VisitOperator([NotNull] AsylumParser.OperatorContext context)
-        {
-            throw new System.NotImplementedException();
         }
     
     }

@@ -12,14 +12,14 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitUniversalExternFunction([NotNull] AsylumParser.UniversalExternFunctionContext context)
         {
             var ret = context.extern_function_definition().Accept(this);
-            CTX.AST.Universals.Add(new Tuple<UniversalType, AsylumVisitResult>(UniversalType.ExternFunction, ret));
+            CTX.AST.Universals.Add(ret.Function);
             return ret;
         }
 
         public AsylumVisitResult VisitUniversalFunction([NotNull] AsylumParser.UniversalFunctionContext context)
         {
             var ret = context.function_definition().Accept(this);
-            CTX.AST.Universals.Add(new Tuple<UniversalType, AsylumVisitResult>(UniversalType.Function, ret));
+            CTX.AST.Universals.Add(ret.Function);
             return ret;
         }
 
@@ -31,7 +31,7 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitUniversalImplementation([NotNull] AsylumParser.UniversalImplementationContext context)
         {
             var ret = context.implementation_definition().Accept(this);
-            CTX.AST.Universals.Add(new Tuple<UniversalType, AsylumVisitResult>(UniversalType.Implementation, ret));
+            CTX.AST.Universals.Add(ret.Implementation);
             return ret;
         }
 

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
+// TODO: TREAT FUNCTIONS LIKE GLOBAL VARIABLES!!! So close, but you forgot to take into account mangling...
 namespace StraitJacket.Constructs {
 
     // Variable or function.
@@ -18,10 +20,13 @@ namespace StraitJacket.Constructs {
         
     }
 
-    public class Cast {
+    public class Cast : ICompileable {
         public bool Implicit;
         public VarType DestType;
         public Expression ToCast;
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveCalls() {
             ToCast.ResolveCalls();
@@ -35,8 +40,8 @@ namespace StraitJacket.Constructs {
             ToCast.ResolveTypes();
         }
 
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
-            LLVMValueRef expr = ToCast.Compile(mod, builder);
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            LLVMValueRef expr = ToCast.Compile(mod, builder, param);
             if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && ToCast.EvaluatesTo.Primitive == Primitives.Object) {
                 return expr; // Do nothing and hope it works.
             } else if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && (ToCast.EvaluatesTo.Primitive == Primitives.Unsigned || ToCast.EvaluatesTo.Primitive == Primitives.Signed)) {
@@ -59,11 +64,67 @@ namespace StraitJacket.Constructs {
         Integer,
         Variable,
         UnknownFunctionCall,
-        Cast
+        Cast,
+        EvaluatedFunctionCall,
+        Assignment
+    }
+
+    // Operator.
+    public enum Operator {
+        Add,
+        Sub,
+        Mul,
+        Div,
+        Mod,
+        Exp,
+        Range,
+        BitAnd,
+        BitOr,
+        BitXor,
+        BitNot,
+        LShift,
+        RShift,
+        Pos,
+        Neg,
+        Inc,
+        Dec,
+        Member,
+        Dereference,
+        AddressOf,
+        AsAddress,
+        And,
+        Or,
+        Nand,
+        Nor,
+        Not,
+        Eq,
+        Neq,
+        Gt,
+        Lt,
+        Ge,
+        Le,
+        Cond,
+        Null,
+        Comma,
+        AssignAdd,
+        AssignSub,
+        AssignMul,
+        AssignDiv,
+        AssignMod,
+        AssignExp,
+        AssignBitAnd,
+        AssignBitOr,
+        AssignBitXor,
+        AssignBitNot,
+        AssignLShift,
+        AssignRShift,
+        AssignCond,
+        AssignNull,
+        AssignEq
     }
 
     // Expression.
-    public class Expression {
+    public class Expression : ICompileable {
         public ExpressionType Type;
         public VarType EvaluatesTo;
         public object Val;
@@ -71,6 +132,9 @@ namespace StraitJacket.Constructs {
         public Expression Left;
         public Expression Right;
         public Scope Scope;
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveCalls() {
             switch (Type) {
@@ -80,6 +144,15 @@ namespace StraitJacket.Constructs {
                 case ExpressionType.Cast:
                     ((Cast)Val).ResolveCalls();
                     break;
+                case ExpressionType.EvaluatedFunctionCall:
+                    Left.ResolveCalls();
+                    Right.ResolveCalls();
+                    break;
+                case ExpressionType.Variable:
+                case ExpressionType.String:
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
         }
 
@@ -89,11 +162,24 @@ namespace StraitJacket.Constructs {
                     ((FunctionCall)Val).ResolveVariables();
                     break;
                 case ExpressionType.Variable:
-                    EvaluatedVariable = Scope.ResolveVariable((VariableOrFunction)Val);
+                    EvaluatedVariable = ((VariableOrFunction)Val).ResolveVariable();
                     break;
                 case ExpressionType.Cast:
                     ((Cast)Val).ResolveVariables();
                     break;
+                case ExpressionType.EvaluatedFunctionCall:
+                    Left.ResolveVariables();
+                    Right.ResolveVariables(); // After resolving variables, this can finally be made into a function call.
+                    Val = new FunctionCall() {
+                        Scope = Scope,
+                        ResolvedFunction = (Function)Left.EvaluatedVariable,
+                        Parameters = new List<Expression>() { Right }
+                    };
+                    break;
+                case ExpressionType.String:
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
         }
 
@@ -109,10 +195,19 @@ namespace StraitJacket.Constructs {
                 case ExpressionType.UnknownFunctionCall:
                     EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
                     break;
+                case ExpressionType.EvaluatedFunctionCall:
+                    ((FunctionCall)Val).ResolveTypes();
+                    EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
+                    break;
+                case ExpressionType.String:
+                    EvaluatesTo = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String };
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
         }
 
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             switch (Type) {
                 case ExpressionType.String:
                     return builder.BuildGlobalStringPtr((string)Val, "");
@@ -122,9 +217,11 @@ namespace StraitJacket.Constructs {
                 case ExpressionType.Variable:
                     return builder.BuildLoad(EvaluatedVariable.LLVMValue);
                 case ExpressionType.Cast:
-                    return ((Cast)Val).Compile(mod, builder);
+                    return ((Cast)Val).Compile(mod, builder, param);
                 case ExpressionType.UnknownFunctionCall:
-                    return ((FunctionCall)Val).Compile(mod, builder);
+                    return ((FunctionCall)Val).Compile(mod, builder, param);
+                case ExpressionType.EvaluatedFunctionCall:
+                    return ((FunctionCall)Val).Compile(mod, builder, param);
             }
             var err = Type;
             throw new System.Exception("Expression type " + err + " not implemented!");

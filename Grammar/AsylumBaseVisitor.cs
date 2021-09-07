@@ -446,28 +446,6 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCode_body([NotNull] AsylumParser.Code_bodyContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FunctionCallStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitFunctionCallStatement([NotNull] AsylumParser.FunctionCallStatementContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by the <c>ConstructorStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitConstructorStatement([NotNull] AsylumParser.ConstructorStatementContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>VariableDeclarationStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
 	/// <para>
@@ -478,17 +456,6 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVariableDeclarationStatement([NotNull] AsylumParser.VariableDeclarationStatementContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by the <c>VariableAssignmentStatement</c>
-	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitVariableAssignmentStatement([NotNull] AsylumParser.VariableAssignmentStatementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>LoopStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
@@ -544,6 +511,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBreakStatement([NotNull] AsylumParser.BreakStatementContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ContinueStatement</c>
+	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IfStatement</c>
 	/// labeled alternative in <see cref="AsylumParser.code_statement"/>.
@@ -641,6 +619,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTraditionalForLoop([NotNull] AsylumParser.TraditionalForLoopContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>TraditionalForLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>ForEachLoop</c>
 	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
 	/// <para>
@@ -652,6 +641,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitForEachLoop([NotNull] AsylumParser.ForEachLoopContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ForEachLoopNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.for_loop"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="AsylumParser.break_statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -661,6 +661,16 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBreak_statement([NotNull] AsylumParser.Break_statementContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AsylumParser.continue_statement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitContinue_statement([NotNull] AsylumParser.Continue_statementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AsylumParser.if_statement"/>.
 	/// <para>
@@ -672,7 +682,8 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitIf_statement([NotNull] AsylumParser.If_statementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AsylumParser.switch_case"/>.
+	/// Visit a parse tree produced by the <c>SwitchCase</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -680,7 +691,18 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSwitch_case([NotNull] AsylumParser.Switch_caseContext context) { return VisitChildren(context); }
+	public virtual Result VisitSwitchCase([NotNull] AsylumParser.SwitchCaseContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>SwitchCaseNoParens</c>
+	/// labeled alternative in <see cref="AsylumParser.switch_case"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>CaseExpression</c>
 	/// labeled alternative in <see cref="AsylumParser.switch_rule"/>.
@@ -883,6 +905,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitExprNullCheck([NotNull] AsylumParser.ExprNullCheckContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ExprComma</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExprComma([NotNull] AsylumParser.ExprCommaContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprParenthesis</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
 	/// <para>
@@ -904,6 +937,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitExprShift([NotNull] AsylumParser.ExprShiftContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ExprCallReturnedFunction</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprAdditive</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
@@ -1037,6 +1081,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitExprInteger([NotNull] AsylumParser.ExprIntegerContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ExprAssignment</c>
+	/// labeled alternative in <see cref="AsylumParser.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExprAssignment([NotNull] AsylumParser.ExprAssignmentContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprLambda</c>
 	/// labeled alternative in <see cref="AsylumParser.expression"/>.
 	/// <para>
@@ -1132,6 +1187,28 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVariableDeclareWithTupleInitializer([NotNull] AsylumParser.VariableDeclareWithTupleInitializerContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>VariableDeclareWithInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>VariableDeclareWithTupleInitializerExpr</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>VariableDeclareWithoutInitializer</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_declaration"/>.

@@ -20,24 +20,25 @@ namespace StraitJacket.Constructs {
     }
 
     // Function definition.
-    public class Function {
-        public string Name;
+    public class Function : Variable, ICompileableUniversal {
         public bool Static;
         public bool Inline;
         public bool Async;
         public bool Unsafe;
         public bool Extern;
         public bool Variadic;
-        public Operators Operator;
+        public Operator Operator;
         public List<Attribute> Attributes = new List<Attribute>();
         public List<VarParameter> Parameters;
         public VarType ReturnType;
         public CodeStatements Definition;
-        public Scope Scope;
         
         public bool Compiled;
         public LLVMValueRef LLVMVal;
         public override string ToString() => (Extern || Name.Equals("main") || Attributes.Where(x => x.Name.Equals("NoMangle")).Count() > 0) ? Name : Mangler.MangleFunction(this);
+
+        public FileContext FileContext;
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveVariables() {
             if (Extern) return;
@@ -55,9 +56,9 @@ namespace StraitJacket.Constructs {
         }
 
         // TODO: NAME MANGLING AND MORE!!!
-        public void Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             if (Inline) Compiled = true;
-            if (Compiled || Inline) return;
+            if (Compiled || Inline) return null;
             int cnt = Parameters.Count;
             if (cnt > 0 && Parameters[cnt - 1].Type.Variadic) { cnt--; }
             LLVMTypeRef[] paramTypes = new LLVMTypeRef[cnt];
@@ -68,12 +69,13 @@ namespace StraitJacket.Constructs {
             if (!Extern) {
                 var block = LLVMBasicBlockRef.AppendInContext(mod.Context, LLVMVal, "entry");
                 builder.PositionAtEnd(block);
-                Definition.Compile(mod, builder);
+                Definition.Compile(mod, builder, param);
                 if (ReturnType.Type == VarTypeEnum.Primitive && ReturnType.Primitive == Primitives.Void) {
                     builder.BuildRetVoid();
                 }
             }
             Compiled = true;
+            return null;
         }
 
     }

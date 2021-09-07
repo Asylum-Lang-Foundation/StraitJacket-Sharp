@@ -6,12 +6,13 @@ namespace StraitJacket.AST {
     // For storing information about the result.
     public class AsylumVisitResult {
         public Attribute Attribute;
-        public CodeStatement CodeStatement;
+        public ICompileable CodeStatement;
         public Expression Expression;
         public Function Function;
         public FunctionCall FunctionCall;
         public Implementation Implementation;
         public Modifier Modifier;
+        public Operator Operator;
         public VarParameter Parameter;
         public List<VarParameter> Parameters;
         public Variable Variable;

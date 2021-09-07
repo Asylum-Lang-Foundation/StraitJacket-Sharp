@@ -8,10 +8,66 @@ namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
 
-        public AsylumVisitResult VisitFunctionCallStatement([NotNull] AsylumParser.FunctionCallStatementContext context)
+        public AsylumVisitResult VisitOperator([NotNull] AsylumParser.OperatorContext context)
         {
-            FunctionCall ret = context.function_call().Accept(this).FunctionCall;
-            return new AsylumVisitResult() { CodeStatement = new CodeStatement() { Type = CodeStatementType.FunctionCall, FunctionCall = ret } };
+            if (context.assignment_operator() != null) return context.assignment_operator().Accept(this);
+            if (context.OP_ADD() != null) return new AsylumVisitResult() { Operator = Operator.Add };
+            if (context.OP_ADDRESS_OF() != null) return new AsylumVisitResult() { Operator = Operator.BitAnd };
+            if (context.OP_AND() != null) return new AsylumVisitResult() { Operator = Operator.And };
+            if (context.OP_BITWISE_OR() != null) return new AsylumVisitResult() { Operator = Operator.BitOr };
+            if (context.OP_DIV() != null) return new AsylumVisitResult() { Operator = Operator.Div };
+            if (context.OP_EQ() != null) return new AsylumVisitResult() { Operator = Operator.Eq };
+            if (context.OP_GE() != null) return new AsylumVisitResult() { Operator = Operator.Ge };
+            if (context.OP_GT() != null) return new AsylumVisitResult() { Operator = Operator.Gt };
+            if (context.OP_LE() != null) return new AsylumVisitResult() { Operator = Operator.Le };
+            if (context.OP_LSHIFT() != null) return new AsylumVisitResult() { Operator = Operator.LShift };
+            if (context.OP_LT() != null) return new AsylumVisitResult() { Operator = Operator.Lt };
+            if (context.OP_MEMBER_ACCESS() != null) return new AsylumVisitResult() { Operator = Operator.Member };
+            if (context.OP_MINUS_MINUS() != null) return new AsylumVisitResult() { Operator = Operator.Dec };
+            if (context.OP_MOD() != null) return new AsylumVisitResult() { Operator = Operator.Mod };
+            if (context.OP_MUL() != null) return new AsylumVisitResult() { Operator = Operator.Mul };
+            if (context.OP_NE() != null) return new AsylumVisitResult() { Operator = Operator.Neq };
+            if (context.OP_NOT() != null) return new AsylumVisitResult() { Operator = Operator.Not };
+            if (context.OP_OR() != null) return new AsylumVisitResult() { Operator = Operator.Or };
+            if (context.OP_PLUS_PLUS() != null) return new AsylumVisitResult() { Operator = Operator.Inc };
+            if (context.OP_RANGE() != null) return new AsylumVisitResult() { Operator = Operator.Range };
+            if (context.OP_RSHIFT() != null) return new AsylumVisitResult() { Operator = Operator.RShift };
+            if (context.OP_SUB() != null) return new AsylumVisitResult() { Operator = Operator.Sub };
+            if (context.OP_TILDE() != null) return new AsylumVisitResult() { Operator = Operator.BitNot };
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitAssignment_operator([NotNull] AsylumParser.Assignment_operatorContext context)
+        {
+            if (context.ASSIGN_OP_ADD_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignAdd };
+            if (context.ASSIGN_OP_AND_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignBitAnd };
+            if (context.ASSIGN_OP_CHECK_NULL() != null) return new AsylumVisitResult() { Operator = Operator.AssignNull };
+            if (context.ASSIGN_OP_DIV_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignDiv };
+            if (context.ASSIGN_OP_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignEq };
+            if (context.ASSIGN_OP_EXP_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignExp };
+            if (context.ASSIGN_OP_LSHIFT_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignLShift };
+            if (context.ASSIGN_OP_MOD_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignMod };
+            if (context.ASSIGN_OP_MUL_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignMul };
+            if (context.ASSIGN_OP_OR_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignBitOr };
+            if (context.ASSIGN_OP_RSHIFT_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignRShift };
+            if (context.ASSIGN_OP_SUB_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignSub };
+            if (context.ASSIGN_OP_XOR_EQ() != null) return new AsylumVisitResult() { Operator = Operator.AssignBitXor };
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprAssignment([NotNull] AsylumParser.ExprAssignmentContext context)
+        {
+            Expression ret = new Expression();
+            ret.Type = ExpressionType.Assignment;
+            ret.Left = context.expression()[0].Accept(this).Expression;
+            ret.Right = context.expression()[1].Accept(this).Expression;
+            ret.Val = context.assignment_operator().Accept(this).Operator;
+            return new AsylumVisitResult() { Expression = ret };
+        }
+
+        public AsylumVisitResult VisitExpressionStatement([NotNull] AsylumParser.ExpressionStatementContext context)
+        {
+            return new AsylumVisitResult() { CodeStatement = context.expression().Accept(this).Expression };
         }
 
         // TODO: GENERICS!!!
@@ -25,6 +81,15 @@ namespace StraitJacket.AST {
                 ret.Parameters.Add(e.Accept(this).Expression);
             }
             return new AsylumVisitResult() { FunctionCall = ret };
+        }
+
+        public AsylumVisitResult VisitExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context)
+        {
+            Expression ret = new Expression();
+            ret.Type = ExpressionType.EvaluatedFunctionCall;
+            ret.Left = context.expression()[0].Accept(this).Expression;
+            ret.Right = context.expression()[1].Accept(this).Expression;
+            return new AsylumVisitResult() { Expression = ret };
         }
 
         public AsylumVisitResult VisitVariable_or_function([NotNull] AsylumParser.Variable_or_functionContext context)
