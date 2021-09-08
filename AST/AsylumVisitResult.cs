@@ -5,6 +5,7 @@ namespace StraitJacket.AST {
 
     // For storing information about the result.
     public class AsylumVisitResult {
+        public Constructs.AST AST;
         public Attribute Attribute;
         public ICompileable CodeStatement;
         public Expression Expression;
