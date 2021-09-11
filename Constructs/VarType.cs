@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
@@ -58,7 +59,7 @@ namespace StraitJacket.Constructs {
     }
 
     // Variable type.
-    public class VarType {
+    public class VarType : IEqualityComparer<VarType> {
         public string Name;
         public VariableOrFunction ToResolve;
         public VarTypeEnum Type;
@@ -74,10 +75,6 @@ namespace StraitJacket.Constructs {
         public bool Atomic;
         public bool Variadic;
         public bool ContainsStruct;
-        public Dictionary<string, Function> Functions = new Dictionary<string, Function>();
-        //public Dictionary<Operator, Function> OperatorOverloads = new Dictionary<Operator, Function>();
-        //public Dictionary<AsyType, Function> ConversionFunctions = new Dictionary<AsyType, Function>();
-        //public Dictionary<AsyType, Function> ConvertFromFunctions = new Dictionary<AsyType, Function>();
         public Scope Scope;
         private bool TypeNotGotten = true;
         private LLVMTypeRef GottenType = null;
@@ -164,6 +161,81 @@ namespace StraitJacket.Constructs {
             }
             if (GottenType == null) throw new Exception("BAD TYPE!!!");
             return GottenType;
+        }
+
+        // If two types are equal.
+        public bool Equals(VarType x, VarType y)
+        {
+
+            // Matching type.
+            if (x.Type == y.Type) {
+
+                // Primitives. TODO (type isn't enough)!!!
+                if (x.Type == VarTypeEnum.Primitive) {
+                    return x.Primitive == y.Primitive;
+                }
+
+                // Tuple.
+                if (x.Type == VarTypeEnum.Tuple) {
+                    if (x.Members.Length == y.Members.Length) {
+                        for (int i = 0; i < x.Members.Length; i++) {
+                            if (x.Members[i] != y.Members[i]) return false;
+                        }
+                    }
+                }
+
+                // Custom.
+                if (x.Type == VarTypeEnum.Custom) {
+                    // TODO!!!
+                    return true;
+                }
+
+                // Raw pointer.
+                if (x.Type == VarTypeEnum.RawPointer) {
+                    return x.EmbeddedType == y.EmbeddedType;
+                }
+
+                // Diet pointer.
+                if (x.Type == VarTypeEnum.DietPointer) {
+                    return x.EmbeddedType == y.EmbeddedType;
+                }
+
+                // Array.
+                if (x.Type == VarTypeEnum.Array) {
+                    return x.ArrayLen == y.ArrayLen && x.EmbeddedType == y.EmbeddedType;
+                }
+
+                // Generics.
+                if (x.Type == VarTypeEnum.Generics) {
+                    // TODO!!!
+                    return true;
+                }
+
+            }
+
+            // Type with a different reference.
+            if (x.Type == VarTypeEnum.Custom || y.Type == VarTypeEnum.Custom) {
+                // TODO!!!
+                return true;
+            }
+
+            // Can't be the same type.
+            return false;
+
+        }
+
+        // Hash code for types.
+        public int GetHashCode([DisallowNull] VarType obj)
+        {
+
+            // Primitive.
+            if (obj.Type == VarTypeEnum.Primitive) {
+                // TODO!!!
+            }
+            
+            // Unknown.
+            return 0;
+
         }
 
     }

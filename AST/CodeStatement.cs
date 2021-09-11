@@ -15,7 +15,7 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitVariableDeclareWithInitializer([NotNull] AsylumParser.VariableDeclareWithInitializerContext context)
         {
-            VariableDefinition ret = new VariableDefinition();
+            /*VariableDefinition ret = new VariableDefinition();
             Expression expr = context.expression().Accept(this).Expression;
             ret.Definition = expr;
             ret.Variables = new List<Variable>();
@@ -25,26 +25,33 @@ namespace StraitJacket.AST {
                 v.Scope = CTX.CurrentScope;
                 v.Name = p.IDENTIFIER().GetText();
                 ret.Variables.Add(v);
-                CTX.CurrentScope.Variables.Add(v.Name, v);
+                CTX.CurrentScope.AddVar(v.Name, v);
             }
-            return new AsylumVisitResult() { CodeStatement = new CodeStatement() { Type = CodeStatementType.VariableDeclaration, VariableDefinition = ret } };
-        }
-
-        public AsylumVisitResult VisitVariableAssignmentStatement([NotNull] AsylumParser.VariableAssignmentStatementContext context)
-        {
-            return context.variable_assignment().Accept(this);
+            return new AsylumVisitResult() { CodeStatement = ret };*/
+            throw new System.NotImplementedException();
         }
 
         public AsylumVisitResult VisitVariableAssignmentNormal([NotNull] AsylumParser.VariableAssignmentNormalContext context)
         {
-            VariableAssignment ret = new VariableAssignment();
+            /*VariableAssignment ret = new VariableAssignment();
             Expression expr = context.expression().Accept(this).Expression;
             ret.Definition = expr;
             ret.Variables = new List<VariableOrFunction>();
             foreach (var p in context.variable_or_function()) {
                 ret.Variables.Add(p.Accept(this).VariableOrFunction);
             }
-            return new AsylumVisitResult() { CodeStatement = new CodeStatement() { Type = CodeStatementType.VariableAssignment, VariableAssignment = ret } };
+            return new AsylumVisitResult() { CodeStatement = new CodeStatement() { Type = CodeStatementType.VariableAssignment, VariableAssignment = ret } }; */
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context)
+        {
+            throw new System.NotImplementedException();
         }
 
     }

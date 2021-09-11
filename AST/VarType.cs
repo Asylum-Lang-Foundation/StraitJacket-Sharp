@@ -10,7 +10,7 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitTypedef_definition([NotNull] AsylumParser.Typedef_definitionContext context)
         {
-            CTX.CurrentScope.Types.Add(context.IDENTIFIER().GetText(), context.variable_type().Accept(this).VariableType);
+            CTX.CurrentScope.AddType(context.IDENTIFIER().GetText(), context.variable_type().Accept(this).VariableType);
             return null;
         }
 

@@ -5,15 +5,6 @@ using LLVMSharp;
 namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
-        public BuildContext CTX = new BuildContext();
-
-        public AsylumVisitResult VisitInit([NotNull] AsylumParser.InitContext context)
-        {
-            for (int i = 0; i < context.universal_statement().Length; i++) {
-                context.universal_statement()[i].Accept(this);
-            }
-            return null;
-        }
 
         public AsylumVisitResult Visit(IParseTree tree)
         {
@@ -21,11 +12,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitAccess_modifier([NotNull] AsylumParser.Access_modifierContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitAssignment_operator([NotNull] AsylumParser.Assignment_operatorContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -71,11 +57,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitConstantTrue([NotNull] AsylumParser.ConstantTrueContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitConstructorStatement([NotNull] AsylumParser.ConstructorStatementContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -151,11 +132,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitExprEqualityComparison([NotNull] AsylumParser.ExprEqualityComparisonContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExpressionStatement([NotNull] AsylumParser.ExpressionStatementContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -555,6 +531,41 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
         
+        public AsylumVisitResult VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitContinue_statement([NotNull] AsylumParser.Continue_statementContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitSwitchCase([NotNull] AsylumParser.SwitchCaseContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprComma([NotNull] AsylumParser.ExprCommaContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 
 }

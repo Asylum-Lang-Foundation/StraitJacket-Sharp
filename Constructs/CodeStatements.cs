@@ -13,8 +13,11 @@ namespace StraitJacket.Constructs {
     }
 
     // Code statements.
-    public class CodeStatements {
-        public List<CodeStatement> Statements = new List<CodeStatement>();
+    public class CodeStatements : ICompileable {
+        public List<ICompileable> Statements = new List<ICompileable>();
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveVariables() {
             foreach (var c in Statements) {
@@ -34,91 +37,18 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        // TODO: RETURN TYPE MECHANISM!!!
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, bool expectReturn = false) {
+        // TODO: RETURN TYPE MECHANISM!!! Param is expect return.
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            if (param == null) param = false;
             foreach (var s in Statements) {
-                s.Compile(mod, builder);
+                s.Compile(mod, builder, param);
             }
-            return expectReturn ? builder.BuildRetVoid() : null;
-        }
-    }
-
-    // Code statement.
-    public class CodeStatement {
-        public CodeStatementType Type;
-        public FunctionCall FunctionCall;
-        public ReturnStatement ReturnStatement;
-        public VariableDefinition VariableDefinition;
-        public VariableAssignment VariableAssignment;
-
-        public void ResolveVariables() {
-            switch (Type) {
-                case CodeStatementType.FunctionCall:
-                    FunctionCall.ResolveVariables();
-                    break;
-                case CodeStatementType.ReturnStatement:
-                    ReturnStatement.ResolveVariables();
-                    break;
-                case CodeStatementType.VariableDeclaration:
-                    VariableDefinition.ResolveVariables();
-                    break;
-                case CodeStatementType.VariableAssignment:
-                    VariableAssignment.ResolveVariables();
-                    break;
-            }
-        }
-
-        public void ResolveCalls() {
-            switch (Type) {
-                case CodeStatementType.FunctionCall:
-                    FunctionCall.ResolveCalls();
-                    break;
-                case CodeStatementType.ReturnStatement:
-                    ReturnStatement.ResolveCalls();
-                    break;
-                case CodeStatementType.VariableDeclaration:
-                    VariableDefinition.ResolveCalls();
-                    break;
-                case CodeStatementType.VariableAssignment:
-                    VariableAssignment.ResolveCalls();
-                    break;
-            }
-        }
-
-        public void ResolveTypes() {
-            switch (Type) {
-                case CodeStatementType.FunctionCall:
-                    FunctionCall.ResolveTypes();
-                    break;
-                case CodeStatementType.ReturnStatement:
-                    ReturnStatement.ResolveTypes();
-                    break;
-                case CodeStatementType.VariableDeclaration:
-                    VariableDefinition.ResolveTypes();
-                    break;
-                case CodeStatementType.VariableAssignment:
-                    VariableAssignment.ResolveTypes();
-                    break;
-            }
-        }
-
-        public void Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
-            switch (Type) {
-                case CodeStatementType.FunctionCall:
-                    FunctionCall.Compile(mod, builder);
-                    return;
-                case CodeStatementType.VariableDeclaration:
-                    VariableDefinition.Compile(mod, builder);
-                    return;
-                case CodeStatementType.VariableAssignment:
-                    VariableAssignment.Compile(mod, builder);
-                    break;
-            }
+            return (bool)param ? builder.BuildRetVoid() : null;
         }
     }
 
     // Call a function.
-    public class FunctionCall {
+    public class FunctionCall : ICompileable {
         public Scope Scope;
         public bool Await;
         public VariableOrFunction Function;
@@ -126,6 +56,9 @@ namespace StraitJacket.Constructs {
         // TODO: GENERICS.
         // TODO: LABELS.
         public List<Expression> Parameters = new List<Expression>();
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveCalls() {
             ResolvedFunction = Scope.ResolveFunction(Function);
@@ -146,17 +79,17 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             if (ResolvedFunction.Equals(AsyLLVM.Function)) {
                 return AsyLLVM.CompileCall(mod, builder, Parameters);
             }
-            if (!ResolvedFunction.Compiled) ResolvedFunction.Compile(mod, builder);
+            if (!ResolvedFunction.Compiled) ResolvedFunction.Compile(mod, builder, param);
             LLVMValueRef[] args = new LLVMValueRef[Parameters.Count];
             for (int i = 0; i < Parameters.Count; i++) {
-                args[i] = Parameters[i].Compile(mod, builder);
+                args[i] = Parameters[i].Compile(mod, builder, param);
             }
             if (ResolvedFunction.Inline) {
-                return ResolvedFunction.Definition.Compile(mod, builder);
+                return ResolvedFunction.Definition.Compile(mod, builder, param);
             } else {
                 return builder.BuildCall(ResolvedFunction.LLVMVal, args, "");
             }
@@ -164,8 +97,11 @@ namespace StraitJacket.Constructs {
     }
 
     // Return statement.
-    public class ReturnStatement {
+    public class ReturnStatement : ICompileable {
         public Expression ReturnValue;
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveCalls() {
             ReturnValue.ResolveCalls();
@@ -179,12 +115,20 @@ namespace StraitJacket.Constructs {
             ReturnValue.ResolveTypes();
         }
 
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param)
+        {
+            return ReturnValue.Compile(mod, builder, param);
+        }
+
     }
 
     // Variable definition.
-    public class VariableDefinition {
+    public class VariableDefinition : ICompileable {
         public List<Variable> Variables = new List<Variable>();
         public Expression Definition;
+        public FileContext FileContext;
+
+        public FileContext GetFileContext() => FileContext;
 
         public void ResolveCalls() {
             Definition.ResolveCalls();
@@ -198,8 +142,8 @@ namespace StraitJacket.Constructs {
             Definition.ResolveTypes();
         }
 
-        public void Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
-            LLVMValueRef expr = Definition.Compile(mod, builder);
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            LLVMValueRef expr = Definition.Compile(mod, builder, param);
             foreach (var v in Variables) {
                 v.LLVMValue = builder.BuildAlloca(v.Type.GetLLVMType(), v.Name);
                 LLVMValueRef toStore = expr;
@@ -216,36 +160,9 @@ namespace StraitJacket.Constructs {
                 }
                 builder.BuildStore(toStore, v.LLVMValue);
             }
+            return null;
         }
 
-    }
-
-    // Variable assignment.
-    public class VariableAssignment {
-        public List<VariableOrFunction> Variables = new List<VariableOrFunction>();
-        public List<Variable> ResolvedVariables = new List<Variable>();
-        public Operators AssignmentOperator;
-        public Expression Definition;
-
-        public void ResolveCalls() {
-            Definition.ResolveCalls();
-        }
-
-        public void ResolveVariables() {
-            Definition.ResolveVariables();
-            foreach (var v in Variables) {
-                ResolvedVariables.Add(v.ResolveVariable());
-            }
-        }
-
-        public void ResolveTypes() {
-            Definition.ResolveTypes();
-        }
-
-        public void Compile(LLVMModuleRef mod, LLVMBuilderRef builder) {
-            throw new System.Exception("AHHHHHHHHHHHHHHHHHH");
-        }
-        
     }
 
 }

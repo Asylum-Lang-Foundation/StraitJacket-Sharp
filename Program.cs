@@ -9,18 +9,41 @@ namespace StraitJacket
 {
     class Program
     {
+
+        // For now, this is just a very simple compiler that can only compile a file in the tests folder with only the name you feed it.
         static void Main(string[] args)
         {
+
+            // For now create defeault arguments.
             if (args.Length == 0) {
-                args = new string[] { "Dummy" };
+                args = new string[] { "HelloWorld.asy" };
             }
-            string file = "Tests/" + args[0] + ".asy";
+            
+            // Get flags, then compile.
+            CompilationFlags flags = GetFlags(args);
             Compiler c = new Compiler();
-            c.AddFile("EASL/Types.asy");
-            //c.AddFile("EASL/Unsigned.asy"); NEED TO FIX COMPILER FIRST!
-            c.AddFile(file);
-            var mod = c.Compile(args[0]);
-            mod.WriteBitcodeToFile("Tests/" + args[0] + ".bc");
+            c.SetRootFolder(flags.RootDir);
+            AddFilesToCompile(c, args);
+            c.Compile(flags);
+
         }
+
+        // Interpret arguments.
+        public static CompilationFlags GetFlags(string[] args) {
+            CompilationFlags flags = new CompilationFlags() {
+                UseSTDC = true,
+                UseSTDCPP = true,
+                RootDir = System.Environment.CurrentDirectory + "/Tests"
+            };
+            return flags;
+        }
+
+        // Get additional files to compile.
+        public static void AddFilesToCompile(Compiler c, string[] args) {
+            // TODO!
+            c.AddFile(args[0]);
+        }
+
     }
+
 }
