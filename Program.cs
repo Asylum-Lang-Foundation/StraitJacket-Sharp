@@ -16,7 +16,7 @@ namespace StraitJacket
 
             // For now create defeault arguments.
             if (args.Length == 0) {
-                args = new string[] { "Tests/HelloWorld.asy" };
+                args = new string[] { "HelloWorld.asy" };
             }
             
             // Get flags, then compile.
@@ -33,7 +33,7 @@ namespace StraitJacket
             CompilationFlags flags = new CompilationFlags() {
                 UseSTDC = true,
                 UseSTDCPP = true,
-                RootDir = System.Environment.CurrentDirectory
+                RootDir = System.Environment.CurrentDirectory + "/Tests"
             };
             return flags;
         }

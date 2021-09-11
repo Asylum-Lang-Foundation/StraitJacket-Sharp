@@ -40,7 +40,7 @@ namespace StraitJacket {
     public class Compiler {
         Visitor visitor;
         string rootFolder;
-        string compilerRoot = AppContext.BaseDirectory;
+        string compilerRoot = "./"; //AppContext.BaseDirectory;
         List<string> files = new List<string>();
 
         // Initialize the ANTLR4 visitor.
@@ -61,7 +61,8 @@ namespace StraitJacket {
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             AsylumParser parser = new AsylumParser(commonTokenStream);
             visitor.CTX.VisitMode = mode;
-            return visitor.VisitInit(parser.init()).AST;
+            var initContext = parser.init();
+            return visitor.VisitInit(initContext)?.AST;
         }
 
         // Visit a file to be compiled.
@@ -99,24 +100,24 @@ namespace StraitJacket {
 
                 // Compile EASL.
                 visitor.CTX.UniversalMode = true;
-                AddFile(compilerRoot + "/EASL/Types.asy");
+                VisitFile(compilerRoot + "/EASL/Types.asy", mode);
                 //AddFile("EASL/Unsigned.asy");
                 if (flags.UseSTDC) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "/EASL/STD/C")) {
-                        AddFile(f);
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
+                        //VisitFile(f, mode);
                     }
                 } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "/EASL/STD/C-ASYLUM")) {
-                        AddFile(f);
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
+                        VisitFile(f, mode);
                     }
                 }
                 if (flags.UseSTDCPP) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "/EASL/STD/CPP")) {
-                        AddFile(f);
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP")) {
+                        VisitFile(f, mode);
                     }
                 } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "/EASL/STD/CPP-ASYLUM")) {
-                        AddFile(f);
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP-ASYLUM")) {
+                        VisitFile(f, mode);
                     }
                 }
                 if (mode != VisitMode.GetTypes) visitor.CTX.UniversalMode = false;
