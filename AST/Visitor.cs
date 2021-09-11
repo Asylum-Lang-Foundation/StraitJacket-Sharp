@@ -5,15 +5,6 @@ using LLVMSharp;
 namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
-        public BuildContext CTX = new BuildContext();
-
-        public AsylumVisitResult VisitInit([NotNull] AsylumParser.InitContext context)
-        {
-            for (int i = 0; i < context.universal_statement().Length; i++) {
-                context.universal_statement()[i].Accept(this);
-            }
-            return null;
-        }
 
         public AsylumVisitResult Visit(IParseTree tree)
         {

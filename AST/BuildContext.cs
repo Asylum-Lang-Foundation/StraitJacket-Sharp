@@ -11,6 +11,9 @@ namespace StraitJacket.AST {
         // Universal AST for defined types and EASL.
         public StraitJacket.Constructs.AST UniversalAST = new Constructs.AST();
 
+        // Current AST.
+        public StraitJacket.Constructs.AST CurrentAST;
+
         // If compiling for the universal namespace (types and EASL).
         public bool UniversalMode;
 
