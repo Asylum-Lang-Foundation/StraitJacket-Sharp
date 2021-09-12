@@ -104,7 +104,7 @@ namespace StraitJacket {
                 //AddFile("EASL/Unsigned.asy");
                 if (flags.UseSTDC) {
                     foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
-                        //VisitFile(f, mode);
+                        VisitFile(f, mode);
                     }
                 } else {
                     foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {

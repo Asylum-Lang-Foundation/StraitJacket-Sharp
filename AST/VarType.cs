@@ -19,6 +19,22 @@ namespace StraitJacket.AST {
             return context.primitives().Accept(this);
         }
 
+        public AsylumVisitResult VisitPrimitiveFunction([NotNull] AsylumParser.PrimitiveFunctionContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitPrimitiveChar([NotNull] AsylumParser.PrimitiveCharContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Char
+                }
+            };
+        }
+
         public AsylumVisitResult VisitPrimitiveString([NotNull] AsylumParser.PrimitiveStringContext context)
         {
             return new AsylumVisitResult() {
@@ -120,6 +136,39 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitPrimitiveObject([NotNull] AsylumParser.PrimitiveObjectContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Object
+                }
+            };
+        }
+
+        public AsylumVisitResult VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.RawPointer,
+                    EmbeddedType = context.variable_type().Accept(this).VariableType
+                }
+            };
+        }
+
+        public AsylumVisitResult VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.DietPointer,
+                    EmbeddedType = context.variable_type().Accept(this).VariableType
+                }
+            };
+        }
+
         public AsylumVisitResult VisitVarTypeCustom([NotNull] AsylumParser.VarTypeCustomContext context)
         {
             return new AsylumVisitResult() {
@@ -141,6 +190,13 @@ namespace StraitJacket.AST {
                     ToResolve = CTX.Implementation.Type
                 }
             };
+        }
+
+        public AsylumVisitResult VisitVarTypeConstant([NotNull] AsylumParser.VarTypeConstantContext context)
+        {
+            var ret = context.variable_type().Accept(this).VariableType;
+            ret.Constant = true;
+            return new AsylumVisitResult() { VariableType = ret };
         }
 
     }
