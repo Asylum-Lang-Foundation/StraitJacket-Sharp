@@ -66,7 +66,8 @@ namespace StraitJacket.Constructs {
         UnknownFunctionCall,
         Cast,
         EvaluatedFunctionCall,
-        Assignment
+        Assignment,
+        Comma
     }
 
     // Operator.
@@ -136,7 +137,19 @@ namespace StraitJacket.Constructs {
 
         public FileContext GetFileContext() => FileContext;
 
+        // Split expressions separated by the comma operator into a list.
+        public List<Expression> SplitComma() {
+            if (Type != ExpressionType.Comma) {
+                return new List<Expression>() { this };
+            }
+            List<Expression> ret = new List<Expression>();
+            ret.AddRange(Left.SplitComma());
+            ret.AddRange(Right.SplitComma());
+            return ret;
+        }
+
         public void ResolveCalls() {
+            throw new System.Exception("OBSOLETE!");
             switch (Type) {
                 case ExpressionType.UnknownFunctionCall:
                     ((FunctionCall)Val).ResolveCalls();
@@ -173,8 +186,12 @@ namespace StraitJacket.Constructs {
                     Val = new FunctionCall() {
                         Scope = Scope,
                         ResolvedFunction = (Function)Left.EvaluatedVariable,
-                        Parameters = new List<Expression>() { Right }
+                        Parameters = Right.SplitComma()
                     };
+                    break;
+                case ExpressionType.Comma:
+                    Left.ResolveVariables();
+                    Right.ResolveVariables();
                     break;
                 case ExpressionType.String:
                     break;

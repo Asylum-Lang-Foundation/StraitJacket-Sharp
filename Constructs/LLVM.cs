@@ -18,8 +18,8 @@ namespace StraitJacket.Constructs {
             Variadic = true,
             Attributes = new List<Attribute>(),
             Parameters = new List<VarParameter>() {
-                new VarParameter() { Name = "instruction", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String, Constant = true } },
-                new VarParameter() { Name = "args", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object, Variadic = true } }
+                new VarParameter() { Value = new Variable() { Name = "instruction", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String, Constant = true } } },
+                new VarParameter() { Value = new Variable() { Name = "args", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object, Variadic = true } } }
             },
             ReturnType = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object }
         };

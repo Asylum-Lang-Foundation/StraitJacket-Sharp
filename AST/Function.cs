@@ -37,7 +37,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -54,7 +54,7 @@ namespace StraitJacket.AST {
                 Type = VarTypeEnum.Primitive,
                 Primitive = Primitives.Function,
                 EmbeddedType = fn.ReturnType,
-                Members = fn.Parameters.Select(x => x.Type).ToArray()
+                Members = fn.Parameters.Select(x => x.Value.Type).ToArray()
             };
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
@@ -100,7 +100,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -160,7 +160,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -209,7 +209,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }

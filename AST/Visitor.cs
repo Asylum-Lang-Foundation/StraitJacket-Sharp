@@ -531,11 +531,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitExprComma([NotNull] AsylumParser.ExprCommaContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 
 }

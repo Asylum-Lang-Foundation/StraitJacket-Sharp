@@ -21,7 +21,36 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitPrimitiveFunction([NotNull] AsylumParser.PrimitiveFunctionContext context)
         {
-            throw new System.NotImplementedException();
+
+            // Setup function type.
+            int numParams = context.variable_type().Length;
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Primitive;
+            ret.Primitive = Primitives.Function;
+
+            // Get the return type.
+            if (numParams == 0) {
+                ret.EmbeddedType = new VarType() {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Void
+                };
+            } else {
+                ret.EmbeddedType = context.variable_type()[0].Accept(this).VariableType;
+            }
+
+            // Get parameters if needed.
+            if (numParams > 1) {
+                ret.Members = new VarType[numParams - 1];
+                for (int i = 0; i < numParams - 1; i++) {
+                    ret.Members[i] = context.variable_type()[i + 1].Accept(this).VariableType;
+                }
+            } else {
+                ret.Members = new VarType[0];
+            }
+
+            // Finish.
+            return new AsylumVisitResult() { VariableType = ret };
+
         }
 
         public AsylumVisitResult VisitPrimitiveChar([NotNull] AsylumParser.PrimitiveCharContext context)

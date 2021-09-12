@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
@@ -89,7 +90,21 @@ namespace StraitJacket.Constructs {
                 args[i] = Parameters[i].Compile(mod, builder, param);
             }
             if (ResolvedFunction.Inline) {
+
+                // Fix arguments.
+                for (int i = 0; i < args.Length; i++) {
+
+                    // Variadic.
+                    if (i >= ResolvedFunction.Parameters.Count || (i == ResolvedFunction.Parameters.Count - 1 && ResolvedFunction.Parameters.Last().Value.Type.Variadic)) {
+                        ResolvedFunction.Parameters.Last().VariadicArgs = new List<LLVMValueRef>();
+                        ResolvedFunction.Parameters.Last().VariadicArgs.Add(args[i]);
+                    } else {
+                        ResolvedFunction.Parameters[i].Value.LLVMValue = args[i];
+                    }
+
+                }
                 return ResolvedFunction.Definition.Compile(mod, builder, param);
+                
             } else {
                 return builder.BuildCall(ResolvedFunction.LLVMVal, args, "");
             }

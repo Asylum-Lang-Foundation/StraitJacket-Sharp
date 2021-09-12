@@ -70,6 +70,15 @@ namespace StraitJacket.AST {
             return new AsylumVisitResult() { CodeStatement = context.expression().Accept(this).Expression };
         }
 
+        public AsylumVisitResult VisitExprComma([NotNull] AsylumParser.ExprCommaContext context)
+        {
+            Expression ret = new Expression();
+            ret.Type = ExpressionType.Comma;
+            ret.Left = context.expression()[0].Accept(this).Expression;
+            ret.Right = context.expression()[1].Accept(this).Expression;
+            return new AsylumVisitResult() { Expression = ret };
+        }
+
         // TODO: GENERICS!!!
         public AsylumVisitResult VisitFunction_call([NotNull] AsylumParser.Function_callContext context)
         {

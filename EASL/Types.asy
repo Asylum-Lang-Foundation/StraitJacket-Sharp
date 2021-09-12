@@ -12,3 +12,4 @@ typedef u128 ulonglong;
 typedef f16 half;
 typedef f32 float;
 typedef f64 double;
+typedef u64 size_t;

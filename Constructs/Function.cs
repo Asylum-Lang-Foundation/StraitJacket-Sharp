@@ -43,17 +43,23 @@ namespace StraitJacket.Constructs {
 
         public void ResolveVariables() {
             if (Extern) return;
+            Scope.PushFunction(this);
             Definition.ResolveVariables();
+            Scope.PopFunction();
         }
 
         public void ResolveCalls() {
             if (Extern) return;
+            Scope.PushFunction(this);
             Definition.ResolveCalls();
+            Scope.PopFunction();
         }
 
         public void ResolveTypes() {
             if (Extern) return;
+            Scope.PushFunction(this);
             Definition.ResolveTypes();
+            Scope.PopFunction();
         }
 
         // TODO: NAME MANGLING AND MORE!!!
@@ -61,12 +67,16 @@ namespace StraitJacket.Constructs {
             if (Inline) Compiled = true;
             if (Compiled || Inline) return null;
             int cnt = Parameters.Count;
-            if (cnt > 0 && Parameters[cnt - 1].Type.Variadic) { cnt--; }
+            if (cnt > 0 && Parameters[cnt - 1].Value.Type.Variadic) { cnt--; }
             LLVMTypeRef[] paramTypes = new LLVMTypeRef[cnt];
             for (int i = 0; i < cnt; i++) {
-                paramTypes[i] = Parameters[i].Type.GetLLVMType();
+                paramTypes[i] = Parameters[i].Value.Type.GetLLVMType();
             }
             LLVMVal = mod.AddFunction(Name, LLVMTypeRef.CreateFunction(ReturnType.GetLLVMType(), paramTypes, Variadic));
+            for (int i = 0; i < Parameters.Count; i++) {
+                if (Parameters[i].Value.Type.Variadic) break;
+                Parameters[i].Value.LLVMValue = LLVMVal.Params[i];
+            }
             if (!Extern) {
                 var block = LLVMBasicBlockRef.AppendInContext(mod.Context, LLVMVal, "entry");
                 builder.PositionAtEnd(block);
