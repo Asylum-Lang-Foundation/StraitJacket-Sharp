@@ -98,15 +98,29 @@ namespace StraitJacket.Constructs {
                     if (i >= ResolvedFunction.Parameters.Count || (i == ResolvedFunction.Parameters.Count - 1 && ResolvedFunction.Parameters.Last().Value.Type.Variadic)) {
                         ResolvedFunction.Parameters.Last().VariadicArgs = new List<LLVMValueRef>();
                         ResolvedFunction.Parameters.Last().VariadicArgs.Add(args[i]);
+                        ResolvedFunction.Parameters.Last().Value.NoLoad = true;
                     } else {
                         ResolvedFunction.Parameters[i].Value.LLVMValue = args[i];
+                        ResolvedFunction.Parameters[i].Value.NoLoad = true;
                     }
 
                 }
                 return ResolvedFunction.Definition.Compile(mod, builder, param);
                 
             } else {
-                return builder.BuildCall(ResolvedFunction.LLVMVal, args, "");
+                Function currFunc = Scope.PeekCurrentFunction;
+                LLVMValueRef funcToCall = null;
+                if (ResolvedFunction.ModulePath.Equals(currFunc.ModulePath)) {
+                    funcToCall = ResolvedFunction.LLVMVal;
+                } else {
+                    if (!ResolvedFunction.ModulePath.Equals(currFunc.ModulePath) && !ResolvedFunction.Inline) {
+                        if (!ResolvedFunction.ExternedLLVMVals.ContainsKey(currFunc.ModulePath)) {
+                            ResolvedFunction.ExternedLLVMVals.Add(currFunc.ModulePath, mod.AddFunction(ResolvedFunction.ToString(), ResolvedFunction.GetFuncTypeLLVM()));
+                        }
+                        funcToCall = ResolvedFunction.ExternedLLVMVals[currFunc.ModulePath];
+                    }
+                }
+                return builder.BuildCall(funcToCall, args, "");
             }
         }
     }

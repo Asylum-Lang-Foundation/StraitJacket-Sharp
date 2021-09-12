@@ -173,6 +173,12 @@ namespace StraitJacket.Constructs {
             switch (Type) {
                 case ExpressionType.UnknownFunctionCall:
                     ((FunctionCall)Val).ResolveVariables();
+                    var currFunc = Scope.PeekCurrentFunction;
+                    if (currFunc != null) {
+                        if (!currFunc.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
+                            currFunc.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
+                        }
+                    }
                     break;
                 case ExpressionType.Variable:
                     EvaluatedVariable = ((VariableOrFunction)Val).ResolveVariable();
@@ -188,6 +194,12 @@ namespace StraitJacket.Constructs {
                         ResolvedFunction = (Function)Left.EvaluatedVariable,
                         Parameters = Right.SplitComma()
                     };
+                    var currFunc2 = Scope.PeekCurrentFunction;
+                    if (currFunc2 != null) {
+                        if (!currFunc2.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
+                            currFunc2.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
+                        }
+                    }
                     break;
                 case ExpressionType.Comma:
                     Left.ResolveVariables();
@@ -232,7 +244,7 @@ namespace StraitJacket.Constructs {
                     Number number = (Number)Val;
                     return LLVMValueRef.CreateConstInt(LLVMTypeRef.CreateInt(number.MinBits), (ulong)number.ValueWhole, number.ForceSigned);
                 case ExpressionType.Variable:
-                    return builder.BuildLoad(EvaluatedVariable.LLVMValue);
+                    return EvaluatedVariable.NoLoad ? EvaluatedVariable.LLVMValue : builder.BuildLoad(EvaluatedVariable.LLVMValue);
                 case ExpressionType.Cast:
                     return ((Cast)Val).Compile(mod, builder, param);
                 case ExpressionType.UnknownFunctionCall:

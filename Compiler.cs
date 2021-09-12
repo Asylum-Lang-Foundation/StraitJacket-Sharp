@@ -100,6 +100,7 @@ namespace StraitJacket {
 
                 // Compile EASL.
                 visitor.CTX.UniversalMode = true;
+                visitor.CTX.ModuleName = "EASL";
                 VisitFile(compilerRoot + "/EASL/Types.asy", mode);
                 VisitFile(compilerRoot + "/EASL/Console.asy", mode);
                 //AddFile("EASL/Unsigned.asy");
@@ -128,6 +129,7 @@ namespace StraitJacket {
 
                     // Just scan for each file.
                     foreach (var s in files) {
+                        visitor.CTX.ModuleName = rootFolder + "/" + s;
                         VisitFile(rootFolder + "/" + s, mode);
                     }
 
@@ -145,6 +147,7 @@ namespace StraitJacket {
                     foreach (var s in files) {
 
                         // Fetch the AST, then do the necessary resolutions/adjustments.
+                        visitor.CTX.ModuleName = rootFolder + "/" + s;
                         var ast = VisitFile(rootFolder + "/" + s, mode);
                         ast.MoveVariableDefinitions();
                         ast.ResolveVariables();

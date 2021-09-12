@@ -13,6 +13,7 @@ namespace StraitJacket.Constructs {
         private Dictionary<string, Variable> Variables = new Dictionary<string, Variable>();
         private Dictionary<string, VarType> Types = new Dictionary<string, VarType>();
         private static Stack<Function> CurrentFunction = new Stack<Function>();
+        public static Function PeekCurrentFunction => CurrentFunction.Count == 0 ? null : CurrentFunction.Peek();
 
         public void AddFunction(string name, string mangled, Function v) {
             if (Functions.ContainsKey(name)) {

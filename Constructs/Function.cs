@@ -21,7 +21,7 @@ namespace StraitJacket.Constructs {
     }
 
     // Function definition.
-    public class Function : Variable, ICompileableUniversal, IEqualityComparer<Function> {
+    public class Function : Variable, ICompileableUniversal {
         public bool Static;
         public bool Inline;
         public bool Async;
@@ -33,9 +33,12 @@ namespace StraitJacket.Constructs {
         public List<VarParameter> Parameters;
         public VarType ReturnType;
         public CodeStatements Definition;
+        public List<Function> CalledFunctions = new List<Function>();
+        public string ModulePath;
         
         public bool Compiled;
         public LLVMValueRef LLVMVal;
+        public Dictionary<string, LLVMValueRef> ExternedLLVMVals = new Dictionary<string, LLVMValueRef>();
         public override string ToString() => (Extern || Name.Equals("main") || Attributes.Where(x => x.Name.Equals("NoMangle")).Count() > 0) ? Name : Mangler.MangleFunction(this);
 
         public FileContext FileContext;
@@ -62,33 +65,73 @@ namespace StraitJacket.Constructs {
             Scope.PopFunction();
         }
 
-        // TODO: NAME MANGLING AND MORE!!!
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            if (Inline) Compiled = true;
-            if (Compiled || Inline) return null;
+        // Get the LLVM type of the function.
+        public LLVMTypeRef GetFuncTypeLLVM() {
+
+            // Convert the parameter types to LLVM types.
             int cnt = Parameters.Count;
             if (cnt > 0 && Parameters[cnt - 1].Value.Type.Variadic) { cnt--; }
             LLVMTypeRef[] paramTypes = new LLVMTypeRef[cnt];
             for (int i = 0; i < cnt; i++) {
                 paramTypes[i] = Parameters[i].Value.Type.GetLLVMType();
             }
-            LLVMVal = mod.AddFunction(Name, LLVMTypeRef.CreateFunction(ReturnType.GetLLVMType(), paramTypes, Variadic));
-            for (int i = 0; i < Parameters.Count; i++) {
-                if (Parameters[i].Value.Type.Variadic) break;
-                Parameters[i].Value.LLVMValue = LLVMVal.Params[i];
+
+            // Return the function type.
+            return LLVMTypeRef.CreateFunction(ReturnType.GetLLVMType(), paramTypes, Variadic);
+
+        }
+
+        // TODO: NAME MANGLING AND MORE!!! Ok, so the problem is you need to extern any functions that are not in this module...
+        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+
+            // Don't do work that doesn't need to be done.
+            if (Inline) Compiled = true;
+            if (Compiled || Inline) return null;
+
+            // Extern any called functions that are not in this module.
+            foreach (var f in CalledFunctions) {
+                if (!f.ModulePath.Equals(ModulePath) && !f.Inline) {
+                    if (!f.ExternedLLVMVals.ContainsKey(ModulePath)) {
+                        var externFunc = mod.AddFunction(f.ToString(), f.GetFuncTypeLLVM());
+                        f.ExternedLLVMVals.Add(ModulePath, externFunc);
+                    }
+                }
             }
+
+            // Add the function definition. This is all that's needed for extern.
+            LLVMVal = mod.AddFunction(ToString(), GetFuncTypeLLVM());
+
+            // We must compile the function if it actually has a body of course.
             if (!Extern) {
+
+                // Convert the parameters to LLVM values.
+                for (int i = 0; i < Parameters.Count; i++) {
+                    if (Parameters[i].Value.Type.Variadic) break;
+                    Parameters[i].Value.LLVMValue = LLVMVal.Params[i];
+                    Parameters[i].Value.NoLoad = true;
+                }
+
+                // Add the entry point of the function.
                 var block = LLVMBasicBlockRef.AppendInContext(mod.Context, LLVMVal, "entry");
                 builder.PositionAtEnd(block);
+
+                // Compile the function, and add a return statement if necessary.
+                Scope.PushFunction(this);
                 Definition.Compile(mod, builder, param);
                 if (ReturnType.Type == VarTypeEnum.Primitive && ReturnType.Primitive == Primitives.Void) {
                     builder.BuildRetVoid();
                 }
+                Scope.PopFunction();
+
             }
+
+            // Finished.
             Compiled = true;
             return null;
+
         }
 
+        /*
         // If signatures are equal.
         public bool Equals(Function x, Function y)
         {
@@ -110,6 +153,7 @@ namespace StraitJacket.Constructs {
             }
             return ret;
         }
+        */
 
     }
 

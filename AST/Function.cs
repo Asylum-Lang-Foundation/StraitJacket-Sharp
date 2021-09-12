@@ -18,6 +18,7 @@ namespace StraitJacket.AST {
             fn.Name = context.IDENTIFIER().GetText();
             fn.Scope = CTX.CurrentScope;
             fn.Scope.AddFunction(fn.Name, fn.Name, fn); // No mangling.
+            fn.ModulePath = CTX.ModuleName;
             EnterScope("%FN%_" + fn.Name);
 
             // Get attributes. TODO!!!
@@ -84,6 +85,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.IDENTIFIER().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
@@ -144,6 +146,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.variable_type().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
@@ -200,6 +203,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.variable_type().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
