@@ -180,10 +180,10 @@ namespace StraitJacket.Constructs {
                 if (varType.Kind == LLVMTypeKind.LLVMIntegerTypeKind) {
                     if (expr.TypeOf.Kind == LLVMTypeKind.LLVMIntegerTypeKind) {
                         if (expr.TypeOf.IntWidth < varType.IntWidth) {
-                            toStore = builder.BuildZExt(toStore, LLVMTypeRef.CreateInt(varType.IntWidth));
+                            toStore = builder.BuildZExt(toStore, LLVMTypeRef.CreateInt(varType.IntWidth), "zext_");
                             // TODO: SIGN!!! ALSO MOVE TO DEDICATED CASTING SECTION!
                         } else if (expr.TypeOf.IntWidth > varType.IntWidth) {
-                            toStore = builder.BuildTrunc(toStore, LLVMTypeRef.CreateInt(varType.IntWidth));
+                            toStore = builder.BuildTrunc(toStore, LLVMTypeRef.CreateInt(varType.IntWidth), "trunc_");
                         }
                     }
                 }
