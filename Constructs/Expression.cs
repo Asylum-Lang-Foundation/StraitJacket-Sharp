@@ -66,7 +66,8 @@ namespace StraitJacket.Constructs {
         UnknownFunctionCall,
         Cast,
         EvaluatedFunctionCall,
-        Assignment
+        Assignment,
+        Comma
     }
 
     // Operator.
@@ -136,7 +137,19 @@ namespace StraitJacket.Constructs {
 
         public FileContext GetFileContext() => FileContext;
 
+        // Split expressions separated by the comma operator into a list.
+        public List<Expression> SplitComma() {
+            if (Type != ExpressionType.Comma) {
+                return new List<Expression>() { this };
+            }
+            List<Expression> ret = new List<Expression>();
+            ret.AddRange(Left.SplitComma());
+            ret.AddRange(Right.SplitComma());
+            return ret;
+        }
+
         public void ResolveCalls() {
+            throw new System.Exception("OBSOLETE!");
             switch (Type) {
                 case ExpressionType.UnknownFunctionCall:
                     ((FunctionCall)Val).ResolveCalls();
@@ -160,6 +173,12 @@ namespace StraitJacket.Constructs {
             switch (Type) {
                 case ExpressionType.UnknownFunctionCall:
                     ((FunctionCall)Val).ResolveVariables();
+                    var currFunc = Scope.PeekCurrentFunction;
+                    if (currFunc != null) {
+                        if (!currFunc.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
+                            currFunc.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
+                        }
+                    }
                     break;
                 case ExpressionType.Variable:
                     EvaluatedVariable = ((VariableOrFunction)Val).ResolveVariable();
@@ -173,8 +192,18 @@ namespace StraitJacket.Constructs {
                     Val = new FunctionCall() {
                         Scope = Scope,
                         ResolvedFunction = (Function)Left.EvaluatedVariable,
-                        Parameters = new List<Expression>() { Right }
+                        Parameters = Right.SplitComma()
                     };
+                    var currFunc2 = Scope.PeekCurrentFunction;
+                    if (currFunc2 != null) {
+                        if (!currFunc2.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
+                            currFunc2.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
+                        }
+                    }
+                    break;
+                case ExpressionType.Comma:
+                    Left.ResolveVariables();
+                    Right.ResolveVariables();
                     break;
                 case ExpressionType.String:
                     break;
@@ -215,7 +244,7 @@ namespace StraitJacket.Constructs {
                     Number number = (Number)Val;
                     return LLVMValueRef.CreateConstInt(LLVMTypeRef.CreateInt(number.MinBits), (ulong)number.ValueWhole, number.ForceSigned);
                 case ExpressionType.Variable:
-                    return builder.BuildLoad(EvaluatedVariable.LLVMValue);
+                    return EvaluatedVariable.NoLoad ? EvaluatedVariable.LLVMValue : builder.BuildLoad(EvaluatedVariable.LLVMValue);
                 case ExpressionType.Cast:
                     return ((Cast)Val).Compile(mod, builder, param);
                 case ExpressionType.UnknownFunctionCall:

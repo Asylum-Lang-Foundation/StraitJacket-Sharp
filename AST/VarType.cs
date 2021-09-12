@@ -19,6 +19,51 @@ namespace StraitJacket.AST {
             return context.primitives().Accept(this);
         }
 
+        public AsylumVisitResult VisitPrimitiveFunction([NotNull] AsylumParser.PrimitiveFunctionContext context)
+        {
+
+            // Setup function type.
+            int numParams = context.variable_type().Length;
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Primitive;
+            ret.Primitive = Primitives.Function;
+
+            // Get the return type.
+            if (numParams == 0) {
+                ret.EmbeddedType = new VarType() {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Void
+                };
+            } else {
+                ret.EmbeddedType = context.variable_type()[0].Accept(this).VariableType;
+            }
+
+            // Get parameters if needed.
+            if (numParams > 1) {
+                ret.Members = new VarType[numParams - 1];
+                for (int i = 0; i < numParams - 1; i++) {
+                    ret.Members[i] = context.variable_type()[i + 1].Accept(this).VariableType;
+                }
+            } else {
+                ret.Members = new VarType[0];
+            }
+
+            // Finish.
+            return new AsylumVisitResult() { VariableType = ret };
+
+        }
+
+        public AsylumVisitResult VisitPrimitiveChar([NotNull] AsylumParser.PrimitiveCharContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Char
+                }
+            };
+        }
+
         public AsylumVisitResult VisitPrimitiveString([NotNull] AsylumParser.PrimitiveStringContext context)
         {
             return new AsylumVisitResult() {
@@ -120,6 +165,39 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitPrimitiveObject([NotNull] AsylumParser.PrimitiveObjectContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.Primitive,
+                    Primitive = Primitives.Object
+                }
+            };
+        }
+
+        public AsylumVisitResult VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.RawPointer,
+                    EmbeddedType = context.variable_type().Accept(this).VariableType
+                }
+            };
+        }
+
+        public AsylumVisitResult VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context)
+        {
+            return new AsylumVisitResult() {
+                VariableType = new VarType()
+                {
+                    Type = VarTypeEnum.DietPointer,
+                    EmbeddedType = context.variable_type().Accept(this).VariableType
+                }
+            };
+        }
+
         public AsylumVisitResult VisitVarTypeCustom([NotNull] AsylumParser.VarTypeCustomContext context)
         {
             return new AsylumVisitResult() {
@@ -141,6 +219,13 @@ namespace StraitJacket.AST {
                     ToResolve = CTX.Implementation.Type
                 }
             };
+        }
+
+        public AsylumVisitResult VisitVarTypeConstant([NotNull] AsylumParser.VarTypeConstantContext context)
+        {
+            var ret = context.variable_type().Accept(this).VariableType;
+            ret.Constant = true;
+            return new AsylumVisitResult() { VariableType = ret };
         }
 
     }

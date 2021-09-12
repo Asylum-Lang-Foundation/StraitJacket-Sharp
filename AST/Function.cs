@@ -18,6 +18,7 @@ namespace StraitJacket.AST {
             fn.Name = context.IDENTIFIER().GetText();
             fn.Scope = CTX.CurrentScope;
             fn.Scope.AddFunction(fn.Name, fn.Name, fn); // No mangling.
+            fn.ModulePath = CTX.ModuleName;
             EnterScope("%FN%_" + fn.Name);
 
             // Get attributes. TODO!!!
@@ -37,7 +38,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -54,7 +55,7 @@ namespace StraitJacket.AST {
                 Type = VarTypeEnum.Primitive,
                 Primitive = Primitives.Function,
                 EmbeddedType = fn.ReturnType,
-                Members = fn.Parameters.Select(x => x.Type).ToArray()
+                Members = fn.Parameters.Select(x => x.Value.Type).ToArray()
             };
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
@@ -84,6 +85,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.IDENTIFIER().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
@@ -100,7 +102,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -144,6 +146,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.variable_type().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
@@ -160,7 +163,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }
@@ -200,6 +203,7 @@ namespace StraitJacket.AST {
             Function fn = new Function();
             fn.Name = context.variable_type().GetText();
             fn.Scope = CTX.CurrentScope;
+            fn.ModulePath = CTX.ModuleName;
 
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
@@ -209,7 +213,7 @@ namespace StraitJacket.AST {
             // Get parameters.
             if (context.variable_arguments() != null) {
                 fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
             } else {
                 fn.Parameters = new List<VarParameter>();
             }

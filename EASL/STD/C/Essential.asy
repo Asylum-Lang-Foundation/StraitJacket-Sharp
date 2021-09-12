@@ -51,10 +51,10 @@ extern fn freopen(const unsafe char* filename, const unsafe char* mode, unsafe o
 */
 
 // Print to a file.
-extern fn fprintf(unsafe object* stream, const char* format, ... args) -> int;
+extern fn fprintf(unsafe object* stream, const unsafe char* format, ... args) -> int;
 
 // Read from a file.
-extern fn fscanf(unsafe object* stream, const char* format, ... args) -> int;
+extern fn fscanf(unsafe object* stream, const unsafe char* format, ... args) -> int;
 
 // Print to standard out.
 extern fn printf(const unsafe char* format, ... args) -> int;

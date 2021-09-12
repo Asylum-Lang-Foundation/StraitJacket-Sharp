@@ -266,11 +266,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitPrimitiveChar([NotNull] AsylumParser.PrimitiveCharContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitPrimitiveDecimal([NotNull] AsylumParser.PrimitiveDecimalContext context)
         {
             throw new System.NotImplementedException();
@@ -292,16 +287,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitPrimitiveFixedAny([NotNull] AsylumParser.PrimitiveFixedAnyContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitPrimitiveFunction([NotNull] AsylumParser.PrimitiveFunctionContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitPrimitiveObject([NotNull] AsylumParser.PrimitiveObjectContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -476,22 +461,7 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitVarTypeConstant([NotNull] AsylumParser.VarTypeConstantContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitVarTypeGenerics([NotNull] AsylumParser.VarTypeGenericsContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -557,11 +527,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprComma([NotNull] AsylumParser.ExprCommaContext context)
         {
             throw new System.NotImplementedException();
         }

@@ -111,7 +111,7 @@ namespace StraitJacket {
         public static string MangleFunction(Function f) {
             string pars = "";
             for (int i = 0; i < f.Parameters.Count; i++) {
-                pars += MangleType(f.Parameters[i].Type);
+                pars += MangleType(f.Parameters[i].Value.Type);
             }
             string ret = ManglePrefix() + MangleScope(f.Scope) + f.Name.Length + f.Name + "E" + pars;
             if (!(f.ReturnType.Type == VarTypeEnum.Primitive && f.ReturnType.Primitive == Primitives.Void)) {

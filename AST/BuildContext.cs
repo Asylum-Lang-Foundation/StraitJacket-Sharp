@@ -23,6 +23,9 @@ namespace StraitJacket.AST {
         // Reference to the current implementation.
         public Implementation Implementation;
 
+        // Name of the module.
+        public string ModuleName;
+
     }
 
 }

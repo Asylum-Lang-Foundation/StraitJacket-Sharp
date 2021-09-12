@@ -100,11 +100,13 @@ namespace StraitJacket {
 
                 // Compile EASL.
                 visitor.CTX.UniversalMode = true;
+                visitor.CTX.ModuleName = "EASL";
                 VisitFile(compilerRoot + "/EASL/Types.asy", mode);
+                VisitFile(compilerRoot + "/EASL/Console.asy", mode);
                 //AddFile("EASL/Unsigned.asy");
                 if (flags.UseSTDC) {
                     foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
-                        //VisitFile(f, mode);
+                        VisitFile(f, mode);
                     }
                 } else {
                     foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
@@ -127,15 +129,25 @@ namespace StraitJacket {
 
                     // Just scan for each file.
                     foreach (var s in files) {
+                        visitor.CTX.ModuleName = rootFolder + "/" + s;
                         VisitFile(rootFolder + "/" + s, mode);
                     }
 
                 } else {
 
+                    // Do the universal AST for EASL.
+                    var univAST = visitor.CTX.UniversalAST;
+                    univAST.MoveVariableDefinitions();
+                    univAST.ResolveVariables();
+                    univAST.ResolveTypes();
+                    LLVMModuleRef univMod = univAST.Compile("EASL");
+                    univMod.WriteBitcodeToFile(rootFolder + "/obj/EASL.bc");
+
                     // Now it's time to do the actual compiling.
                     foreach (var s in files) {
 
                         // Fetch the AST, then do the necessary resolutions/adjustments.
+                        visitor.CTX.ModuleName = rootFolder + "/" + s;
                         var ast = VisitFile(rootFolder + "/" + s, mode);
                         ast.MoveVariableDefinitions();
                         ast.ResolveVariables();

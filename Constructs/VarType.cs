@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
@@ -119,17 +120,25 @@ namespace StraitJacket.Constructs {
                             case Primitives.VariableLength:
                                 break;
                             case Primitives.Object:
+                                GottenType = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0);
                                 break;
                             case Primitives.Void:
                                 GottenType = LLVMTypeRef.Void;
                                 break;
                             case Primitives.Function:
+                                var funcParams = new LLVMTypeRef[Members.Length];
+                                for (int i = 0; i < Members.Length; i++) {
+                                    funcParams[i] = Members[i].GetLLVMType();
+                                }
+                                GottenType = LLVMTypeRef.CreatePointer(LLVMTypeRef.CreateFunction(EmbeddedType.GetLLVMType(), funcParams, funcParams.Length == 0 ? false : Members.Last().Variadic), 0);
                                 break;
                             case Primitives.Event:
                                 break;
                             case Primitives.Char:
+                                GottenType = LLVMTypeRef.Int8;
                                 break;
                             case Primitives.WideChar:
+                                GottenType = LLVMTypeRef.Int16;
                                 break;
                             case Primitives.ToBeDetermined:
                                 break;
@@ -149,6 +158,7 @@ namespace StraitJacket.Constructs {
                         GottenType = Scope.ResolveType(ToResolve).GetLLVMType();
                         break;
                     case VarTypeEnum.RawPointer:
+                        GottenType = LLVMTypeRef.CreatePointer(EmbeddedType.GetLLVMType(), 0);
                         break;
                     case VarTypeEnum.DietPointer:
                         break;
@@ -242,9 +252,9 @@ namespace StraitJacket.Constructs {
 
     // Variable parameter.
     public class VarParameter {
-        public string Name;
-        public VarType Type;
         public string Label;
+        public Variable Value = new Variable();
+        public List<LLVMValueRef> VariadicArgs;
     }
 
 }
