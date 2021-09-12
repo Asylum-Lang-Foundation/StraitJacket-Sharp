@@ -239,12 +239,12 @@ namespace StraitJacket.Constructs {
         public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             switch (Type) {
                 case ExpressionType.String:
-                    return builder.BuildGlobalStringPtr((string)Val, "");
+                    return builder.BuildGlobalStringPtr((string)Val, (string)Val);
                 case ExpressionType.Integer:
                     Number number = (Number)Val;
                     return LLVMValueRef.CreateConstInt(LLVMTypeRef.CreateInt(number.MinBits), (ulong)number.ValueWhole, number.ForceSigned);
                 case ExpressionType.Variable:
-                    return EvaluatedVariable.NoLoad ? EvaluatedVariable.LLVMValue : builder.BuildLoad(EvaluatedVariable.LLVMValue);
+                    return EvaluatedVariable.NoLoad ? EvaluatedVariable.LLVMValue : builder.BuildLoad(EvaluatedVariable.LLVMValue, "load_" + EvaluatedVariable.Name);
                 case ExpressionType.Cast:
                     return ((Cast)Val).Compile(mod, builder, param);
                 case ExpressionType.UnknownFunctionCall:

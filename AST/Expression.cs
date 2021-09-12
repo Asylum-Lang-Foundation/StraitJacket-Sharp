@@ -89,7 +89,7 @@ namespace StraitJacket.AST {
             foreach (var e in context.expression()) {
                 ret.Parameters.Add(e.Accept(this).Expression);
             }
-            return new AsylumVisitResult() { FunctionCall = ret };
+            return new AsylumVisitResult() { CodeStatement = ret };
         }
 
         public AsylumVisitResult VisitExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context)
@@ -135,7 +135,7 @@ namespace StraitJacket.AST {
                 expr.Val = context.variable_or_function().Accept(this).VariableOrFunction;
                 return new AsylumVisitResult() { Expression = expr };
             } else if (context.function_call() != null) {
-                var func = context.function_call().Accept(this).FunctionCall;
+                var func = (FunctionCall)context.function_call().Accept(this).CodeStatement;
                 expr.Type = ExpressionType.UnknownFunctionCall;
                 expr.Val = func;
                 return new AsylumVisitResult() { Expression = expr };

@@ -10,7 +10,6 @@ namespace StraitJacket.AST {
         public ICompileable CodeStatement;
         public Expression Expression;
         public Function Function;
-        public FunctionCall FunctionCall;
         public Implementation Implementation;
         public Modifier Modifier;
         public Operator Operator;
