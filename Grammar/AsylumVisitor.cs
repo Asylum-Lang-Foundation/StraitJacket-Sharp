@@ -108,6 +108,13 @@ public interface IAsylumVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitUniversalTypedef([NotNull] AsylumParser.UniversalTypedefContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>UniversalTopLevelCode</c>
+	/// labeled alternative in <see cref="AsylumParser.universal_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="AsylumParser.using_statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

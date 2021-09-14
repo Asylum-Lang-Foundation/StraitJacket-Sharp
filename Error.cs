@@ -30,7 +30,9 @@ namespace StraitJacket {
         // Errors.
         public enum Errors {
             InvalidSyntax,
-            NotImplemented
+            NotImplemented,
+            MultipleTopLevelStatements,
+            MainWithTopLevelStatements
         }
 
         // Warning IDs.
@@ -41,7 +43,9 @@ namespace StraitJacket {
         // Error IDs.
         public static readonly Dictionary<Errors, string> ErrorIds = new Dictionary<Errors, string>() {
             { Errors.InvalidSyntax, "Invalid Syntax - You can't write code that doesn't follow the syntactical guidelines, that's insane!" },
-            { Errors.NotImplemented, "Not Implemented - In an ironic twist of fate, there's something wrong with the compiler. We're insane!" }
+            { Errors.NotImplemented, "Not Implemented - In an ironic twist of fate, there's something wrong with the compiler. We're insane!" },
+            { Errors.MultipleTopLevelStatements, "Multiple Files With Top Level Statements - Only one file compiled can have top-level statements, otherwise how would we know where it begins? That's insane!" },
+            { Errors.MainWithTopLevelStatements, "Main With Top Level Statements - You can't define a main entrypoint if top level statements exist, as the top level statements are the main entrypoint! This redefinition is insane!" }
         };
 
         // Fetch a context.

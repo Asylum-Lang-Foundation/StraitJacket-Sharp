@@ -239,7 +239,7 @@ namespace StraitJacket.Constructs {
         public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             switch (Type) {
                 case ExpressionType.String:
-                    return builder.BuildGlobalStringPtr((string)Val, (string)Val);
+                    return builder.BuildGlobalStringPtr((string)Val, "");
                 case ExpressionType.Integer:
                     Number number = (Number)Val;
                     return LLVMValueRef.CreateConstInt(LLVMTypeRef.CreateInt(number.MinBits), (ulong)number.ValueWhole, number.ForceSigned);

@@ -188,6 +188,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitUniversalTypedef([NotNull] AsylumParser.UniversalTypedefContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>UniversalTopLevelCode</c>
+	/// labeled alternative in <see cref="AsylumParser.universal_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UniversalTopLevelCode</c>
+	/// labeled alternative in <see cref="AsylumParser.universal_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AsylumParser.using_statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

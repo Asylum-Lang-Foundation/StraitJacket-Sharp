@@ -140,7 +140,7 @@ namespace StraitJacket {
                     univAST.MoveVariableDefinitions();
                     univAST.ResolveVariables();
                     univAST.ResolveTypes();
-                    LLVMModuleRef univMod = univAST.Compile("EASL");
+                    LLVMModuleRef univMod = univAST.Compile("EASL", rootFolder);
                     univMod.WriteBitcodeToFile(rootFolder + "/obj/EASL.bc");
 
                     // Now it's time to do the actual compiling.
@@ -157,7 +157,7 @@ namespace StraitJacket {
                         if (!ErrorHandler.Valid) return;
 
                         // Compile the file and output to a file.
-                        LLVMModuleRef mod = ast.Compile(s);
+                        LLVMModuleRef mod = ast.Compile(s, rootFolder);
                         Directory.CreateDirectory(rootFolder + "/obj/" + Path.GetDirectoryName(s));
                         mod.WriteBitcodeToFile(rootFolder + "/obj/" + Path.GetFileNameWithoutExtension(s) + ".bc");
 

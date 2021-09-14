@@ -161,6 +161,18 @@ public interface IAsylumListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitUniversalTypedef([NotNull] AsylumParser.UniversalTypedefContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>UniversalTopLevelCode</c>
+	/// labeled alternative in <see cref="AsylumParser.universal_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UniversalTopLevelCode</c>
+	/// labeled alternative in <see cref="AsylumParser.universal_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AsylumParser.using_statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

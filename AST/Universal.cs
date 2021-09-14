@@ -55,6 +55,19 @@ namespace StraitJacket.AST {
             return ret;
         }
 
+        public AsylumVisitResult VisitUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context)
+        {
+            if (CTX.VisitMode != Compiler.VisitMode.GetCode) return null;
+            var ret = context.code_statement().Accept(this);
+            if (CTX.TopLevelStatementsUsed && !CTX.ModuleName.Equals(CTX.TopLevelModule)) {
+                ErrorHandler.ThrowError(ErrorHandler.Errors.MultipleTopLevelStatements, ErrorHandler.GetFileContext(context));
+            }
+            CTX.TopLevelStatementsUsed = true;
+            CTX.TopLevelModule = CTX.ModuleName;
+            CTX.CurrentAST.TopLevel.Statements.Add(ret.CodeStatement);
+            return ret;
+        }
+
         public void EnterScope(string name = "", bool allowConflict = false) {
             var scope = CTX.CurrentScope;
             if (name == "") {
