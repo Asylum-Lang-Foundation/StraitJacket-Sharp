@@ -26,6 +26,12 @@ namespace StraitJacket.AST {
         // Name of the module.
         public string ModuleName;
 
+        // Top level statements used.
+        public bool TopLevelStatementsUsed;
+
+        // Name of the top level module.
+        public string TopLevelModule;
+
     }
 
 }

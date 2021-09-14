@@ -16,7 +16,7 @@ namespace StraitJacket
 
             // For now create defeault arguments.
             if (args.Length == 0) {
-                args = new string[] { "Dummy.asy" };
+                args = new string[] { "HelloWorld.asy" };
             }
             
             // Get flags, then compile.
