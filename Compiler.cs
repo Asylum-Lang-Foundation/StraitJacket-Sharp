@@ -50,8 +50,13 @@ namespace StraitJacket {
 
         // Visit mode for the AST.
         public enum VisitMode {
+
+            // Scan for typedefs and struct definitions.
             GetTypes,
+
+            // Scan for functions, calls, expressions, etc.
             GetCode
+
         }
 
         // Visit a file.
@@ -103,7 +108,7 @@ namespace StraitJacket {
                 visitor.CTX.ModuleName = "EASL";
                 VisitFile(compilerRoot + "/EASL/Types.asy", mode);
                 VisitFile(compilerRoot + "/EASL/Console.asy", mode);
-                //AddFile("EASL/Unsigned.asy");
+                //VisitFile(compilerRoot + "/EASL/Unsigned.asy", mode);
                 if (flags.UseSTDC) {
                     foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
                         VisitFile(f, mode);
@@ -137,9 +142,7 @@ namespace StraitJacket {
 
                     // Do the universal AST for EASL.
                     var univAST = visitor.CTX.UniversalAST;
-                    univAST.MoveVariableDefinitions();
-                    univAST.ResolveVariables();
-                    univAST.ResolveTypes();
+                    univAST.PrepareForCompilation();
                     LLVMModuleRef univMod = univAST.Compile("EASL", rootFolder);
                     univMod.WriteBitcodeToFile(rootFolder + "/obj/EASL.bc");
 
@@ -149,9 +152,7 @@ namespace StraitJacket {
                         // Fetch the AST, then do the necessary resolutions/adjustments.
                         visitor.CTX.ModuleName = rootFolder + "/" + s;
                         var ast = VisitFile(rootFolder + "/" + s, mode);
-                        ast.MoveVariableDefinitions();
-                        ast.ResolveVariables();
-                        ast.ResolveTypes();
+                        ast.PrepareForCompilation();
 
                         // Make sure no error was encountered.
                         if (!ErrorHandler.Valid) return;

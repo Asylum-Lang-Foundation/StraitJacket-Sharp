@@ -10,14 +10,32 @@ namespace StraitJacket.Constructs {
     public class AST {
         public List<ICompileableUniversal> Universals = new List<ICompileableUniversal>();
         public CodeStatements TopLevel = new CodeStatements();
+        private bool CompilationReady;
+
+        // Make sure we are ready to compile.
+        public void PrepareForCompilation() {
+
+            // Make sure declarations are in entry block.
+            MoveVariableDefinitions();
+
+            // Turn variable and function call names into actual function calls.
+            ResolveVariables();
+
+            // Resolve the result types of expressions and finalize what function is called.
+            ResolveTypes();
+
+            // Ready!
+            CompilationReady = true;
+
+        }
 
         // Make it so the definition of a variable and its assignment are separate. Definitions must be in the entry block for alloca to be optimized.
-        public void MoveVariableDefinitions() {
+        private void MoveVariableDefinitions() {
 
         }
 
         // Converts variable names to actual variable values.
-        public void ResolveVariables() {
+        private void ResolveVariables() {
             foreach (var u in Universals) {
                 u.ResolveVariables();
             }
@@ -25,7 +43,7 @@ namespace StraitJacket.Constructs {
         }
 
         // Resolve all the types used.
-        public void ResolveTypes() {
+        private void ResolveTypes() {
             foreach (var u in Universals) {
                 u.ResolveTypes();
             }
@@ -34,6 +52,9 @@ namespace StraitJacket.Constructs {
 
         // Compile the entire thing.
         public LLVMModuleRef Compile(string modName, string rootFolder) {
+            if (!CompilationReady) {
+                throw new Exception("COMPILER API ERROR: Preparation for compilation was never called!");
+            }
             var mod = LLVMModuleRef.CreateWithName(modName);
             var builder = LLVMBuilderRef.Create(mod.Context);
             if (TopLevel.Statements.Count > 0) {

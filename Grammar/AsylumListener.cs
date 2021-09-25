@@ -1385,18 +1385,6 @@ public interface IAsylumListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVarTypeGenerics([NotNull] AsylumParser.VarTypeGenericsContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypeStatic</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
@@ -1457,6 +1445,18 @@ public interface IAsylumListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypeTupleProper</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
@@ -1493,18 +1493,6 @@ public interface IAsylumListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVarTypeAtomic([NotNull] AsylumParser.VarTypeAtomicContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypePrimitive</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
@@ -1516,6 +1504,18 @@ public interface IAsylumListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>PrimitiveString</c>
 	/// labeled alternative in <see cref="AsylumParser.primitives"/>.

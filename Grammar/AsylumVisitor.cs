@@ -828,13 +828,6 @@ public interface IAsylumVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitVarTypeGenerics([NotNull] AsylumParser.VarTypeGenericsContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypeStatic</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
@@ -870,6 +863,13 @@ public interface IAsylumVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypeTupleProper</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
@@ -891,19 +891,19 @@ public interface IAsylumVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitVarTypeAtomic([NotNull] AsylumParser.VarTypeAtomicContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypePrimitive</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>PrimitiveString</c>
 	/// labeled alternative in <see cref="AsylumParser.primitives"/>.

@@ -1628,20 +1628,6 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVarTypeGenerics([NotNull] AsylumParser.VarTypeGenericsContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypeStatic</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1712,6 +1698,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypeTupleProper</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1754,20 +1754,6 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVarTypeAtomic([NotNull] AsylumParser.VarTypeAtomicContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>VarTypePrimitive</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1781,6 +1767,20 @@ public partial class AsylumBaseListener : IAsylumListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>PrimitiveString</c>
 	/// labeled alternative in <see cref="AsylumParser.primitives"/>.

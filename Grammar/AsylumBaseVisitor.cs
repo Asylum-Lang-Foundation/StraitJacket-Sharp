@@ -1307,17 +1307,6 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVarTypeGenerics([NotNull] AsylumParser.VarTypeGenericsContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VarTypeDietPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypeStatic</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>
@@ -1373,6 +1362,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>VarTypeReference</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypeTupleProper</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>
@@ -1406,17 +1406,6 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVarTypeAtomic([NotNull] AsylumParser.VarTypeAtomicContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VarTypeRawPointer</c>
-	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>VarTypePrimitive</c>
 	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
 	/// <para>
@@ -1427,6 +1416,17 @@ public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>VarTypePointer</c>
+	/// labeled alternative in <see cref="AsylumParser.variable_type"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>PrimitiveString</c>
 	/// labeled alternative in <see cref="AsylumParser.primitives"/>.

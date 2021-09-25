@@ -174,25 +174,25 @@ namespace StraitJacket.AST {
                     Primitive = Primitives.Object
                 }
             };
-        }
+        }     
 
-        public AsylumVisitResult VisitVarTypeRawPointer([NotNull] AsylumParser.VarTypeRawPointerContext context)
+        public AsylumVisitResult VisitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context)
         {
             return new AsylumVisitResult() {
                 VariableType = new VarType()
                 {
-                    Type = VarTypeEnum.RawPointer,
+                    Type = VarTypeEnum.Pointer,
                     EmbeddedType = context.variable_type().Accept(this).VariableType
                 }
             };
         }
 
-        public AsylumVisitResult VisitVarTypeDietPointer([NotNull] AsylumParser.VarTypeDietPointerContext context)
+        public AsylumVisitResult VisitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context)
         {
             return new AsylumVisitResult() {
                 VariableType = new VarType()
                 {
-                    Type = VarTypeEnum.DietPointer,
+                    Type = VarTypeEnum.Reference,
                     EmbeddedType = context.variable_type().Accept(this).VariableType
                 }
             };
@@ -213,11 +213,7 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = new VarType() {
-                    Scope = CTX.CurrentScope,
-                    Type = VarTypeEnum.Custom,
-                    ToResolve = CTX.Implementation.Type
-                }
+                VariableType = CTX.Implementation.Type
             };
         }
 
