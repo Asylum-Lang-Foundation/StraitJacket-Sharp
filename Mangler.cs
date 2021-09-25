@@ -96,9 +96,9 @@ namespace StraitJacket {
                     }
                     string scopeMangle = MangleScope(type.Scope);
                     return ret + scopeMangle + type.Name.Length + type.Name + "E";
-                case VarTypeEnum.RawPointer:
+                case VarTypeEnum.Pointer:
                     return "p" + MangleType(type.EmbeddedType);
-                case VarTypeEnum.DietPointer:
+                case VarTypeEnum.Reference:
                     return "P" + MangleType(type.EmbeddedType);
                 case VarTypeEnum.Array:
                     return "a" + MangleType(type.EmbeddedType);

@@ -8,8 +8,7 @@ namespace StraitJacket.Constructs {
 
     // Type implementation definition.
     public class Implementation : ICompileableUniversal {
-        public VariableOrFunction Type;
-        public VarType ResolvedType;
+        public VarType Type;
         public VarType InterfaceToImplement;
         public Dictionary<string, Function> Functions = new Dictionary<string, Function>();
         public Dictionary<Operator, Function> Operators = new Dictionary<Operator, Function>();

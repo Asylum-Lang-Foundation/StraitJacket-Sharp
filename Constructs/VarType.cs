@@ -53,8 +53,8 @@ namespace StraitJacket.Constructs {
         Primitive,
         Tuple,
         Custom,
-        RawPointer,
-        DietPointer,
+        Pointer,
+        Reference,
         Array,
         Generics
     }
@@ -157,10 +157,10 @@ namespace StraitJacket.Constructs {
                     case VarTypeEnum.Custom:
                         GottenType = Scope.ResolveType(ToResolve).GetLLVMType();
                         break;
-                    case VarTypeEnum.RawPointer:
+                    case VarTypeEnum.Pointer:
                         GottenType = LLVMTypeRef.CreatePointer(EmbeddedType.GetLLVMType(), 0);
                         break;
-                    case VarTypeEnum.DietPointer:
+                    case VarTypeEnum.Reference:
                         break;
                     case VarTypeEnum.Array:
                         break;
@@ -201,12 +201,12 @@ namespace StraitJacket.Constructs {
                 }
 
                 // Raw pointer.
-                if (x.Type == VarTypeEnum.RawPointer) {
+                if (x.Type == VarTypeEnum.Pointer) {
                     return x.EmbeddedType == y.EmbeddedType;
                 }
 
                 // Diet pointer.
-                if (x.Type == VarTypeEnum.DietPointer) {
+                if (x.Type == VarTypeEnum.Reference) {
                     return x.EmbeddedType == y.EmbeddedType;
                 }
 

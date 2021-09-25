@@ -7,97 +7,97 @@
 */
 
 // Malloc is needed to allocate dynamic memory.
-extern fn malloc(size_t size) -> unsafe object*;
+extern fn malloc(size_t size) -> object*;
 
 // Needed to allocate arrays.
-extern fn calloc(size_t num, size_t size) -> unsafe object*;
+extern fn calloc(size_t num, size_t size) -> object*;
 
 // Needed to resize arrays.
-extern fn realloc(unsafe object* ptr, size_t size) -> unsafe object*;
+extern fn realloc(object* ptr, size_t size) -> object*;
 
 // Needed to free memory.
-extern fn free(unsafe object* ptr);
+extern fn free(object* ptr);
 
 /*
 * File Operations
 */
 
 // Remove a file.
-extern fn remove(const unsafe char* file) -> int;
+extern fn remove(const char* file) -> int;
 
 // Rename a file.
-extern fn rename(const unsafe char* file, const unsafe char* newName) -> int;
+extern fn rename(const char* file, const char* newName) -> int;
 
 // Open a temporary file.
-extern fn tmpfile() -> unsafe object*;
+extern fn tmpfile() -> object*;
 
 // Generate a temporary name.
-extern fn tmpnam(unsafe char* str);
+extern fn tmpnam(char* str);
 
 // Open a file.
-extern fn fopen(const unsafe char* filename, const unsafe char* mode) -> unsafe object*;
+extern fn fopen(const char* filename, const char* mode) -> object*;
 
 // Close a file.
-extern fn fclose(unsafe object* file) -> int;
+extern fn fclose(object* file) -> int;
 
 // Flush the file buffer to disk.
-extern fn fflush(unsafe object* file) -> int;
+extern fn fflush(object* file) -> int;
 
 // Reopen a file with different name or mode.
-extern fn freopen(const unsafe char* filename, const unsafe char* mode, unsafe object* stream) -> unsafe object*;
+extern fn freopen(const char* filename, const char* mode,  object* stream) -> object*;
 
 /*
 * IO Operations
 */
 
 // Print to a file.
-extern fn fprintf(unsafe object* stream, const unsafe char* format, ... args) -> int;
+extern fn fprintf(object* stream, const char* format, ... args) -> int;
 
 // Read from a file.
-extern fn fscanf(unsafe object* stream, const unsafe char* format, ... args) -> int;
+extern fn fscanf( object* stream, const char* format, ... args) -> int;
 
 // Print to standard out.
-extern fn printf(const unsafe char* format, ... args) -> int;
+extern fn printf(const char* format, ... args) -> int;
 
 // Read from standard in.
-extern fn scanf(const unsafe char* format, ... args) -> int;
+extern fn scanf(const char* format, ... args) -> int;
 
 // Unget a character from a stream.
-extern fn ungetc(int character, unsafe object* stream) -> int;
+extern fn ungetc(int character, object* stream) -> int;
 
 // Set stream buffer.
-extern fn setvbuf(unsafe object* stream, unsafe byte* buffer, int mode, size_t size) -> int;
+extern fn setvbuf(object* stream, byte* buffer, int mode, size_t size) -> int;
 
 // Read from a stream.
-extern fn fread(unsafe byte* ptr, size_t size, size_t count, unsafe object* stream) -> size_t;
+extern fn fread(byte* ptr, size_t size, size_t count, object* stream) -> size_t;
 
 // Write to a stream.
-extern fn fwrite(unsafe byte* ptr, size_t size, size_t count, unsafe object* stream) -> size_t;
+extern fn fwrite(byte* ptr, size_t size, size_t count, object* stream) -> size_t;
 
 // Seek to a certain position in the file.
-extern fn fseek(unsafe object* stream, long offset, int origin) -> int;
+extern fn fseek(object* stream, long offset, int origin) -> int;
 
 // Get the position in the stream.
-extern fn ftell(unsafe object* stream) -> long;
+extern fn ftell(object* stream) -> long;
 
 // Get any errors from stream.
-extern fn ferror(unsafe object* stream) -> int;
+extern fn ferror(object* stream) -> int;
 
 // Clear errors in stream.
-extern fn clearerr(unsafe object* stream);
+extern fn clearerr(object* stream);
 
 // Check for end of file.
-extern fn feof(unsafe object* stream) -> int;
+extern fn feof( object* stream) -> int;
 
 // Print to standard error.
-extern fn perror(const unsafe char* str);
+extern fn perror(const char* str);
 
 /*
 * Process Operations
 */
 
 // Execute a system command.
-extern fn system(const unsafe char* command) -> int;
+extern fn system(const char* command) -> int;
 
 // Abort the current process.
 extern fn abort();
@@ -122,7 +122,7 @@ extern fn _Exit(int status);
 */
 
 // Get an environment variable.
-extern fn getenv(const unsafe char* name) -> unsafe char*;
+extern fn getenv(const char* name) -> char*;
 
 // Set a signal handler.
 extern fn signal(int sig, func<int> handler) -> func<int>;
@@ -134,7 +134,7 @@ extern fn raise(int sig) -> int;
 extern fn clock() -> ulong;
 
 // Get calendar time.
-extern fn time(unsafe ulong* timer) -> ulong;
+extern fn time(ulong* timer) -> ulong;
 
 // Get a random number.
 extern fn rand() -> int;

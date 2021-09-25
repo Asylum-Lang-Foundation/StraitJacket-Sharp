@@ -11,14 +11,16 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitImplementation_definition([NotNull] AsylumParser.Implementation_definitionContext context)
         {
             var ret = new Implementation();
-            ret.Type = context.variable_or_function().Accept(this).VariableOrFunction;
+            ret.Type = CTX.CurrentScope.ResolveType(context.variable_or_function().Accept(this).VariableOrFunction);
             if (context.variable_type() != null) {
                 ret.InterfaceToImplement = context.variable_type().Accept(this).VariableType;
             }
             CTX.Implementation = ret;
+            EnterScope(Mangler.MangleType(ret.Type));
             foreach (var e in context.implementation_entry()) {
                 e.Accept(this);
             }
+            ExitScope();
             CTX.Implementation = null;
             return new AsylumVisitResult() { Implementation = ret };
         }

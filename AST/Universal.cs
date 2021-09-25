@@ -82,6 +82,7 @@ namespace StraitJacket.AST {
             } else {
                 scope.Children.Add(name, new Scope());
                 CTX.CurrentScope = scope.Children[name];
+                CTX.CurrentScope.Name = name;
                 CTX.CurrentScope.Parent = scope;
             }
         }
