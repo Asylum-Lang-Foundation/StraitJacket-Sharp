@@ -81,6 +81,62 @@ namespace StraitJacket.Constructs {
         private LLVMTypeRef GottenType = null;
         public override string ToString() => Mangler.MangleType(this);
 
+        // Disallow external creation.
+        private VarType() {}
+
+        // Create a simple primitive type.
+        public static VarType CreatePrimitiveSimple(Primitives primitive) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Primitive;
+            ret.Primitive = primitive;
+            return ret;
+        }
+
+        // Create an integer.
+        public static VarType CreateInt(bool signed, uint bitWidth) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Primitive;
+            ret.Primitive = signed ? Primitives.Signed : Primitives.Unsigned;
+            ret.BitWidth = bitWidth;
+            return ret;
+        }
+
+        // Create a function.
+        public static VarType CreateFunction(VarType retType, List<VarType> parameters) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Primitive;
+            ret.Primitive = Primitives.Function;
+            ret.EmbeddedType = retType;
+            ret.Members = parameters.ToArray();
+            return ret;
+        }
+
+        // Create a tuple.
+        public static VarType CreateTuple(List<VarType> members) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Tuple;
+            ret.Members = members.ToArray();
+            return ret;
+        }
+
+        // TODO: CUSTOM TYPE!!!
+
+        // Create a pointer.
+        public static VarType CreatePointer(VarType toPointTo) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Pointer;
+            ret.EmbeddedType = toPointTo;
+            return ret;
+        }
+
+        // Create a reference.
+        public static VarType CreateReference(VarType toPointTo) {
+            VarType ret = new VarType();
+            ret.Type = VarTypeEnum.Reference;
+            ret.EmbeddedType = toPointTo;
+            return ret;
+        }
+
         // TODO!!!
         public LLVMTypeRef GetLLVMType() {
             if (TypeNotGotten) {
@@ -205,7 +261,7 @@ namespace StraitJacket.Constructs {
                     return x.EmbeddedType == y.EmbeddedType;
                 }
 
-                // Diet pointer.
+                // Reference.
                 if (x.Type == VarTypeEnum.Reference) {
                     return x.EmbeddedType == y.EmbeddedType;
                 }

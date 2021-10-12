@@ -2,7 +2,20 @@ using System.Collections.Generic;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
-// TODO: TREAT FUNCTIONS LIKE GLOBAL VARIABLES!!! So close, but you forgot to take into account mangling...
+/*
+
+    Expressions:
+        So there are many different types of expressions that can be created.
+        The purpose of this file is to control the contruction, evaluation, and compilation of these.
+    
+    Expression Types:
+
+        String:
+            Purpose: Global string data value to convert into a global string pointer.
+            Val: Compiler "string" type.
+
+*/
+
 namespace StraitJacket.Constructs {
 
     // Variable or function.
@@ -186,6 +199,10 @@ namespace StraitJacket.Constructs {
                 case ExpressionType.Cast:
                     ((Cast)Val).ResolveVariables();
                     break;
+                case ExpressionType.Assignment:
+                    Left.ResolveVariables();
+                    Right.ResolveVariables();
+                    break;
                 case ExpressionType.EvaluatedFunctionCall:
                     Left.ResolveVariables();
                     Right.ResolveVariables(); // After resolving variables, this can finally be made into a function call.
@@ -221,6 +238,10 @@ namespace StraitJacket.Constructs {
                 case ExpressionType.Variable:
                     EvaluatesTo = EvaluatedVariable.Type;
                     break;
+                case ExpressionType.Assignment:
+                    EvaluatesTo = VarType.CreatePrimitiveSimple(Primitives.Void);
+                    // TODO: ASSIGN PROPER "FUNCTION"!!!
+                    break;
                 case ExpressionType.UnknownFunctionCall:
                     EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
                     break;
@@ -229,7 +250,7 @@ namespace StraitJacket.Constructs {
                     EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
                     break;
                 case ExpressionType.String:
-                    EvaluatesTo = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String };
+                    EvaluatesTo = VarType.CreatePrimitiveSimple(Primitives.String);
                     break;
                 default:
                     throw new System.NotImplementedException();

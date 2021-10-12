@@ -350,6 +350,7 @@ MigrationBackup/
 .ionide/
 
 # Other files.
+.vscode/*
 Tests/*.bc
 Tests/*.elf
 Tests/*.ll
