@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
@@ -24,32 +25,25 @@ namespace StraitJacket.AST {
 
             // Setup function type.
             int numParams = context.variable_type().Length;
-            VarType ret = new VarType();
-            ret.Type = VarTypeEnum.Primitive;
-            ret.Primitive = Primitives.Function;
+            VarType ret = null;
+            List<VarType> members = new List<VarType>();
 
             // Get the return type.
             if (numParams == 0) {
-                ret.EmbeddedType = new VarType() {
-                    Type = VarTypeEnum.Primitive,
-                    Primitive = Primitives.Void
-                };
+                ret = VarType.CreatePrimitiveSimple(Primitives.Void); 
             } else {
-                ret.EmbeddedType = context.variable_type()[0].Accept(this).VariableType;
+                ret = context.variable_type()[0].Accept(this).VariableType;
             }
 
             // Get parameters if needed.
             if (numParams > 1) {
-                ret.Members = new VarType[numParams - 1];
                 for (int i = 0; i < numParams - 1; i++) {
-                    ret.Members[i] = context.variable_type()[i + 1].Accept(this).VariableType;
+                    members.Add(context.variable_type()[i + 1].Accept(this).VariableType);
                 }
-            } else {
-                ret.Members = new VarType[0];
             }
 
             // Finish.
-            return new AsylumVisitResult() { VariableType = ret };
+            return new AsylumVisitResult() { VariableType = VarType.CreateFunction(ret, members) };
 
         }
 
@@ -133,30 +127,21 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePointer(context.variable_type().Accept(this).VariableType);
+                VariableType = VarType.CreatePointer(context.variable_type().Accept(this).VariableType)
             };
         }
 
         public AsylumVisitResult VisitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = new VarType()
-                {
-                    Type = VarTypeEnum.Reference,
-                    EmbeddedType = context.variable_type().Accept(this).VariableType
-                }
+                VariableType = VarType.CreateReference(context.variable_type().Accept(this).VariableType)
             };
         }
 
         public AsylumVisitResult VisitVarTypeCustom([NotNull] AsylumParser.VarTypeCustomContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = new VarType()
-                {
-                    Scope = CTX.CurrentScope,
-                    Type = VarTypeEnum.Custom,
-                    ToResolve = context.variable_or_function().Accept(this).VariableOrFunction
-                }
+                VariableType = VarType.CreateCustom(CTX.CurrentScope, context.variable_or_function().Accept(this).VariableOrFunction)
             };
         }
 

@@ -23,7 +23,7 @@ namespace StraitJacket.AST {
 
             // Variadic.
             if (context.IDENTIFIER() != null) {
-                VarType variadic = context.variable_type() != null ? context.variable_type().Accept(this).VariableType : new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object };
+                VarType variadic = context.variable_type() != null ? context.variable_type().Accept(this).VariableType : VarType.CreatePrimitiveSimple(Primitives.Object);
                 variadic.Variadic = true;
                 ret.Add(new VarParameter() { Value = new Variable() {  Name = context.IDENTIFIER().GetText(), Type = variadic } });
             }
@@ -36,7 +36,7 @@ namespace StraitJacket.AST {
         // TODO: LABELS!!!
         public AsylumVisitResult VisitVariableArgsVariadicOnly([NotNull] AsylumParser.VariableArgsVariadicOnlyContext context)
         {
-            VarType ret = context.variable_type() != null ? context.variable_type().Accept(this).VariableType : new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object };
+            VarType ret = context.variable_type() != null ? context.variable_type().Accept(this).VariableType : VarType.CreatePrimitiveSimple(Primitives.Object);
             ret.Variadic = true;
             return new AsylumVisitResult() {
                 Parameters = new List<VarParameter>() {

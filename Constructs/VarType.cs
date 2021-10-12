@@ -84,6 +84,18 @@ namespace StraitJacket.Constructs {
         // Disallow external creation.
         private VarType() {}
 
+        // Create a constant type.
+        public static VarType AppendConstantToType(VarType varType) {
+            varType.Constant = true;
+            return varType;
+        }
+
+        // Create a variadic type.
+        public static VarType AppendVariadicToType(VarType varType) {
+            varType.Variadic = true;
+            return varType;
+        }
+
         // Create a simple primitive type.
         public static VarType CreatePrimitiveSimple(Primitives primitive) {
             VarType ret = new VarType();
@@ -119,7 +131,14 @@ namespace StraitJacket.Constructs {
             return ret;
         }
 
-        // TODO: CUSTOM TYPE!!!
+        // Create a reference to a custom type.
+        public static VarType CreateCustom(Scope currScope, VariableOrFunction toResolve) {
+            VarType ret = new VarType();
+            ret.Scope = currScope;
+            ret.Type = VarTypeEnum.Custom;
+            ret.ToResolve = toResolve;
+            return ret;
+        }
 
         // Create a pointer.
         public static VarType CreatePointer(VarType toPointTo) {

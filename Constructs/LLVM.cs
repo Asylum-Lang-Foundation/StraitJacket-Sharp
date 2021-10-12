@@ -18,10 +18,10 @@ namespace StraitJacket.Constructs {
             Variadic = true,
             Attributes = new List<Attribute>(),
             Parameters = new List<VarParameter>() {
-                new VarParameter() { Value = new Variable() { Name = "instruction", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String, Constant = true } } },
-                new VarParameter() { Value = new Variable() { Name = "args", Type = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object, Variadic = true } } }
+                new VarParameter() { Value = new Variable() { Name = "instruction", Type = VarType.AppendConstantToType(VarType.CreatePrimitiveSimple(Primitives.String)) } },
+                new VarParameter() { Value = new Variable() { Name = "args", Type = VarType.AppendVariadicToType(VarType.CreatePrimitiveSimple(Primitives.String)) } }
             },
-            ReturnType = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Object }
+            ReturnType = VarType.CreatePrimitiveSimple(Primitives.Object)
         };
 
         // Since LLVM assembly calls are inline, they have to be defined for every call. Here we just translate the instructions.
