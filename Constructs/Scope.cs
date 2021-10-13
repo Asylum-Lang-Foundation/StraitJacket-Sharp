@@ -82,7 +82,7 @@ namespace StraitJacket.Constructs {
             } else if (Parent != null) {
                 return Parent.ResolveType(type);
             } else {
-                if (type.Path.Equals("unsigned")) return VarType.CreatePrimitiveSimple(Primitives.UnsignedAny);
+                if (type.Path.Equals("unsigned")) return new VarTypeSimplePrimitive(SimplePrimitives.UnsignedAny);
                 throw new System.Exception("Type not resolved!");
             }
         }

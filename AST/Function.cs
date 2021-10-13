@@ -47,11 +47,11 @@ namespace StraitJacket.AST {
             if (context.variable_type() != null) {
                 fn.ReturnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = VarType.CreatePrimitiveSimple(Primitives.Void);
+                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Finished.
-            fn.Type = VarType.CreateFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
+            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
 
@@ -106,7 +106,7 @@ namespace StraitJacket.AST {
             if (context.variable_type() != null) {
                 fn.ReturnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = VarType.CreatePrimitiveSimple(Primitives.Void);
+                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Get code.

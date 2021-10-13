@@ -72,8 +72,6 @@ namespace StraitJacket {
                             return ret + "r";
                         case Primitives.WideChar:
                             return ret + "w";
-                        case Primitives.ToBeDetermined:
-                            throw new System.Exception("????");
                         case Primitives.UnsignedAny:
                             return ret + "U";
                         case Primitives.SignedAny:

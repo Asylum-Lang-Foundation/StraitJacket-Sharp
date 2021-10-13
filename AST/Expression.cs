@@ -163,7 +163,8 @@ namespace StraitJacket.AST {
         {
             Expression ret = new Expression();
             ret.Scope = CTX.CurrentScope;
-            ret.EvaluatesTo = VarType.AppendConstantToType(VarType.CreatePrimitiveSimple(Primitives.String));
+            ret.EvaluatesTo = new VarTypeSimplePrimitive(SimplePrimitives.ConstString);
+            ret.EvaluatesTo.Constant = true;
             ret.Type = ExpressionType.String;
             ret.Val = GetString(context.STRING());
             return new AsylumVisitResult() { Expression = ret };
@@ -176,7 +177,8 @@ namespace StraitJacket.AST {
             ret.Type = ExpressionType.Integer;
             ret.Val = GetInteger(context.INTEGER());
             bool signed = ((Number)ret.Val).ValueWhole < 0;
-            ret.EvaluatesTo = VarType.AppendConstantToType(VarType.CreateInt(signed, ((Number)ret.Val).MinBits));
+            ret.EvaluatesTo = new VarTypeInteger(signed, ((Number)ret.Val).MinBits);
+            ret.EvaluatesTo.Constant = true;
             return new AsylumVisitResult() { Expression = ret };
         }
 

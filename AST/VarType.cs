@@ -30,7 +30,7 @@ namespace StraitJacket.AST {
 
             // Get the return type.
             if (numParams == 0) {
-                ret = VarType.CreatePrimitiveSimple(Primitives.Void); 
+                ret = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             } else {
                 ret = context.variable_type()[0].Accept(this).VariableType;
             }
@@ -43,84 +43,85 @@ namespace StraitJacket.AST {
             }
 
             // Finish.
-            return new AsylumVisitResult() { VariableType = VarType.CreateFunction(ret, members) };
+            return new AsylumVisitResult() { VariableType = new VarTypeFunction(ret, members) };
 
         }
 
         public AsylumVisitResult VisitPrimitiveChar([NotNull] AsylumParser.PrimitiveCharContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.Char)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.Char)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveString([NotNull] AsylumParser.PrimitiveStringContext context)
         {
+            // TEMPORARY!!!
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.String)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.ConstString)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveUnsigned([NotNull] AsylumParser.PrimitiveUnsignedContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreateInt(false, uint.Parse(context.UNSIGNED().GetText().Substring(1)))
+                VariableType = new VarTypeInteger(false, uint.Parse(context.UNSIGNED().GetText().Substring(1)))
             };
         }
 
         public AsylumVisitResult VisitPrimitiveSigned([NotNull] AsylumParser.PrimitiveSignedContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreateInt(true, uint.Parse(context.SIGNED().GetText().Substring(1)))
+                VariableType = new VarTypeInteger(true, uint.Parse(context.SIGNED().GetText().Substring(1)))
             };
         }
 
         public AsylumVisitResult VisitPrimitiveHalf([NotNull] AsylumParser.PrimitiveHalfContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.Half)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.Half)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveFloat([NotNull] AsylumParser.PrimitiveFloatContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.Float)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.Float)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveDouble([NotNull] AsylumParser.PrimitiveDoubleContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.Double)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.Double)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveSignedAny([NotNull] AsylumParser.PrimitiveSignedAnyContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.SignedAny)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.SignedAny)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveUnsignedAny([NotNull] AsylumParser.PrimitiveUnsignedAnyContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.UnsignedAny)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.UnsignedAny)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveFloatingAny([NotNull] AsylumParser.PrimitiveFloatingAnyContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.FloatingAny)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.FloatingAny)
             };
         }
 
         public AsylumVisitResult VisitPrimitiveObject([NotNull] AsylumParser.PrimitiveObjectContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePrimitiveSimple(Primitives.Object)
+                VariableType = new VarTypeSimplePrimitive(SimplePrimitives.Object)
             };
         }     
 

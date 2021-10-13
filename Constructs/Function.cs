@@ -118,7 +118,7 @@ namespace StraitJacket.Constructs {
                 // Compile the function, and add a return statement if necessary.
                 Scope.PushFunction(this);
                 Definition.Compile(mod, builder, param);
-                if (ReturnType.Type == VarTypeEnum.Primitive && ReturnType.Primitive == Primitives.Void) {
+                if (ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {
                     builder.BuildRetVoid();
                 }
                 Scope.PopFunction();
