@@ -41,10 +41,6 @@ namespace StraitJacket.Constructs {
 
         public FileContext GetFileContext() => FileContext;
 
-        public void ResolveCalls() {
-            ToCast.ResolveCalls();
-        }
-
         public void ResolveVariables() {
             ToCast.ResolveVariables();
         }
@@ -138,7 +134,7 @@ namespace StraitJacket.Constructs {
     }
 
     // Expression.
-    public class Expression : ICompileable {
+    public abstract class Expression : ICompileable {
         public ExpressionType Type;
         public VarType EvaluatesTo;
         public object Val;
@@ -149,6 +145,16 @@ namespace StraitJacket.Constructs {
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
+
+        // Vfunctions.
+        public virtual void ResolveCalls() {}
+        public virtual void ResolveVariables() {}
+        public virtual void ResolveTypes() {}
+        public abstract VarType ReturnType();
+        public abstract LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
+
+
+        /*
 
         // Split expressions separated by the comma operator into a list.
         public List<Expression> SplitComma() {
@@ -275,7 +281,8 @@ namespace StraitJacket.Constructs {
             }
             var err = Type;
             throw new System.Exception("Expression type " + err + " not implemented!");
-        }
+        }*/
+        
     }
 
 }

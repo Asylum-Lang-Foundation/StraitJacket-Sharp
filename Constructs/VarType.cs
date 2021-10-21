@@ -19,7 +19,7 @@ namespace StraitJacket.Constructs {
         public NumberType Type;
         public long ValueWhole;
         public double ValueDecimal;
-        public uint MinBits => ForceSigned ? ((uint)Math.Log2(Math.Abs(ValueWhole)) + 2) : ((uint)Math.Log2(ValueWhole) + 1);
+        public uint MinBits => ForceSigned ? ((uint)Math.Log2(Math.Abs(ValueWhole)) + 2) : ((uint)Math.Log2((ulong)ValueWhole) + 1);
     }
 
     // Primitives.

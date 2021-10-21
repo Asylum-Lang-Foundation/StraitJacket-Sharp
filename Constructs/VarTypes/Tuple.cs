@@ -5,23 +5,32 @@ using LLVMSharp.Interop;
 
 namespace StraitJacket.Constructs {
 
-    // Tuple/struct. A tuple is packed, where as a struct is not?
+    // A tuple.
     public class VarTypeTuple : VarType {
         public List<VarType> Members;
-        bool Packed;
+        public bool IsVector { get; private set; }
 
-        public VarTypeTuple(List<VarType> members, bool packed = false) {
+        public VarTypeTuple(List<VarType> members) {
             Type = VarTypeEnum.Tuple;
             Members = members;
-            Packed = packed;
+            for (int i = 1; i < Members.Count; i++) {
+                if (!Members[i].Equals(Members[0])) {
+                    return;
+                }
+            }
+            IsVector = true;
         }
 
         protected override LLVMTypeRef LLVMType() {
-            List<LLVMTypeRef> members = new List<LLVMTypeRef>();
-            foreach (var m in Members) {
-                members.Add(m.GetLLVMType());
+            if (IsVector) {
+                return LLVMTypeRef.CreateVector(Members[0].GetLLVMType(), (uint)Members.Count());
+            } else {
+                List<LLVMTypeRef> members = new List<LLVMTypeRef>();
+                foreach (var m in Members) {
+                    members.Add(m.GetLLVMType());
+                }
+                return LLVMTypeRef.CreateStruct(members.ToArray(), true);
             }
-            return LLVMTypeRef.CreateStruct(members.ToArray(), Packed);
         }
 
         public override bool Equals(object obj) {
@@ -35,7 +44,7 @@ namespace StraitJacket.Constructs {
                 for (int j = 0; j < i.Members.Count; j++) {
                     if (!i.Members[j].Equals(Members[j])) return false;
                 }
-                return i.Packed == Packed;
+                return i.IsVector == IsVector;
             }
             return false;
         }
@@ -48,7 +57,7 @@ namespace StraitJacket.Constructs {
             hash.Add(Atomic);
             hash.Add(Variadic);
             hash.Add(Members.GetHashCode());
-            hash.Add(Packed.GetHashCode());
+            hash.Add(IsVector.GetHashCode());
             return hash.ToHashCode();
         }
 

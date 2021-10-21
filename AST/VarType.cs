@@ -128,21 +128,21 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVarTypePointer([NotNull] AsylumParser.VarTypePointerContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreatePointer(context.variable_type().Accept(this).VariableType)
+                VariableType = new VarTypePointer(context.variable_type().Accept(this).VariableType)
             };
         }
 
         public AsylumVisitResult VisitVarTypeReference([NotNull] AsylumParser.VarTypeReferenceContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreateReference(context.variable_type().Accept(this).VariableType)
+                VariableType = new VarTypeReference(context.variable_type().Accept(this).VariableType)
             };
         }
 
         public AsylumVisitResult VisitVarTypeCustom([NotNull] AsylumParser.VarTypeCustomContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = VarType.CreateCustom(CTX.CurrentScope, context.variable_or_function().Accept(this).VariableOrFunction)
+                VariableType = new VarTypeCustom(context.variable_or_function().Accept(this).VariableOrFunction)
             };
         }
 

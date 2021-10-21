@@ -10,13 +10,10 @@ namespace StraitJacket.Constructs {
         // Get file context.
         FileContext GetFileContext();
 
-        // Resolve calls and make sure the functions exist.
-        void ResolveCalls();
-
-        // Convert variable names into references.
+        // Convert variable names into references, which include function names.
         void ResolveVariables();
 
-        // Resolve type names into references.
+        // Resolve type names into references, also evaluate function overloads.
         void ResolveTypes();
 
         // Compile the item.
