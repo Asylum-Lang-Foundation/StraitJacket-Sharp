@@ -133,6 +133,60 @@ namespace StraitJacket.Constructs {
         AssignEq
     }
 
+    // Context for resolution.
+    public class TypeResolutionContext {
+        public VarType PreferredType; // What the expression is in total.
+        public List<VarType> OtherRelations = new List<VarType>(); // What the other operand's types is to choose.
+
+        // Given a list of possible types to choose from, choose the one that matches. May return null.
+        public VarType ChooseType(List<VarType> options) {
+
+            // Match count.
+            int matchCount = 0;
+            VarType lastMatch = null;
+
+            // Try for exact match.
+            foreach (var t in OtherRelations) {
+                foreach (var o in options) {
+                    if (t.Equals(o)) {
+                        matchCount++;
+                        lastMatch = t;
+                    }
+                }
+            }
+
+            // Check for ambiguity.
+            if (matchCount > 1) return null;
+            else if (matchCount == 1) return lastMatch;
+
+            // Ok, no takers, try to see if casting is an option.
+            foreach (var t in OtherRelations) {
+                foreach (var o in options) {
+                    if (o.CanImplicitlyCastTo(t)) {
+                        matchCount++;
+                        lastMatch = t;
+                    }
+                }
+            }
+
+            // Check for ambiguity.
+            if (matchCount > 1) return null;
+            else if (matchCount == 1) return lastMatch;
+
+            // No types matched, so go by the preferred type.
+            foreach (var o in options) {
+                if (o.CanImplicitlyCastTo(PreferredType)) {
+                    return o;
+                }
+            }
+
+            // Don't know what to choose.
+            return null;
+
+        }
+
+    }
+
     // Expression.
     public abstract class Expression : ICompileable {
         public ExpressionType Type;

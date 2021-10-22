@@ -88,8 +88,12 @@ namespace StraitJacket.Constructs {
             return GottenType;
         }
 
-        public bool Equals(VarType x, VarType y)
-        {
+        // If type can be casted to another.
+        public bool CanCastTo(VarType other) {
+            return false;
+        }
+
+        public bool Equals(VarType x, VarType y) {
             if (x.Type != y.Type) return false;
             if (x.Type == VarTypeEnum.PrimitiveSimple) return ((VarTypeSimplePrimitive)x).Equals(y);
             else if (x.Type == VarTypeEnum.PrimitiveInteger) return ((VarTypeInteger)x).Equals(y);
@@ -99,8 +103,7 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
-        public int GetHashCode([DisallowNull] VarType x)
-        {
+        public int GetHashCode([DisallowNull] VarType x) {
             if (x.Type == VarTypeEnum.PrimitiveSimple) return ((VarTypeSimplePrimitive)x).GetHashCode();
             else if (x.Type == VarTypeEnum.PrimitiveInteger) return ((VarTypeInteger)x).GetHashCode();
             else if (x.Type == VarTypeEnum.PrimitiveFixed) return ((VarTypeFixed)x).GetHashCode();
