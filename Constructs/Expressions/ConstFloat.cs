@@ -19,8 +19,8 @@ namespace StraitJacket.Constructs {
             return new VarTypeSimplePrimitive(SimplePrimitives.Double);
         }
 
-        public override LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            return LLVMValueRef.CreateConstReal(LLVMTypeRef.Double, Val.ValueDecimal);
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            return new ReturnValue(LLVMValueRef.CreateConstReal(LLVMTypeRef.Double, Val.ValueDecimal));
         }
 
     }

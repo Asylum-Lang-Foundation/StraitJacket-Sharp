@@ -88,9 +88,77 @@ namespace StraitJacket.Constructs {
             return GottenType;
         }
 
+        // If the type is floating point.
+        public bool IsFloatingPoint() {
+            var val = this as VarTypeSimplePrimitive;
+            if (val != null) {
+                SimplePrimitives prim = val.Primitive;
+                return prim == SimplePrimitives.Half || prim == SimplePrimitives.Float || prim == SimplePrimitives.Double || prim == SimplePrimitives.Extended || prim == SimplePrimitives.Decimal;
+            }
+            return false;
+        }
+
+        // If type can be implicitly casted to another.
+        public bool CanImplicitlyCastTo(VarType other) {
+            return false;
+        }
+
         // If type can be casted to another.
         public bool CanCastTo(VarType other) {
             return false;
+        }
+
+        // Cast to another type.
+        public LLVMValueRef CastTo(LLVMValueRef srcVal, VarType destType, LLVMModuleRef mod LLVMBuilderRef builder) {
+
+            // Check if castable.
+            if (!CanCastTo(destType)) {
+                return null;
+            }
+
+            // Generic object conversion, nothing is necessary just "hope it works".
+            if (Type == VarTypeEnum.PrimitiveSimple && (this as VarTypeSimplePrimitive).Primitive == SimplePrimitives.Object) {
+                return srcVal;
+            }
+
+            // Check for compiler-given conversions (extensions/truncations). Check integers here.
+            if (Type == VarTypeEnum.PrimitiveInteger && destType.Type == VarTypeEnum.PrimitiveInteger) {
+                var src = this as VarTypeInteger;
+                var dest = destType as VarTypeInteger;
+                if (src.BitWidth < dest.BitWidth) {
+                    if (dest.Signed) {
+                        return builder.BuildSExt(srcVal, destType.GetLLVMType(), "SJ_CastInt_SExt");
+                    } else {
+                        return builder.BuildZExt(srcVal, destType.GetLLVMType(), "SJ_CastInt_ZExt");
+                    }
+                } else if (src.BitWidth > dest.BitWidth) {
+                    return builder.BuildTrunc(srcVal, dest.GetLLVMType(), "SJ_CastInt_Trunc");
+                } else {
+                    return srcVal;
+                }
+            }
+
+            // TODO: FIXED POINT STUFF!!!
+            if (Type == VarTypeEnum.PrimitiveFixed && destType.Type == VarTypeEnum.PrimitiveFixed) {
+
+            }
+
+            // Floating-point conversions.
+            if (IsFloatingPoint() && destType.IsFloatingPoint()) {
+                var src = this as VarTypeSimplePrimitive;
+                var dest = destType as VarTypeSimplePrimitive;
+                if (src.Primitive < dest.Primitive) {
+                    return builder.BuildFPExt(srcVal, dest.GetLLVMType(), "SJ_CastFP_Ext");
+                } else if (src.Primitive > dest.Primitive) {
+                    return builder.BuildFPTrunc(srcVal, dest.GetLLVMType(), "SJ_CastFP_Trunc");
+                } else {
+                    return srcVal;
+                }
+            }
+
+            // Use user-implemented method (has to exist to get this far).
+            // TODO: Implement some kind of "implementation definition" that has a list of all the functions of a type.
+
         }
 
         public bool Equals(VarType x, VarType y) {

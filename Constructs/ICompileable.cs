@@ -4,6 +4,48 @@ using LLVMSharp.Interop;
 
 namespace StraitJacket.Constructs {
 
+    // Return value type.
+    public enum ReturnValueType {
+        Values,
+        NestedValues,
+        Void
+    }
+
+    // Return value.
+    public class ReturnValue {
+        public ReturnValueType ReturnType { get; private set; }
+        public bool IsSingular { get; private set; }
+        public List<LLVMValueRef> Vals { get; private set; } = new List<LLVMValueRef>();
+        public List<ReturnValue> Rets { get; private set; } = new List<ReturnValue>();
+
+        public ReturnValue() {
+            ReturnType = ReturnValueType.Void;
+        }
+
+        public ReturnValue(LLVMValueRef val) {
+            ReturnType = ReturnValueType.Values;
+            IsSingular = true;
+            Vals.Add(val);
+        }
+        
+        public ReturnValue(List<LLVMValueRef> vals) {
+            ReturnType = ReturnValueType.Values;
+            Vals = vals;
+        }
+
+        public ReturnValue(ReturnValue ret) {
+            ReturnType = ReturnValueType.NestedValues;
+            IsSingular = true;
+            Rets.Add(ret);
+        }
+
+        public ReturnValue(List<ReturnValue> rets) {
+            ReturnType = ReturnValueType.NestedValues;
+            Rets = rets;
+        }
+
+    }
+
     // Any construct that can be compiled.
     public interface ICompileable {
 
@@ -17,11 +59,11 @@ namespace StraitJacket.Constructs {
         void ResolveTypes();
 
         // Compile the item.
-        LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
+        ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
 
     }
 
-    // I compileable, but for universal statements.
+    // ICompileable, but for universal statements.
     public interface ICompileableUniversal : ICompileable {}
 
 }

@@ -16,8 +16,8 @@ namespace StraitJacket.Constructs {
             return new VarTypeSimplePrimitive(SimplePrimitives.ConstString);
         }
 
-        public override LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            return builder.BuildGlobalStringPtr(Str, "SJ_ConstStr_" + Str);
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            return new ReturnValue(builder.BuildGlobalStringPtr(Str, "SJ_ConstStr_" + Str));
         }
 
     }

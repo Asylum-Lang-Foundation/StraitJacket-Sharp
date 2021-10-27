@@ -15,9 +15,17 @@ namespace StraitJacket.Constructs {
             DestType = destType;
         }
 
-        public override void ResolveCalls() { ToCast.ResolveCalls(); }
-        public override void ResolveVariables() { ToCast.ResolveVariables(); }
-        public override void ResolveTypes() { ToCast.ResolveTypes(); SrcType = ToCast.ReturnType(); }
+        public override void ResolveVariables() {
+            ToCast.ResolveVariables();
+        }
+
+        public override void ResolveTypes() {
+            ToCast.ResolveTypes();
+            SrcType = ToCast.ReturnType();
+            if (!SrcType.CanCastTo(DestType)) {
+                throw new System.Exception("BAD CAST!!!");
+            }
+        }
 
         public override VarType ReturnType() {
             return DestType;

@@ -4,17 +4,22 @@ using LLVMSharp.Interop;
 
 namespace StraitJacket.Constructs {
 
-    // Comma operator, which basically separates expressions.
-    // Use this to feed functions, even if less than 2 parameters are given.
-    // After compiling, you get the values by an index from another function.
-    // This approach is hacky, but using an alloca arbitrily is bad unless it can be alloca'd at the entry.
+    // Comma operator, which separates and returns multiple expressions.
+    // TODO: What if a function returns multiple values and it needs to be stored?
     public class ExpressionComma : Expression {
         public List<Expression> Expressions;
-        VarTypeTuple DestType;
-        List<LLVMValueRef> ExpressionValues;
 
+        // Construct a comma expression given a list of expressions, and automatically split commas.
         public ExpressionComma(List<Expression> expressions) {
-            Expressions = expressions;
+            Type = ExpressionType.Comma;
+            Expressions = new List<Expression>();
+            foreach (var e in expressions) {
+                if (e.Type == ExpressionType.Comma) {
+                    Expressions.AddRange((e as ExpressionComma).Expressions);
+                } else {
+                    Expressions.Add(e);
+                }
+            }
         }
 
         public override void ResolveVariables() {
@@ -29,26 +34,24 @@ namespace StraitJacket.Constructs {
                 e.ResolveTypes();
                 memberTypes.Add(e.ReturnType());
             }
-            DestType = new VarTypeTuple(memberTypes);
         }
 
         public override VarType ReturnType() {
-            return DestType;
-        }
-
-        public LLVMValueRef GetLLVMValue(int index) {
-            return ExpressionValues[index];
-        }
-
-        // NOTICE: NEVER USE THIS TO GET A VALUE!
-        public override LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            ExpressionValues = new List<LLVMValueRef>();
+            List<VarType> types = new List<VarType>();
             foreach (var e in Expressions) {
-                ExpressionValues.Add(e.Compile(mod, builder, param));
+                types.Add(e.ReturnType());
             }
-            return null;
+            return new VarTypeTuple(types);
         }
-        
+
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            List<ReturnValue> rets = new List<ReturnValue>();
+            foreach (var e in Expressions) {
+                rets.Add(e.Compile(mod, builder, param));
+            }
+            return new ReturnValue(rets);
+        }
+
     }
 
 }
