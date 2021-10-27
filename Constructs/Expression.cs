@@ -7,19 +7,13 @@ using LLVMSharp.Interop;
 
     Expressions:
         So there are many different types of expressions that can be created.
-        The purpose of this file is to control the contruction, evaluation, and compilation of these.
-    
-    Expression Types:
-
-        String:
-            Purpose: Global string data value to convert into a global string pointer.
-            Val: Compiler "string" type.
+        The purpose of this file is to provide generic methods for them.
 
 */
 
 namespace StraitJacket.Constructs {
 
-    // Variable or function.
+    // Variable or function that should be resolved.
     public class VariableOrFunction {
         public string Path;
         public Scope Scope;
@@ -32,40 +26,6 @@ namespace StraitJacket.Constructs {
             return Scope.ResolveVariable(this);
         }
         
-    }
-
-    public class Cast : ICompileable {
-        public bool Implicit;
-        public VarType DestType;
-        public Expression ToCast;
-        public FileContext FileContext;
-
-        public FileContext GetFileContext() => FileContext;
-
-        public void ResolveVariables() {
-            ToCast.ResolveVariables();
-        }
-
-        public void ResolveTypes() {
-            ToCast.ResolveTypes();
-        }
-
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            LLVMValueRef expr = ToCast.Compile(mod, builder, param);
-            if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && ToCast.EvaluatesTo.Primitive == Primitives.Object) {
-                return expr; // Do nothing and hope it works.
-            } else if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && (ToCast.EvaluatesTo.Primitive == Primitives.Unsigned || ToCast.EvaluatesTo.Primitive == Primitives.Signed)) {
-                if (DestType.Type == VarTypeEnum.Primitive && (DestType.Primitive == Primitives.Unsigned || DestType.Primitive == Primitives.Signed)) {
-                    if (DestType.BitWidth < ToCast.EvaluatesTo.BitWidth) {
-
-                    } else if (DestType.BitWidth > ToCast.EvaluatesTo.BitWidth && ToCast.EvaluatesTo.Primitive == Primitives.Unsigned) {
-                        return builder.BuildZExt(expr, DestType.GetLLVMType());
-                    }
-                }
-            }
-            throw new System.Exception("AHHHHHHH");
-        }
-
     }
 
     // Value types.

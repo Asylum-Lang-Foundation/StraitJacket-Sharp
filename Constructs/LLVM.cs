@@ -25,72 +25,72 @@ namespace StraitJacket.Constructs {
         };
 
         // Since LLVM assembly calls are inline, they have to be defined for every call. Here we just translate the instructions.
-        public static LLVMValueRef CompileCall(LLVMModuleRef mod, LLVMBuilderRef builder, List<Expression> args) {
-            string instruction = (string)args[0].Val;
+        public static ReturnValue CompileCall(LLVMModuleRef mod, LLVMBuilderRef builder, List<Expression> args) {
+            string instruction = (args[0] as ExpressionConstStringPtr).Str;
             switch (instruction) {
                 case "add":
                     VerifyArgs(2);
-                    return builder.BuildAdd(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildAdd(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nswadd":
                     VerifyArgs(2);
-                    return builder.BuildNSWAdd(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNSWAdd(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nuwadd":
                     VerifyArgs(2);
-                    return builder.BuildNUWAdd(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNUWAdd(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "sub":
                     VerifyArgs(2);
-                    return builder.BuildSub(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildSub(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nswsub":
                     VerifyArgs(2);
-                    return builder.BuildNSWSub(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNSWSub(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nuwsub":
                     VerifyArgs(2);
-                    return builder.BuildNUWSub(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNUWSub(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "mul":
                     VerifyArgs(2);
-                    return builder.BuildMul(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildMul(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nswmul":
                     VerifyArgs(2);
-                    return builder.BuildNSWMul(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNSWMul(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "nuwmul":
                     VerifyArgs(2);
-                    return builder.BuildNUWMul(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNUWMul(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "udiv":
                     VerifyArgs(2);
-                    return builder.BuildUDiv(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildUDiv(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "sdiv":
                     VerifyArgs(2);
-                    return builder.BuildSDiv(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildSDiv(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "exactsdiv":
                     VerifyArgs(2);
-                    return builder.BuildExactSDiv(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildExactSDiv(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "urem":
                     VerifyArgs(2);
-                    return builder.BuildURem(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildURem(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "srem":
                     VerifyArgs(2);
-                    return builder.BuildSRem(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildSRem(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "shl":
                     VerifyArgs(2);
-                    return builder.BuildShl(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildShl(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "lshr":
                     VerifyArgs(2);
-                    return builder.BuildLShr(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildLShr(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "ashr":
                     VerifyArgs(2);
-                    return builder.BuildAShr(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildAShr(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "and":
                     VerifyArgs(2);
-                    return builder.BuildAnd(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildAnd(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "or":
                     VerifyArgs(2);
-                    return builder.BuildOr(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildOr(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "xor":
                     VerifyArgs(2);
-                    return builder.BuildXor(args[1].Compile(mod, builder, null), args[2].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildXor(args[1].Compile(mod, builder, null).Vals[0], args[2].Compile(mod, builder, null).Vals[0]));
                 case "not":
                     VerifyArgs(1);
-                    return builder.BuildNot(args[1].Compile(mod, builder, null));
+                    return new ReturnValue(builder.BuildNot(args[1].Compile(mod, builder, null).Vals[0]));
             }
             void VerifyArgs(int num) {
                 if (num != args.Count - 1) {

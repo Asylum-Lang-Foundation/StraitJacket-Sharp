@@ -158,6 +158,7 @@ namespace StraitJacket.Constructs {
 
             // Use user-implemented method (has to exist to get this far).
             // TODO: Implement some kind of "implementation definition" that has a list of all the functions of a type.
+            return null;
 
         }
 
