@@ -150,22 +150,28 @@ namespace StraitJacket.Constructs {
 
     // For resolving expressions.
     public class ExpressionResolutionContext {
+        public Expression Parent; // Parent expression.
+        public List<Expression> Neighbors = new List<Expression>(); // Expressions next to the current one.
+        public VarType PreferredType; // Default desired type by the parent expression.
         
     }
 
     // Expression. TODO: Improve how context is shared throughout expressions.
     public abstract class Expression : ICompileable {
         public ExpressionType Type;
-        public ExpressionResolutionContext Ctx;
+        public ExpressionResolutionContext Ctx = new ExpressionResolutionContext();
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
 
         // Vfunctions.
-        public virtual void ResolveVariables() {}
-        public virtual void ResolveTypes() {}
-        public abstract VarType ReturnType();
-        public abstract ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
+        public virtual void ResolveVariables() {} // Resolve variable and function call references to a list of possibilities.
+        public virtual void ResolveTypes() {} // Resolve types, type check, add casts, and solidify all function references.
+        public abstract VarType ReturnType(); // Get the return type of an expression.
+        public abstract bool IsPlural(); // If this expression type returns or stores multiple values.
+        public abstract void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Store a single value into the expression.
+        public abstract void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Store a plural value into the expression.
+        public abstract ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Compile the expression.
         
     }
 
