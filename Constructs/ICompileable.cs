@@ -6,7 +6,7 @@ namespace StraitJacket.Constructs {
 
     // Return value type.
     public enum ReturnValueType {
-        Values,
+        Value,
         NestedValues,
         Void
     }
@@ -15,7 +15,7 @@ namespace StraitJacket.Constructs {
     public class ReturnValue {
         public ReturnValueType ReturnType { get; private set; }
         public bool IsSingular { get; private set; }
-        public List<LLVMValueRef> Vals { get; private set; } = new List<LLVMValueRef>();
+        public LLVMValueRef Val { get; private set; }
         public List<ReturnValue> Rets { get; private set; } = new List<ReturnValue>();
 
         public ReturnValue() {
@@ -23,14 +23,9 @@ namespace StraitJacket.Constructs {
         }
 
         public ReturnValue(LLVMValueRef val) {
-            ReturnType = ReturnValueType.Values;
+            ReturnType = ReturnValueType.Value;
             IsSingular = true;
-            Vals.Add(val);
-        }
-        
-        public ReturnValue(List<LLVMValueRef> vals) {
-            ReturnType = ReturnValueType.Values;
-            Vals = vals;
+            Val = val;
         }
 
         public ReturnValue(ReturnValue ret) {

@@ -31,8 +31,16 @@ namespace StraitJacket.Constructs {
             return DestType;
         }
 
-        public override LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public override bool IsPlural() {
+            return false;
+        }
+
+        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new System.NotImplementedException();
+        }
+
+        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.NotImplementedException(); // How did we get here???
         }
 
     }
