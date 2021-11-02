@@ -58,7 +58,7 @@ namespace StraitJacket.Constructs {
             ReturnValue.ResolveTypes();
         }
 
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             return ReturnValue.Compile(mod, builder, param);
         }
 
@@ -80,8 +80,9 @@ namespace StraitJacket.Constructs {
             Definition.ResolveTypes();
         }
 
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            LLVMValueRef expr = Definition.Compile(mod, builder, param);
+        public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.NotImplementedException();
+            /*ReturnValue expr = Definition.Compile(mod, builder, param);
             foreach (var v in Variables) {
                 v.LLVMValue = builder.BuildAlloca(v.Type.GetLLVMType(), v.Name);
                 LLVMValueRef toStore = expr;
@@ -98,7 +99,7 @@ namespace StraitJacket.Constructs {
                 }
                 builder.BuildStore(toStore, v.LLVMValue);
             }
-            return null;
+            return null;*/
         }
 
     }

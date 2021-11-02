@@ -13,6 +13,10 @@ namespace StraitJacket.Constructs {
             ToResolve = toResolve;
         }
 
+        public override VarType ReturnType() {
+            throw new System.NotImplementedException();
+        }
+
         public override bool IsPlural() {
             return false;
         }
@@ -41,6 +45,10 @@ namespace StraitJacket.Constructs {
         }
 
         public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.NotImplementedException();
+        }
+
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new System.NotImplementedException();
         }
 

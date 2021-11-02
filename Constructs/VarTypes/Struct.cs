@@ -27,10 +27,12 @@ namespace StraitJacket.Constructs {
 
         public override bool Equals(object obj) {
             // TODO!!!
+            throw new System.NotImplementedException();
         }
 
         public override int GetHashCode() {
             // TODO!!!
+            throw new System.NotImplementedException();
         }
 
     }

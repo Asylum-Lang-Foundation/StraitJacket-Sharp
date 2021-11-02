@@ -15,8 +15,10 @@ namespace StraitJacket.Constructs {
             ToResolve = toResolve;
         }
 
-        // TODO!!!
-
+        protected override LLVMTypeRef LLVMType() {
+            throw new NotImplementedException();
+        }
+        
     }
 
 }
