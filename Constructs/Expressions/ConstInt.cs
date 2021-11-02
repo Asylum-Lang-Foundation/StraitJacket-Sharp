@@ -20,6 +20,18 @@ namespace StraitJacket.Constructs {
             return new VarTypeInteger(Val.ForceSigned, Val.MinBits);
         }
 
+        public override bool IsPlural() {
+            return false;
+        }
+
+        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.Exception("??????");
+        }
+
+        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.Exception("??????");
+        }
+
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             return new ReturnValue(LLVMValueRef.CreateConstInt(ReturnType().GetLLVMType(), (ulong)Val.ValueWhole, Val.ForceSigned));
         }

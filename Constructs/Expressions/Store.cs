@@ -9,6 +9,11 @@ namespace StraitJacket.Constructs {
         public Expression Src;
         public Expression Dest;
 
+        public ExpressionStore(Expression src, Expression dest) {
+            Src = src;
+            Dest = dest;
+        }
+
         public override void ResolveVariables() {
             Src.ResolveVariables();
             Dest.ResolveVariables();

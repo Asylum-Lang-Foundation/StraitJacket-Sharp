@@ -32,7 +32,6 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.9.2")]
 [System.Diagnostics.DebuggerNonUserCode]
-[System.CLSCompliant(false)]
 public partial class AsylumBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IAsylumVisitor<Result> {
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AsylumParser.init"/>.

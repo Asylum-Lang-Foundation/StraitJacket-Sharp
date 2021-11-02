@@ -87,6 +87,11 @@ namespace StraitJacket.Constructs {
 
         }
 
+        // Store each value of a tuple into a corresponding part.
+        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            throw new System.NotImplementedException();
+        }
+
         // Compile the internal expressions, and add them to the return value.
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             List<ReturnValue> rets = new List<ReturnValue>();

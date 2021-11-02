@@ -76,21 +76,6 @@ namespace StraitJacket.Constructs {
         Le,
         Cond,
         Null,
-        Comma,
-        AssignAdd,
-        AssignSub,
-        AssignMul,
-        AssignDiv,
-        AssignMod,
-        AssignExp,
-        AssignBitAnd,
-        AssignBitOr,
-        AssignBitXor,
-        AssignBitNot,
-        AssignLShift,
-        AssignRShift,
-        AssignCond,
-        AssignNull,
         AssignEq
     }
 

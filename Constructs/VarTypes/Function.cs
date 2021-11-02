@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LLVMSharp.Interop;
 
 namespace StraitJacket.Constructs {
@@ -17,9 +18,16 @@ namespace StraitJacket.Constructs {
 
         protected override LLVMTypeRef LLVMType() {
             List<LLVMTypeRef> parameters = new List<LLVMTypeRef>();
-            bool variadic = false; // TODO!!!
+            bool variadic = false;
             foreach (var m in Parameters) {
                 parameters.Add(m.GetLLVMType());
+            }
+            if (parameters.Count > 0) {
+                var last = Parameters.Last();
+                if (last.Variadic) {
+                    variadic = true;
+                    parameters.Remove(parameters.Last());
+                }
             }
             return LLVMTypeRef.CreateFunction(ReturnType.GetLLVMType(), parameters.ToArray(), variadic);
         }

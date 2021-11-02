@@ -35,12 +35,19 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
+        // This should NEVER happen, you can't store into a cast!
         public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            throw new System.NotImplementedException();
+            throw new System.Exception("??????");
         }
 
+        // This should NEVER happen, you can't store into a cast!
         public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            throw new System.NotImplementedException(); // How did we get here???
+            throw new System.Exception("??????");
+        }
+
+        // Compile the cast.
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            return SrcType.CastTo(ToCast.Compile(mod, builder, param), DestType, mod, builder);
         }
 
     }

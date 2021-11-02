@@ -109,7 +109,7 @@ namespace StraitJacket.Constructs {
         }
 
         // Cast to another type.
-        public LLVMValueRef CastTo(LLVMValueRef srcVal, VarType destType, LLVMModuleRef mod LLVMBuilderRef builder) {
+        public ReturnValue CastTo(ReturnValue srcVal, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder) {
 
             // Check if castable.
             if (!CanCastTo(destType)) {
@@ -127,12 +127,12 @@ namespace StraitJacket.Constructs {
                 var dest = destType as VarTypeInteger;
                 if (src.BitWidth < dest.BitWidth) {
                     if (dest.Signed) {
-                        return builder.BuildSExt(srcVal, destType.GetLLVMType(), "SJ_CastInt_SExt");
+                        return new ReturnValue(builder.BuildSExt(srcVal.Val, destType.GetLLVMType(), "SJ_CastInt_SExt"));
                     } else {
-                        return builder.BuildZExt(srcVal, destType.GetLLVMType(), "SJ_CastInt_ZExt");
+                        return new ReturnValue(builder.BuildZExt(srcVal.Val, destType.GetLLVMType(), "SJ_CastInt_ZExt"));
                     }
                 } else if (src.BitWidth > dest.BitWidth) {
-                    return builder.BuildTrunc(srcVal, dest.GetLLVMType(), "SJ_CastInt_Trunc");
+                    return new ReturnValue(builder.BuildTrunc(srcVal.Val, dest.GetLLVMType(), "SJ_CastInt_Trunc"));
                 } else {
                     return srcVal;
                 }
@@ -148,9 +148,9 @@ namespace StraitJacket.Constructs {
                 var src = this as VarTypeSimplePrimitive;
                 var dest = destType as VarTypeSimplePrimitive;
                 if (src.Primitive < dest.Primitive) {
-                    return builder.BuildFPExt(srcVal, dest.GetLLVMType(), "SJ_CastFP_Ext");
+                    return new ReturnValue(builder.BuildFPExt(srcVal.Val, dest.GetLLVMType(), "SJ_CastFP_Ext"));
                 } else if (src.Primitive > dest.Primitive) {
-                    return builder.BuildFPTrunc(srcVal, dest.GetLLVMType(), "SJ_CastFP_Trunc");
+                    return new ReturnValue(builder.BuildFPTrunc(srcVal.Val, dest.GetLLVMType(), "SJ_CastFP_Trunc"));
                 } else {
                     return srcVal;
                 }
