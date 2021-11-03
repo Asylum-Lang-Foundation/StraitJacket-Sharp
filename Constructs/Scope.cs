@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace StraitJacket.Constructs {
 
-    // Scope of variables, types, and functions. TODO: BETTER FUNCTION RESOLUTION!!!
+    // Scope of variables, types, and functions. TODO: ALLOW SPLITTING NAMES BY PERIOD!!!
     public class Scope {
         public string Name;
         public Scope Parent;
@@ -57,8 +57,44 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public Variable ResolveVariable(VariableOrFunction func) {
+        public List<Variable> ResolveVariable(VariableOrFunction v) {
+
+            // Check if it is a parameter.
+            List<Variable> ret = new List<Variable>();
             if (CurrentFunction.Count > 0) {
+                var fn = CurrentFunction.Peek();
+                 for (int i = 0; i < fn.Parameters.Count; i++) {
+                    if (fn.Parameters[i].Value.Name.Equals(v.Path)) {
+                        ret.Add(fn.Parameters[i].Value);
+                    }
+                }
+            }
+
+            // Then see if it is within this scope.
+            if (Variables.ContainsKey(v.Path)) {
+                ret.Add(Variables[v.Path]);
+            }
+            if (Functions.ContainsKey(v.Path)) {
+                ret.AddRange(Functions[v.Path].Values);
+            }
+            if (ret.Count > 0) return ret;
+
+            // Child scopes.
+            if (Parent != null) {
+                ret = Parent.ResolveVariable(v);
+                if (ret.Count > 0) return ret;
+            }
+
+            // Hardcoded LLVM.
+            if (v.Path.Equals("llvm")) {
+                ret.Add(AsyLLVM.Function);
+                return ret;
+            }
+
+            // Nothing found.
+            throw new System.Exception("Variable not resolved!");
+
+            /*if (CurrentFunction.Count > 0) {
                 var fn = CurrentFunction.Peek();
                 for (int i = 0; i < fn.Parameters.Count; i++) {
                     if (fn.Parameters[i].Value.Name.Equals(func.Path)) {
@@ -72,8 +108,8 @@ namespace StraitJacket.Constructs {
                 return Functions[func.Path].Values.ElementAt(0);
             } else if (Parent != null) {
                 return Parent.ResolveVariable(func);
-            }
-            throw new System.Exception("Variable not resolved!");
+            }*/
+            
         }
 
         public VarType ResolveType(VariableOrFunction type) {

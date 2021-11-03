@@ -18,11 +18,7 @@ namespace StraitJacket.Constructs {
         public string Path;
         public Scope Scope;
 
-        public Function ResolveFunction() {
-            return Scope.ResolveFunction(this);
-        }
-
-        public Variable ResolveVariable() {
+        public List<Variable> ResolveVariable() {
             return Scope.ResolveVariable(this);
         }
         

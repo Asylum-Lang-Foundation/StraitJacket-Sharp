@@ -16,7 +16,8 @@ namespace StraitJacket.Constructs {
         }
 
         protected override LLVMTypeRef LLVMType() {
-            throw new NotImplementedException();
+            Resolved = ToResolve.Scope.ResolveType(ToResolve);
+            return Resolved.GetLLVMType();
         }
         
     }

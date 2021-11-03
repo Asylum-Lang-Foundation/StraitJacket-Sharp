@@ -91,7 +91,13 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitExprCallReturnedFunction([NotNull] AsylumParser.ExprCallReturnedFunctionContext context)
         {
-            Expression ret = new ExpressionCall(context.expression()[0].Accept(this).Expression, context.expression()[1].Accept(this).Expression as ExpressionComma);
+            // Fix weird thing where we either get an expression or an expression comma to always be expression comma.
+            List<Expression> parameters = new List<Expression>();
+            parameters.Add(context.expression()[1].Accept(this).Expression);
+            if (parameters[0] as ExpressionComma != null) {
+                parameters = (parameters[0] as ExpressionComma).Expressions;
+            }
+            Expression ret = new ExpressionCall(context.expression()[0].Accept(this).Expression, new ExpressionComma(parameters));
             return new AsylumVisitResult() { Expression = ret };
         }
 

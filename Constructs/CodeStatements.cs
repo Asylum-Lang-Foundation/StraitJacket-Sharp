@@ -64,7 +64,7 @@ namespace StraitJacket.Constructs {
 
     }
 
-    // Variable definition.
+    // Variable definition. TODO: CONVERT INTO EXPRESSIONS!!!
     public class VariableDefinition : ICompileable {
         public List<Variable> Variables = new List<Variable>();
         public Expression Definition;

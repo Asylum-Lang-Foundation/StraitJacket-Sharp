@@ -7,14 +7,29 @@ namespace StraitJacket.Constructs {
     // A variable to resolve.
     public class ExpressionVariable : Expression {
         public VariableOrFunction ToResolve;
+        List<Variable> PossibleReturns;
         Variable Resolved;
 
         public ExpressionVariable(VariableOrFunction toResolve) {
             ToResolve = toResolve;
         }
 
+        public override void ResolveVariables() {
+            PossibleReturns = ToResolve.ResolveVariable();
+        }
+
+        public override void ResolveTypes() {
+            if (PossibleReturns.Count < 1) {
+                throw new System.Exception("???????");
+            } else if (PossibleReturns.Count == 1) {
+                Resolved = PossibleReturns[0];
+            } else {
+                throw new System.NotImplementedException();
+            }
+        }
+
         public override VarType ReturnType() {
-            throw new System.NotImplementedException();
+            return Resolved.Type;
         }
 
         public override bool IsPlural() {
@@ -29,9 +44,10 @@ namespace StraitJacket.Constructs {
             // Case 1: Raw value.
             if (src.ReturnType == ReturnValueType.Value) {
                 builder.BuildStore(src.Val, dest.Val);
+                Resolved.LLVMValue = src.Val;
             }
 
-            // Case 2: Recursive multiple values (tuple).
+            // Case 2: Recursive multiple values (tuple). We are storing withing a tuple.
             else if (src.ReturnType == ReturnValueType.NestedValues) {
                 // TODO!!!
                 throw new System.NotImplementedException();
@@ -49,7 +65,11 @@ namespace StraitJacket.Constructs {
         }
 
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            throw new System.NotImplementedException();
+            if (!Resolved.Type.RequiresLoad() || Resolved.NoLoad || Resolved.Type.Constant) {
+                return new ReturnValue(Resolved.LLVMValue);
+            } else {
+                return new ReturnValue(builder.BuildLoad(Resolved.LLVMValue, "SJ_LoadVar_" + Resolved.Name));
+            }
         }
 
     }
