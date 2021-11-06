@@ -46,7 +46,8 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context)
         {
-            VariableDefinition ret = new VariableDefinition();
+            throw new System.NotImplementedException();
+            /*VariableDefinition ret = new VariableDefinition();
             ret.Variables = new List<Variable>();
             foreach (var p in context.variable_parameter()) {
                 var parameter = p.Accept(this).Parameter;
@@ -54,7 +55,7 @@ namespace StraitJacket.AST {
                 CTX.CurrentScope.AddVar(parameter.Value.Name, parameter.Value);
             }
             ret.Definition = context.expression().Accept(this).Expression;
-            return new AsylumVisitResult() { CodeStatement = ret };
+            return new AsylumVisitResult() { CodeStatement = ret };*/
         }
 
         public AsylumVisitResult VisitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context)

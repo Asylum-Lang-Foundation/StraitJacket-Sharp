@@ -75,6 +75,9 @@ namespace StraitJacket.AST {
         // TODO!!!
         public AsylumVisitResult VisitFunction_definition([NotNull] AsylumParser.Function_definitionContext context)
         {
+            throw new System.NotImplementedException();
+
+            /*
 
             // New function.
             Function fn = new Function();
@@ -131,11 +134,16 @@ namespace StraitJacket.AST {
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
 
+            */
+
         }
 
         // TODO!!!
         public AsylumVisitResult VisitConstructor_definition([NotNull] AsylumParser.Constructor_definitionContext context)
         {
+            throw new System.NotImplementedException();
+
+            /*
             
             // New function.
             Function fn = new Function();
@@ -187,12 +195,17 @@ namespace StraitJacket.AST {
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
+
+            */
             
         }
 
         // TODO!!!
         public AsylumVisitResult VisitOperator_definition([NotNull] AsylumParser.Operator_definitionContext context)
         {
+            throw new System.NotImplementedException();
+
+            /*
             
             // New function.
             Function fn = new Function();
@@ -247,6 +260,8 @@ namespace StraitJacket.AST {
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
+
+            */
 
         }
     
