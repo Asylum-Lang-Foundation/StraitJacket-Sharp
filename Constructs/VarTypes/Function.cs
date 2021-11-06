@@ -16,6 +16,8 @@ namespace StraitJacket.Constructs {
             Parameters = parameters;
         }
 
+        public override bool RequiresLoad() => false;
+
         protected override LLVMTypeRef LLVMType() {
             List<LLVMTypeRef> parameters = new List<LLVMTypeRef>();
             bool variadic = false;

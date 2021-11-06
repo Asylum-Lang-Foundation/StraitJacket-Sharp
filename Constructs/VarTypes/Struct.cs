@@ -17,6 +17,8 @@ namespace StraitJacket.Constructs {
             Members = members;
         }
 
+        public override bool RequiresLoad() => false;
+
         protected override LLVMTypeRef LLVMType() {
             List<LLVMTypeRef> members = new List<LLVMTypeRef>();
             foreach (var m in Members) {

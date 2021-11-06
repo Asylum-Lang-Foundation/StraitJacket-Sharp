@@ -15,28 +15,23 @@ namespace StraitJacket.Constructs {
             Operator = op;
         }
 
-        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param)
-        {
+        public override bool IsPlural() {
             throw new System.NotImplementedException();
         }
 
-        public override bool IsPlural()
-        {
+        public override VarType ReturnType() {
+            return RetType;
+        }
+
+        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new System.NotImplementedException();
         }
 
-        public override VarType ReturnType()
-        {
+        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new System.NotImplementedException();
         }
 
-        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param)
-        {
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new System.NotImplementedException();
         }
 

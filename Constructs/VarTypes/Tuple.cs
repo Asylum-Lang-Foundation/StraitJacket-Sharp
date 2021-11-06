@@ -21,6 +21,8 @@ namespace StraitJacket.Constructs {
             IsVector = true;
         }
 
+        public override bool RequiresLoad() => false;
+
         protected override LLVMTypeRef LLVMType() {
             if (IsVector) {
                 return LLVMTypeRef.CreateVector(Members[0].GetLLVMType(), (uint)Members.Count());
