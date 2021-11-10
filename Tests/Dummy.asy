@@ -1,5 +1,6 @@
 fn main() {
-    string myStr = "Hello World!";
+    //string myStr = "Hello World!";
     //myStr = "Lol, not.";
-    println(myStr);
+    //println(myStr);
+    println("Hello World!");
 }

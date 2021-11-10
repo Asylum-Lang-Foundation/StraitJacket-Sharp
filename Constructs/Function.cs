@@ -99,6 +99,7 @@ namespace StraitJacket.Constructs {
 
                 // Compile the function, and add a return statement if necessary.
                 Scope.PushFunction(this);
+                Definition.CompileDeclarations(mod, builder, param);
                 Definition.Compile(mod, builder, param);
                 if (ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {
                     builder.BuildRetVoid();

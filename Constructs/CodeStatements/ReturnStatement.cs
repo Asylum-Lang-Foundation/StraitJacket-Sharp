@@ -22,10 +22,15 @@ namespace StraitJacket.Constructs {
         }
 
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            ReturnValue comp =  ReturnValue.Compile(mod, builder, param);
-            // TODO: BUILD RETURN INSTRUCTION!!!
-            throw new System.NotImplementedException();
-            //return new ReturnValue();
+            ReturnValue comp = ReturnValue.Compile(mod, builder, param);
+            if (comp.ReturnType == ReturnValueType.Void || true) {
+                builder.BuildRetVoid();
+            } else if (comp.ReturnType == ReturnValueType.Value) {
+                builder.BuildRet(comp.Val);
+            } else if (comp.ReturnType == ReturnValueType.NestedValues) {
+                throw new System.NotImplementedException();
+            }
+            return comp;
         }
 
     }

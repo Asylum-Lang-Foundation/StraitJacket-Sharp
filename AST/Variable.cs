@@ -48,7 +48,7 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVariable_parameter([NotNull] AsylumParser.Variable_parameterContext context)
         {
             return new AsylumVisitResult() { Parameter = new VarParameter() {
-                Value = new Variable() { Name = context.IDENTIFIER().GetText(), Type = context.variable_type().Accept(this).VariableType }
+                Value = new Variable() { Name = context.IDENTIFIER().GetText(), Type = context.variable_type().Accept(this).VariableType, Scope = CTX.CurrentScope }
             }};
         }
 

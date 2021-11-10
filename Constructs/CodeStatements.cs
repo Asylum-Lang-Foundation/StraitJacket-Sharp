@@ -24,6 +24,15 @@ namespace StraitJacket.Constructs {
             }
         }
 
+        // Compile declarations.
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            foreach (var s in Statements) {
+                if (s as VariableDefinition != null) {
+                    (s as VariableDefinition).CompileDeclaration(mod, builder, param);
+                }
+            }
+        }
+
         // TODO: RETURN TYPE MECHANISM!!! Param is expect return.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             if (param == null) param = false;

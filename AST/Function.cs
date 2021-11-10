@@ -75,9 +75,6 @@ namespace StraitJacket.AST {
         // TODO!!!
         public AsylumVisitResult VisitFunction_definition([NotNull] AsylumParser.Function_definitionContext context)
         {
-            throw new System.NotImplementedException();
-
-            /*
 
             // New function.
             Function fn = new Function();
@@ -113,14 +110,13 @@ namespace StraitJacket.AST {
             }
 
             // Get code.
+            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
             EnterScope("%FN%_" + fn.ToString());
             fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             if (context.expression() != null) {
                 fn.Definition = new CodeStatements() {
                     Statements = new List<ICompileable>() {
-                        new ReturnStatement() {
-                            ReturnValue = context.expression().Accept(this).Expression
-                        }
+                        new ReturnStatement(context.expression().Accept(this).Expression)
                     }
                 };
             } else if (context.code_statement() != null) {
@@ -133,8 +129,6 @@ namespace StraitJacket.AST {
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
-
-            */
 
         }
 
