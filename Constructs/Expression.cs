@@ -72,7 +72,9 @@ namespace StraitJacket.Constructs {
         Le,
         Cond,
         Null,
-        AssignEq
+        AssignEq,
+        Is,
+        As
     }
 
     // Context for resolution.

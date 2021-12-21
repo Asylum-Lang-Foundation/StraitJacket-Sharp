@@ -8,6 +8,7 @@ namespace StraitJacket.AST {
         public Constructs.AST AST;
         public Attribute Attribute;
         public ICompileable CodeStatement;
+        public CodeStatements CodeStatements;
         public Expression Expression;
         public Function Function;
         public Implementation Implementation;

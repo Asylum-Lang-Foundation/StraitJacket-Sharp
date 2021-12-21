@@ -31,7 +31,7 @@ namespace StraitJacket.Constructs {
             }
             
             // Add an implicit cast.
-            else if (Src.ReturnType().CanCastTo(Dest.ReturnType())) {
+            else if (Src.ReturnType().CanImplicitlyCastTo(Dest.ReturnType())) {
                 ExpressionCast cast = new ExpressionCast(Src, Dest.ReturnType());
                 Src = cast;
                 Src.ResolveTypes();

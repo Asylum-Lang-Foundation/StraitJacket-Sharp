@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
@@ -113,6 +114,26 @@ namespace StraitJacket.AST {
             }
             if (context.primitives() == null) ret.Path = ret.Path.Substring(0, ret.Path.Length - 1);
             return new AsylumVisitResult() { VariableOrFunction = ret };
+        }
+
+        public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)
+        {
+            return context.expression().Accept(this); // This is just a container for the inside expression.
+        }
+
+        public AsylumVisitResult VisitExprComparison([NotNull] AsylumParser.ExprComparisonContext context)
+        {
+            Operator op = Operator.Lt;
+            if (context.OP_LT() != null) op = Operator.Lt;
+            else if (context.OP_GT() != null) op = Operator.Gt;
+            else if (context.OP_LE() != null) op = Operator.Le;
+            else if (context.OP_GE() != null) op = Operator.Ge;
+            else if (context.IS() != null) op = Operator.Is;
+            else if (context.AS() != null) op = Operator.As; // This usage of as is clearly incorrect... What was I thinking?
+            else throw new Exception("Comparison operator not found!!!");
+            return new AsylumVisitResult() {
+                Expression = new ExpressionOperator(context.expression().Select(x => x.Accept(this).Expression).ToList(), op)
+            };
         }
 
         public AsylumVisitResult VisitExprPrimary([NotNull] AsylumParser.ExprPrimaryContext context)

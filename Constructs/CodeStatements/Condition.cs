@@ -30,8 +30,8 @@ namespace StraitJacket.Constructs {
             ConditionCheck.ResolveTypes();
             Then.ResolveTypes();
             if (Else != null) Else.ResolveTypes();
-            if (ConditionCheck.ReturnType().Equals(new VarTypeSimplePrimitive(SimplePrimitives.Bool))) {
-                throw new System.Exception("?????????");
+            if (!ConditionCheck.ReturnType().Equals(new VarTypeSimplePrimitive(SimplePrimitives.Bool))) {
+                throw new System.Exception("Condition expression does not result in a bool! How did this happen?");
             }
         }
 

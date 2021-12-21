@@ -41,11 +41,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitCode_body([NotNull] AsylumParser.Code_bodyContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitConstantFalse([NotNull] AsylumParser.ConstantFalseContext context)
         {
             throw new System.NotImplementedException();
@@ -126,11 +121,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitExprComparison([NotNull] AsylumParser.ExprComparisonContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitExprEqualityComparison([NotNull] AsylumParser.ExprEqualityComparisonContext context)
         {
             throw new System.NotImplementedException();
@@ -152,11 +142,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitExprOr([NotNull] AsylumParser.ExprOrContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -207,16 +192,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitGeneric_specifier([NotNull] AsylumParser.Generic_specifierContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitIfStatement([NotNull] AsylumParser.IfStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitIf_statement([NotNull] AsylumParser.If_statementContext context)
         {
             throw new System.NotImplementedException();
         }

@@ -8,6 +8,16 @@ namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
 
+        public AsylumVisitResult VisitCode_body([NotNull] AsylumParser.Code_bodyContext context)
+        {
+            CodeStatements ret = new CodeStatements();
+            ret.Statements = new List<ICompileable>();
+            foreach (var c in context.code_statement()) {
+                ret.Statements.Add(c.Accept(this).CodeStatement);
+            }
+            return new AsylumVisitResult() { CodeStatements = ret };
+        }
+
         public AsylumVisitResult VisitVariableDeclarationStatement([NotNull] AsylumParser.VariableDeclarationStatementContext context)
         {
             return context.variable_declaration().Accept(this);
@@ -59,6 +69,21 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context)
         {
             throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitIfStatement([NotNull] AsylumParser.IfStatementContext context)
+        {
+            return context.if_statement().Accept(this);
+        }
+
+        public AsylumVisitResult VisitIf_statement([NotNull] AsylumParser.If_statementContext context)
+        {
+            Expression ifCond = context.expression()[0].Accept(this).Expression;
+            CodeStatements thenBlock = context.code_body()[0].Accept(this).CodeStatements;
+            CodeStatements elseBlock = null; // TODO!!!
+            return new AsylumVisitResult() {
+                CodeStatement = new Condition(ifCond, thenBlock, elseBlock)
+            };
         }
 
     }

@@ -101,6 +101,29 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
+        // If the type is fixed.
+        public bool IsFixed() {
+            return this as VarTypeFixed != null;
+        }
+
+        // If the type is unsigned.
+        public bool IsUnsigned() {
+            var val = this as VarTypeInteger;
+            if (val != null) {
+                return !val.Signed;
+            }
+            return false;
+        }
+
+        // If the type is signed.
+        public bool IsSigned() {
+            var val = this as VarTypeInteger;
+            if (val != null) {
+                return val.Signed;
+            }
+            return false;
+        }
+
         // If type can be implicitly casted to another.
         public bool CanImplicitlyCastTo(VarType other) {
             return false;
