@@ -34,6 +34,7 @@ namespace StraitJacket.Constructs {
             else if (Src.ReturnType().CanCastTo(Dest.ReturnType())) {
                 ExpressionCast cast = new ExpressionCast(Src, Dest.ReturnType());
                 Src = cast;
+                Src.ResolveTypes();
             }
             
             // Can not convert...

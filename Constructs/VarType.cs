@@ -106,17 +106,66 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
-        // If type can be casted to another.
+        // If type can be casted to another. TODO!!!
         public bool CanCastTo(VarType other) {
+
+            // Handle custom types.
+            if (Type == VarTypeEnum.Custom) {
+                return (this as VarTypeCustom).Resolved.CanCastTo(other);
+            } else if (other.Type == VarTypeEnum.Custom) {
+                return CanCastTo((other as VarTypeCustom).Resolved);
+            }
+
+            // Object can always do so.
+            if (Type == VarTypeEnum.PrimitiveSimple && (this as VarTypeSimplePrimitive).Primitive == SimplePrimitives.Object) return true;
+
+            // Simple primitive.
+            if (other.Type == VarTypeEnum.PrimitiveSimple) {
+
+                // Get primitive type, can always convert to an object.
+                var otherPrim = (other as VarTypeSimplePrimitive).Primitive;
+                if (otherPrim == SimplePrimitives.Object) return true;
+
+                // Simple primitive.
+                if (Type == VarTypeEnum.PrimitiveSimple) {
+
+                    // Get primitive, can always convert from object.
+                    var prim = (this as VarTypeSimplePrimitive).Primitive;
+
+                }
+                
+                // Not simple primitive.
+                else {
+
+                }
+
+            }
+
+            // Integer primitive.
+            if (other.Type == VarTypeEnum.PrimitiveInteger) {
+                if (Type == VarTypeEnum.PrimitiveInteger || Type == VarTypeEnum.PrimitiveFixed) {
+                    return true;
+                }
+            }
+
+            // Can't convert.
             return false;
+            
         }
 
-        // Cast to another type.
+        // Cast to another type. TODO!!!
         public ReturnValue CastTo(ReturnValue srcVal, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder) {
 
             // Check if castable.
             if (!CanCastTo(destType)) {
                 return null;
+            }
+
+            // Handle custom types.
+            if (Type == VarTypeEnum.Custom) {
+                return (this as VarTypeCustom).Resolved.CastTo(srcVal, destType, mod, builder);
+            } else if (destType.Type == VarTypeEnum.Custom) {
+                return CastTo(srcVal, (destType as VarTypeCustom).Resolved, mod, builder);
             }
 
             // Generic object conversion, nothing is necessary just "hope it works".
@@ -129,7 +178,7 @@ namespace StraitJacket.Constructs {
                 var src = this as VarTypeInteger;
                 var dest = destType as VarTypeInteger;
                 if (src.BitWidth < dest.BitWidth) {
-                    if (dest.Signed) {
+                    if (src.Signed) {
                         return new ReturnValue(builder.BuildSExt(srcVal.Val, destType.GetLLVMType(), "SJ_CastInt_SExt"));
                     } else {
                         return new ReturnValue(builder.BuildZExt(srcVal.Val, destType.GetLLVMType(), "SJ_CastInt_ZExt"));

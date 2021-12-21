@@ -1,7 +1,3 @@
-fn getString() -> string => "Help!";
-
-fn main() {
-    string myStr = "Hello World!";
-    myStr = getString();
-    println(myStr);
-}
+int a = 3;
+int b = 4;
+printf("%d\n", (u32)llvm("add", a, b));

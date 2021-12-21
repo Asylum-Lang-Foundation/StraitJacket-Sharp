@@ -53,13 +53,13 @@ namespace StraitJacket.Constructs {
         // TODO: TUPLE PARAMETERS!!!
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
 
-            // Compile values.
-            ReturnValue toCall = ToCall.Compile(mod, builder, param);
-            
             // LLVM.
             if (FunctionToCall.Equals(AsyLLVM.Function)) {
                 return AsyLLVM.CompileCall(mod, builder, Parameters.Expressions);
             }
+
+            // Compile values.
+            ReturnValue toCall = ToCall.Compile(mod, builder, param);
 
             // Compile parameters.
             ReturnValue parameters = Parameters.Compile(mod, builder, param);

@@ -8,7 +8,15 @@ namespace StraitJacket.Constructs {
     // Actually resolves to a typedef, struct, union, or function.
     public class VarTypeCustom : VarType {
         public VariableOrFunction ToResolve;
-        VarType Resolved;
+        public VarType Resolved {
+            get {
+                if (m_Resolved == null) {
+                    m_Resolved = ToResolve.Scope.ResolveType(ToResolve);
+                }
+                return m_Resolved;
+            }
+        }
+        VarType m_Resolved;
 
         public VarTypeCustom(VariableOrFunction toResolve) {
             Type = VarTypeEnum.Custom;
@@ -18,8 +26,15 @@ namespace StraitJacket.Constructs {
         public override bool RequiresLoad() => Resolved.RequiresLoad();
 
         protected override LLVMTypeRef LLVMType() {
-            Resolved = ToResolve.Scope.ResolveType(ToResolve);
             return Resolved.GetLLVMType();
+        }
+
+        public override bool Equals(object obj) {
+            return Resolved.Equals(obj);
+        }
+
+        public override int GetHashCode() {
+            return Resolved.GetHashCode();
         }
         
     }
