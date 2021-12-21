@@ -68,7 +68,7 @@ namespace StraitJacket.Constructs {
             
             // Get the values from the source and destination.
             ReturnValue src = Src.Compile(mod, builder, param);
-            ReturnValue dest = Dest.Compile(mod, builder, param);
+            ReturnValue dest = Dest is ExpressionVariable ? (Dest as ExpressionVariable).CompileToStoreTo(mod, builder, param) : Dest.Compile(mod, builder, param);
 
             // How does one do this?
             // u32 a = 5;                   Dest = Variable, Src = ConstInt

@@ -23,7 +23,7 @@ namespace StraitJacket.Constructs {
 
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             ReturnValue comp = ReturnValue.Compile(mod, builder, param);
-            if (comp.ReturnType == ReturnValueType.Void || true) {
+            if (comp.ReturnType == ReturnValueType.Void) {
                 builder.BuildRetVoid();
             } else if (comp.ReturnType == ReturnValueType.Value) {
                 builder.BuildRet(comp.Val);

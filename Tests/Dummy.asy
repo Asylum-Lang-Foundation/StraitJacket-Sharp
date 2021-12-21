@@ -1,6 +1,7 @@
+fn getString() -> string => "Help!";
+
 fn main() {
-    //string myStr = "Hello World!";
-    //myStr = "Lol, not.";
-    //println(myStr);
-    println("Hello World!");
+    string myStr = "Hello World!";
+    myStr = getString();
+    println(myStr);
 }

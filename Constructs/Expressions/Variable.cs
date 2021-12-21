@@ -46,7 +46,6 @@ namespace StraitJacket.Constructs {
             // Case 1: Raw value.
             if (src.ReturnType == ReturnValueType.Value) {
                 builder.BuildStore(src.Val, dest.Val);
-                Resolved.LLVMValue = src.Val;
             }
 
             // Case 2: Recursive multiple values (tuple). We are storing withing a tuple.
@@ -72,6 +71,10 @@ namespace StraitJacket.Constructs {
             } else {
                 return new ReturnValue(builder.BuildLoad(Resolved.LLVMValue, "SJ_LoadVar_" + Resolved.Name));
             }
+        }
+
+        public ReturnValue CompileToStoreTo(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            return new ReturnValue(Resolved.LLVMValue);
         }
 
     }

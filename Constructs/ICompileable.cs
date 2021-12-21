@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LLVMSharp;
 using LLVMSharp.Interop;
@@ -13,6 +14,7 @@ namespace StraitJacket.Constructs {
 
     // Return value.
     public class ReturnValue {
+        public static bool DEBUG_OUT = false;
         public ReturnValueType ReturnType { get; private set; }
         public bool IsSingular { get; private set; }
         public LLVMValueRef Val { get; private set; }
@@ -23,6 +25,7 @@ namespace StraitJacket.Constructs {
         }
 
         public ReturnValue(LLVMValueRef val) {
+            if (DEBUG_OUT) Console.WriteLine(val);
             ReturnType = ReturnValueType.Value;
             IsSingular = true;
             Val = val;

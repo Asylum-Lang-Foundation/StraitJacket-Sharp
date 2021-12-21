@@ -35,7 +35,7 @@ namespace StraitJacket.Constructs {
         }
 
         public override VarType ReturnType() {
-            throw new System.NotImplementedException();
+            return FunctionToCall.ReturnType;
         }
 
         public override bool IsPlural() {
