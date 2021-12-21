@@ -114,11 +114,19 @@ namespace StraitJacket.AST {
             EnterScope("%FN%_" + fn.ToString());
             fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             if (context.expression() != null) {
-                fn.Definition = new CodeStatements() {
-                    Statements = new List<ICompileable>() {
-                        new ReturnStatement(context.expression().Accept(this).Expression)
-                    }
-                };
+                if (fn.ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) { // Hack for accidentally returning a value instead of void which is illegal.
+                    fn.Definition = new CodeStatements() {
+                        Statements = new List<ICompileable>() {
+                            context.expression().Accept(this).Expression
+                        }
+                    };
+                } else {
+                    fn.Definition = new CodeStatements() {
+                        Statements = new List<ICompileable>() {
+                            new ReturnStatement(context.expression().Accept(this).Expression)
+                        }
+                    };
+                }
             } else if (context.code_statement() != null) {
                 fn.Definition = new CodeStatements();
                 foreach (var c in context.code_statement()) {
