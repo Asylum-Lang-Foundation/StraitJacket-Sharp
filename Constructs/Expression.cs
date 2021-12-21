@@ -1,61 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
-// TODO: TREAT FUNCTIONS LIKE GLOBAL VARIABLES!!! So close, but you forgot to take into account mangling...
+/*
+
+    Expressions:
+        So there are many different types of expressions that can be created.
+        The purpose of this file is to provide generic methods for them.
+
+*/
+
 namespace StraitJacket.Constructs {
 
-    // Variable or function.
+    // Variable or function that should be resolved.
     public class VariableOrFunction {
         public string Path;
         public Scope Scope;
 
-        public Function ResolveFunction() {
-            return Scope.ResolveFunction(this);
-        }
-
-        public Variable ResolveVariable() {
+        public List<Variable> ResolveVariable() {
             return Scope.ResolveVariable(this);
         }
         
-    }
-
-    public class Cast : ICompileable {
-        public bool Implicit;
-        public VarType DestType;
-        public Expression ToCast;
-        public FileContext FileContext;
-
-        public FileContext GetFileContext() => FileContext;
-
-        public void ResolveCalls() {
-            ToCast.ResolveCalls();
-        }
-
-        public void ResolveVariables() {
-            ToCast.ResolveVariables();
-        }
-
-        public void ResolveTypes() {
-            ToCast.ResolveTypes();
-        }
-
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            LLVMValueRef expr = ToCast.Compile(mod, builder, param);
-            if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && ToCast.EvaluatesTo.Primitive == Primitives.Object) {
-                return expr; // Do nothing and hope it works.
-            } else if (ToCast.EvaluatesTo.Type == VarTypeEnum.Primitive && (ToCast.EvaluatesTo.Primitive == Primitives.Unsigned || ToCast.EvaluatesTo.Primitive == Primitives.Signed)) {
-                if (DestType.Type == VarTypeEnum.Primitive && (DestType.Primitive == Primitives.Unsigned || DestType.Primitive == Primitives.Signed)) {
-                    if (DestType.BitWidth < ToCast.EvaluatesTo.BitWidth) {
-
-                    } else if (DestType.BitWidth > ToCast.EvaluatesTo.BitWidth && ToCast.EvaluatesTo.Primitive == Primitives.Unsigned) {
-                        return builder.BuildZExt(expr, DestType.GetLLVMType());
-                    }
-                }
-            }
-            throw new System.Exception("AHHHHHHH");
-        }
-
     }
 
     // Value types.
@@ -106,155 +72,88 @@ namespace StraitJacket.Constructs {
         Le,
         Cond,
         Null,
-        Comma,
-        AssignAdd,
-        AssignSub,
-        AssignMul,
-        AssignDiv,
-        AssignMod,
-        AssignExp,
-        AssignBitAnd,
-        AssignBitOr,
-        AssignBitXor,
-        AssignBitNot,
-        AssignLShift,
-        AssignRShift,
-        AssignCond,
-        AssignNull,
         AssignEq
     }
 
-    // Expression.
-    public class Expression : ICompileable {
+    // Context for resolution.
+    public class TypeResolutionContext {
+        public VarType PreferredType; // What the expression is in total.
+        public List<VarType> OtherRelations = new List<VarType>(); // What the other operand's types is to choose.
+
+        // Given a list of possible types to choose from, choose the one that matches. May return null.
+        public VarType ChooseType(List<VarType> options) {
+
+            // Match count.
+            int matchCount = 0;
+            VarType lastMatch = null;
+
+            // Try for exact match.
+            foreach (var t in OtherRelations) {
+                foreach (var o in options) {
+                    if (t.Equals(o)) {
+                        matchCount++;
+                        lastMatch = t;
+                    }
+                }
+            }
+
+            // Check for ambiguity.
+            if (matchCount > 1) return null;
+            else if (matchCount == 1) return lastMatch;
+
+            // Ok, no takers, try to see if casting is an option.
+            foreach (var t in OtherRelations) {
+                foreach (var o in options) {
+                    if (o.CanImplicitlyCastTo(t)) {
+                        matchCount++;
+                        lastMatch = t;
+                    }
+                }
+            }
+
+            // Check for ambiguity.
+            if (matchCount > 1) return null;
+            else if (matchCount == 1) return lastMatch;
+
+            // No types matched, so go by the preferred type.
+            foreach (var o in options) {
+                if (o.CanImplicitlyCastTo(PreferredType)) {
+                    return o;
+                }
+            }
+
+            // Don't know what to choose.
+            return null;
+
+        }
+
+    }
+
+    // For resolving expressions.
+    public class ExpressionResolutionContext {
+        public Expression Parent; // Parent expression.
+        public List<Expression> Neighbors = new List<Expression>(); // Expressions next to the current one.
+        public VarType PreferredType; // Default desired type by the parent expression.
+        
+    }
+
+    // Expression. TODO: Improve how context is shared throughout expressions.
+    public abstract class Expression : ICompileable {
         public ExpressionType Type;
-        public VarType EvaluatesTo;
-        public object Val;
-        public Variable EvaluatedVariable;
-        public Expression Left;
-        public Expression Right;
-        public Scope Scope;
+        public ExpressionResolutionContext Ctx = new ExpressionResolutionContext();
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
 
-        // Split expressions separated by the comma operator into a list.
-        public List<Expression> SplitComma() {
-            if (Type != ExpressionType.Comma) {
-                return new List<Expression>() { this };
-            }
-            List<Expression> ret = new List<Expression>();
-            ret.AddRange(Left.SplitComma());
-            ret.AddRange(Right.SplitComma());
-            return ret;
-        }
-
-        public void ResolveCalls() {
-            throw new System.Exception("OBSOLETE!");
-            switch (Type) {
-                case ExpressionType.UnknownFunctionCall:
-                    ((FunctionCall)Val).ResolveCalls();
-                    break;
-                case ExpressionType.Cast:
-                    ((Cast)Val).ResolveCalls();
-                    break;
-                case ExpressionType.EvaluatedFunctionCall:
-                    Left.ResolveCalls();
-                    Right.ResolveCalls();
-                    break;
-                case ExpressionType.Variable:
-                case ExpressionType.String:
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void ResolveVariables() {
-            switch (Type) {
-                case ExpressionType.UnknownFunctionCall:
-                    ((FunctionCall)Val).ResolveVariables();
-                    var currFunc = Scope.PeekCurrentFunction;
-                    if (currFunc != null) {
-                        if (!currFunc.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
-                            currFunc.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
-                        }
-                    }
-                    break;
-                case ExpressionType.Variable:
-                    EvaluatedVariable = ((VariableOrFunction)Val).ResolveVariable();
-                    break;
-                case ExpressionType.Cast:
-                    ((Cast)Val).ResolveVariables();
-                    break;
-                case ExpressionType.EvaluatedFunctionCall:
-                    Left.ResolveVariables();
-                    Right.ResolveVariables(); // After resolving variables, this can finally be made into a function call.
-                    Val = new FunctionCall() {
-                        Scope = Scope,
-                        ResolvedFunction = (Function)Left.EvaluatedVariable,
-                        Parameters = Right.SplitComma()
-                    };
-                    var currFunc2 = Scope.PeekCurrentFunction;
-                    if (currFunc2 != null) {
-                        if (!currFunc2.CalledFunctions.Contains(((FunctionCall)Val).ResolvedFunction)) {
-                            currFunc2.CalledFunctions.Add(((FunctionCall)Val).ResolvedFunction);
-                        }
-                    }
-                    break;
-                case ExpressionType.Comma:
-                    Left.ResolveVariables();
-                    Right.ResolveVariables();
-                    break;
-                case ExpressionType.String:
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void ResolveTypes() {
-            switch (Type) {
-                case ExpressionType.Cast:
-                    ((Cast)Val).ResolveTypes();
-                    EvaluatesTo = ((Cast)Val).DestType;
-                    break;
-                case ExpressionType.Variable:
-                    EvaluatesTo = EvaluatedVariable.Type;
-                    break;
-                case ExpressionType.UnknownFunctionCall:
-                    EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
-                    break;
-                case ExpressionType.EvaluatedFunctionCall:
-                    ((FunctionCall)Val).ResolveTypes();
-                    EvaluatesTo = ((FunctionCall)Val).ResolvedFunction.ReturnType;
-                    break;
-                case ExpressionType.String:
-                    EvaluatesTo = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.String };
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            switch (Type) {
-                case ExpressionType.String:
-                    return builder.BuildGlobalStringPtr((string)Val, "");
-                case ExpressionType.Integer:
-                    Number number = (Number)Val;
-                    return LLVMValueRef.CreateConstInt(LLVMTypeRef.CreateInt(number.MinBits), (ulong)number.ValueWhole, number.ForceSigned);
-                case ExpressionType.Variable:
-                    return EvaluatedVariable.NoLoad ? EvaluatedVariable.LLVMValue : builder.BuildLoad(EvaluatedVariable.LLVMValue, "load_" + EvaluatedVariable.Name);
-                case ExpressionType.Cast:
-                    return ((Cast)Val).Compile(mod, builder, param);
-                case ExpressionType.UnknownFunctionCall:
-                    return ((FunctionCall)Val).Compile(mod, builder, param);
-                case ExpressionType.EvaluatedFunctionCall:
-                    return ((FunctionCall)Val).Compile(mod, builder, param);
-            }
-            var err = Type;
-            throw new System.Exception("Expression type " + err + " not implemented!");
-        }
+        // Vfunctions.
+        public virtual void ResolveVariables() {} // Resolve variable and function call references to a list of possibilities.
+        public virtual void ResolveTypes() {} // Resolve types, type check, add casts, and solidify all function references.
+        public abstract VarType ReturnType(); // Get the return type of an expression.
+        public abstract bool IsPlural(); // If this expression type returns or stores multiple values.
+        public abstract void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Store a single value into the expression.
+        public abstract void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Store a plural value into the expression.
+        public abstract ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param); // Compile the expression.
+        
     }
 
 }

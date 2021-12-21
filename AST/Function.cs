@@ -47,16 +47,11 @@ namespace StraitJacket.AST {
             if (context.variable_type() != null) {
                 fn.ReturnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Void };
+                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Finished.
-            fn.Type = new VarType() {
-                Type = VarTypeEnum.Primitive,
-                Primitive = Primitives.Function,
-                EmbeddedType = fn.ReturnType,
-                Members = fn.Parameters.Select(x => x.Value.Type).ToArray()
-            };
+            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
 
@@ -111,20 +106,27 @@ namespace StraitJacket.AST {
             if (context.variable_type() != null) {
                 fn.ReturnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Void };
+                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Get code.
+            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
             EnterScope("%FN%_" + fn.ToString());
             fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             if (context.expression() != null) {
-                fn.Definition = new CodeStatements() {
-                    Statements = new List<ICompileable>() {
-                        new ReturnStatement() {
-                            ReturnValue = context.expression().Accept(this).Expression
+                if (fn.ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) { // Hack for accidentally returning a value instead of void which is illegal.
+                    fn.Definition = new CodeStatements() {
+                        Statements = new List<ICompileable>() {
+                            context.expression().Accept(this).Expression
                         }
-                    }
-                };
+                    };
+                } else {
+                    fn.Definition = new CodeStatements() {
+                        Statements = new List<ICompileable>() {
+                            new ReturnStatement(context.expression().Accept(this).Expression)
+                        }
+                    };
+                }
             } else if (context.code_statement() != null) {
                 fn.Definition = new CodeStatements();
                 foreach (var c in context.code_statement()) {
@@ -141,6 +143,9 @@ namespace StraitJacket.AST {
         // TODO!!!
         public AsylumVisitResult VisitConstructor_definition([NotNull] AsylumParser.Constructor_definitionContext context)
         {
+            throw new System.NotImplementedException();
+
+            /*
             
             // New function.
             Function fn = new Function();
@@ -192,12 +197,17 @@ namespace StraitJacket.AST {
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
+
+            */
             
         }
 
         // TODO!!!
         public AsylumVisitResult VisitOperator_definition([NotNull] AsylumParser.Operator_definitionContext context)
         {
+            throw new System.NotImplementedException();
+
+            /*
             
             // New function.
             Function fn = new Function();
@@ -252,6 +262,8 @@ namespace StraitJacket.AST {
             // Return function.
             ExitScope();
             return new AsylumVisitResult() { Function = fn };
+
+            */
 
         }
     

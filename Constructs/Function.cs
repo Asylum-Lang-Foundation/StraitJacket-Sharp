@@ -51,13 +51,6 @@ namespace StraitJacket.Constructs {
             Scope.PopFunction();
         }
 
-        public void ResolveCalls() {
-            if (Extern) return;
-            Scope.PushFunction(this);
-            Definition.ResolveCalls();
-            Scope.PopFunction();
-        }
-
         public void ResolveTypes() {
             if (Extern) return;
             Scope.PushFunction(this);
@@ -67,22 +60,11 @@ namespace StraitJacket.Constructs {
 
         // Get the LLVM type of the function.
         public LLVMTypeRef GetFuncTypeLLVM() {
-
-            // Convert the parameter types to LLVM types.
-            int cnt = Parameters.Count;
-            if (cnt > 0 && Parameters[cnt - 1].Value.Type.Variadic) { cnt--; }
-            LLVMTypeRef[] paramTypes = new LLVMTypeRef[cnt];
-            for (int i = 0; i < cnt; i++) {
-                paramTypes[i] = Parameters[i].Value.Type.GetLLVMType();
-            }
-
-            // Return the function type.
-            return LLVMTypeRef.CreateFunction(ReturnType.GetLLVMType(), paramTypes, Variadic);
-
+            return new VarTypeFunction(ReturnType, Parameters.Select(x => x.Value.Type).ToList()).GetLLVMType();
         }
 
         // TODO: NAME MANGLING AND MORE!!! Ok, so the problem is you need to extern any functions that are not in this module...
-        public LLVMValueRef Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
 
             // Don't do work that doesn't need to be done.
             if (Inline) Compiled = true;
@@ -117,8 +99,9 @@ namespace StraitJacket.Constructs {
 
                 // Compile the function, and add a return statement if necessary.
                 Scope.PushFunction(this);
+                Definition.CompileDeclarations(mod, builder, param);
                 Definition.Compile(mod, builder, param);
-                if (ReturnType.Type == VarTypeEnum.Primitive && ReturnType.Primitive == Primitives.Void) {
+                if (ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {
                     builder.BuildRetVoid();
                 }
                 Scope.PopFunction();

@@ -60,7 +60,7 @@ namespace StraitJacket.Constructs {
             if (TopLevel.Statements.Count > 0) {
                 Function main = new Function();
                 main.Name = "main";
-                main.ReturnType = new VarType() { Type = VarTypeEnum.Primitive, Primitive = Primitives.Void };
+                main.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
                 main.Parameters = new List<VarParameter>();
                 main.Definition = TopLevel;
                 main.ModulePath = rootFolder + "/" + modName;

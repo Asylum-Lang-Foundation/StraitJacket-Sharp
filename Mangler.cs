@@ -2,7 +2,7 @@ using StraitJacket.Constructs;
 
 namespace StraitJacket {
 
-    // For mangling names.
+    // For mangling names. GOTO FROM PAST: I think we need to nuke this and start over... Compression has to be added too.
     public static class Mangler {
 
         public static string ManglePrefix() {
@@ -20,7 +20,7 @@ namespace StraitJacket {
             return ret;
         }
 
-        public static string MangleType(VarType type) {
+        /*public static string MangleType(VarType type) {
             string ret = "";
             if (type.Constant) ret += "C";
             if (type.Static) ret += "S";
@@ -28,11 +28,11 @@ namespace StraitJacket {
             if (type.Atomic) ret += "A";
             if (type.Variadic) ret += "I";
             switch(type.Type) {
-                case VarTypeEnum.Primitive:
-                    switch (type.Primitive) {
-                        case Primitives.String:
-                            return ret + "s";
-                        case Primitives.Bool:
+                case VarTypeEnum.PrimitiveSimple:
+                    switch ((type as VarTypeSimplePrimitive).Primitive) {
+                        case SimplePrimitives.ConstString:
+                            return ret + "s"; // HUH???
+                        case SimplePrimitives.Bool:
                             return ret + "b";
                         case Primitives.Unsigned:
                             return ret + "u" + type.BitWidth.ToString();
@@ -72,8 +72,6 @@ namespace StraitJacket {
                             return ret + "r";
                         case Primitives.WideChar:
                             return ret + "w";
-                        case Primitives.ToBeDetermined:
-                            throw new System.Exception("????");
                         case Primitives.UnsignedAny:
                             return ret + "U";
                         case Primitives.SignedAny:
@@ -106,6 +104,9 @@ namespace StraitJacket {
                     throw new System.Exception("TODO!!!");
             }
             return null;
+        }*/
+        public static string MangleType(VarType type) {
+            return null;
         }
 
         public static string MangleFunction(Function f) {
@@ -114,7 +115,7 @@ namespace StraitJacket {
                 pars += MangleType(f.Parameters[i].Value.Type);
             }
             string ret = ManglePrefix() + MangleScope(f.Scope) + f.Name.Length + f.Name + "E" + pars;
-            if (!(f.ReturnType.Type == VarTypeEnum.Primitive && f.ReturnType.Primitive == Primitives.Void)) {
+            if (!f.ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {
                 ret += "R" + MangleType(f.ReturnType);
             }
             return ret;

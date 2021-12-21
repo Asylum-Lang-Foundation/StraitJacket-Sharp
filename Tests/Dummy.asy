@@ -1,5 +1,3 @@
-fn main() {
-    string myStr = "Hello World!";
-    string myStr2 = myStr;
-    println(myStr2);
-}
+int a = 3;
+int b = 4;
+printf("%d\n", (u32)llvm("add", a, b));
