@@ -44,8 +44,8 @@ namespace StraitJacket.Constructs {
             LLVMBasicBlockRef cont = null;
 
             // Append necessary blocks.
-            then = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMValue, "SJ_IfThen");
-            if (Else != null) other = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMValue, "SJ_IfElse");
+            then = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_IfThen");
+            if (Else != null) other = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_IfElse");
             cont = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_IfCont");
             
             // Compile condition.

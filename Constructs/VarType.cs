@@ -126,7 +126,7 @@ namespace StraitJacket.Constructs {
 
         // If type can be implicitly casted to another.
         public bool CanImplicitlyCastTo(VarType other) {
-            return false;
+            return CanCastTo(other); // TODO!!!
         }
 
         // If type can be casted to another. TODO!!!

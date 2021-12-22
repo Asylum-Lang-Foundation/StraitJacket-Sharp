@@ -80,7 +80,12 @@ namespace StraitJacket.AST {
         {
             Expression ifCond = context.expression()[0].Accept(this).Expression;
             CodeStatements thenBlock = context.code_body()[0].Accept(this).CodeStatements;
-            CodeStatements elseBlock = null; // TODO!!!
+            CodeStatements elseBlock = null;
+            if (context.ELSE() != null) {
+                //elseBlock = 
+            } else if (context.ELIF() != null) {
+                
+            }
             return new AsylumVisitResult() {
                 CodeStatement = new Condition(ifCond, thenBlock, elseBlock)
             };

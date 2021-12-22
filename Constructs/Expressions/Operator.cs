@@ -34,15 +34,17 @@ namespace StraitJacket.Constructs {
                 case Operator.Le:
                 case Operator.Ge:
                     if (Inputs[0].ReturnType().Equals(Inputs[1].ReturnType())) { // Matching type.
-                        // Cool, nothing to do.
+                        InputTypes = Inputs[0].ReturnType();
                     } else if (Inputs[0].ReturnType().CanImplicitlyCastTo(Inputs[1].ReturnType())) { // Left can cast to right.
                         ExpressionCast cast = new ExpressionCast(Inputs[0], Inputs[1].ReturnType());
                         cast.ResolveTypes();
                         Inputs[0] = cast;
+                        InputTypes = Inputs[1].ReturnType();
                     } else if (Inputs[1].ReturnType().CanImplicitlyCastTo(Inputs[0].ReturnType())) { // Right can cast to left.
                         ExpressionCast cast = new ExpressionCast(Inputs[1], Inputs[0].ReturnType());
                         cast.ResolveTypes();
                         Inputs[1] = cast;
+                        InputTypes = Inputs[0].ReturnType();
                     } else if (false) { // Custom operator defined. TODO!!!
 
                     } else { // Can't cast!
