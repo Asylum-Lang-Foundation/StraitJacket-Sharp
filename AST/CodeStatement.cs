@@ -127,7 +127,7 @@ namespace StraitJacket.AST {
                 expr,
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
-            ) { OverrideElseReturn = true });
+            ));
             return new AsylumVisitResult() {
                 CodeStatement = new Loop(body)
             };
@@ -146,7 +146,7 @@ namespace StraitJacket.AST {
                 expr,
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
-            ) { OverrideElseReturn = true });
+            ));
             return new AsylumVisitResult() {
                 CodeStatement = new Loop(body)
             };
@@ -172,7 +172,7 @@ namespace StraitJacket.AST {
                 cond,
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
-            ) { OverrideElseReturn = true });
+            ));
             body.Statements.Add(after);
             return new AsylumVisitResult() {
                 CodeStatement = new Loop(body, beforeLoop)
@@ -194,10 +194,26 @@ namespace StraitJacket.AST {
                 cond,
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
-            ) { OverrideElseReturn = true });
+            ));
             body.Statements.Add(after);
             return new AsylumVisitResult() {
                 CodeStatement = new Loop(body, beforeLoop)
+            };
+        }
+
+        public AsylumVisitResult VisitBreakStatement([NotNull] AsylumParser.BreakStatementContext context)
+        {
+            return context.break_statement().Accept(this);
+        }
+
+        public AsylumVisitResult VisitBreak_statement([NotNull] AsylumParser.Break_statementContext context)
+        {
+            int breakNum = 1;
+            if (context.INTEGER() != null) {
+                breakNum = (int)GetInteger(context.INTEGER()).ValueWhole;
+            }
+            return new AsylumVisitResult() {
+                CodeStatement = new Break(breakNum)
             };
         }
 

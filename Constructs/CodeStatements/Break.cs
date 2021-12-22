@@ -30,6 +30,9 @@ namespace StraitJacket.Constructs {
         // Compile the break.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) { 
 
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
+
             // Jump to the correct exit.
             Stack<Loop> tmp = new Stack<Loop>();
             for (int i = 0; i < BreakNum; i++) {
@@ -39,6 +42,7 @@ namespace StraitJacket.Constructs {
             for (int i = 0; i < BreakNum; i++) {
                 Loop.LoopStack.Push(tmp.Pop()); // Add the loops back to the stack.
             }
+            CodeStatements.BlockTerminated = true;
 
             // Don't return.
             return null;

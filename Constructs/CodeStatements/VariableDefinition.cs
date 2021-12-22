@@ -46,10 +46,16 @@ namespace StraitJacket.Constructs {
         }
 
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
+
+            // Compile store expressions.
             foreach (var e in GeneratedExpressions) {
                 e.Compile(mod, builder, param);
             }
             return new ReturnValue();
+            
         }
 
     }

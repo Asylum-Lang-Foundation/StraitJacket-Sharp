@@ -43,13 +43,16 @@ namespace StraitJacket.Constructs {
         // Compile the loop.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
 
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
+
             // Create the blocks.
             BodyBlock = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_Loop");
             BreakBlock = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_LoopBreak");
 
             // Build a jump into the body block.
             if (RunBeforeLoop != null) RunBeforeLoop.Compile(mod, builder, param);
-            builder.BuildBr(BodyBlock);
+            if (!CodeStatements.BlockTerminated) builder.BuildBr(BodyBlock);
 
             // Necessary for breaks to occur.
             LoopStack.Push(this);
@@ -57,10 +60,11 @@ namespace StraitJacket.Constructs {
             // Build the body block.
             builder.PositionAtEnd(BodyBlock);
             Body.Compile(mod, builder, param);
-            builder.BuildBr(BodyBlock);
+            if (!CodeStatements.BlockTerminated) builder.BuildBr(BodyBlock);
 
             // Continue at the end block.
             builder.PositionAtEnd(BreakBlock);
+            CodeStatements.BlockTerminated = false;
 
             // Pop the break.
             LoopStack.Pop();

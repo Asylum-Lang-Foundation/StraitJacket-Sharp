@@ -7,8 +7,6 @@ namespace StraitJacket.Constructs {
         public Expression ConditionCheck;
         public CodeStatements Then;
         public CodeStatements Else;
-        public bool OverrideThenReturn;
-        public bool OverrideElseReturn;
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
@@ -39,11 +37,14 @@ namespace StraitJacket.Constructs {
 
         public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             Then.CompileDeclarations(mod, builder, param);
-            Else.CompileDeclarations(mod, builder, param);
+            if (Else != null) Else.CompileDeclarations(mod, builder, param);
         }
 
         // Compile the conditional branch.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
 
             // Control flow blocks. Then - If condition is met. Other - Condition is not met. Cont - Both if and else continue here.
             LLVMBasicBlockRef then = null;
@@ -61,18 +62,21 @@ namespace StraitJacket.Constructs {
 
             // Compile then.
             builder.PositionAtEnd(then);
+            CodeStatements.BlockTerminated = false;
             Then.Compile(mod, builder, param);
-            if (!OverrideThenReturn) builder.BuildBr(cont);
+            if (!CodeStatements.BlockTerminated) builder.BuildBr(cont);
 
             // Compile else.
             if (other != null) { 
                 builder.PositionAtEnd(other);
+                CodeStatements.BlockTerminated = false;
                 Else.Compile(mod, builder, param);
-                if (!OverrideElseReturn) builder.BuildBr(cont);
+                if (!CodeStatements.BlockTerminated) builder.BuildBr(cont);
             }
 
             // Resume compiling at the continuation.
             builder.PositionAtEnd(cont);
+            CodeStatements.BlockTerminated = false;
 
             // We don't return anything.
             return null;

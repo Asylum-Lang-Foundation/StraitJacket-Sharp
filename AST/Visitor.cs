@@ -16,16 +16,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitBreakStatement([NotNull] AsylumParser.BreakStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitBreak_statement([NotNull] AsylumParser.Break_statementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitCaseDefault([NotNull] AsylumParser.CaseDefaultContext context)
         {
             throw new System.NotImplementedException();
