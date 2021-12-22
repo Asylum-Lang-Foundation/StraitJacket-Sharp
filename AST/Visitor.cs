@@ -216,16 +216,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitLoop([NotNull] AsylumParser.LoopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitLoopStatement([NotNull] AsylumParser.LoopStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitNamespace_statement([NotNull] AsylumParser.Namespace_statementContext context)
         {
             throw new System.NotImplementedException();

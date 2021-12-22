@@ -102,6 +102,18 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitLoopStatement([NotNull] AsylumParser.LoopStatementContext context)
+        {
+            return context.loop().Accept(this);
+        }
+
+        public AsylumVisitResult VisitLoop([NotNull] AsylumParser.LoopContext context)
+        {
+            return new AsylumVisitResult() {
+                CodeStatement = new Loop(context.code_body().Accept(this).CodeStatements)
+            };
+        }
+
     }
 
 }
