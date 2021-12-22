@@ -256,16 +256,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitReturnStatement([NotNull] AsylumParser.ReturnStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitReturn_value([NotNull] AsylumParser.Return_valueContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitStructAccess([NotNull] AsylumParser.StructAccessContext context)
         {
             throw new System.NotImplementedException();

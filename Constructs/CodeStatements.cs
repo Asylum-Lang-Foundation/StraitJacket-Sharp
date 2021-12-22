@@ -8,6 +8,7 @@ namespace StraitJacket.Constructs {
     // Code statements.
     public class CodeStatements : ICompileable {
         public static bool BlockTerminated = false;
+        public static ReturnValue ReturnedValue = null;
         public List<ICompileable> Statements = new List<ICompileable>();
         public FileContext FileContext;
 
@@ -32,13 +33,11 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        // TODO: RETURN TYPE MECHANISM!!! Param is expect return.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            if (param == null) param = false;
             foreach (var s in Statements) {
                 if (!BlockTerminated) s.Compile(mod, builder, param);
             }
-            return (bool)param ? new ReturnValue(builder.BuildRetVoid()) : null;
+            return CodeStatements.ReturnedValue;
         }
 
     }

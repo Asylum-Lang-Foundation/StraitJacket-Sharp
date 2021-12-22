@@ -217,6 +217,18 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitReturnStatement([NotNull] AsylumParser.ReturnStatementContext context)
+        {
+            return context.return_value().Accept(this);
+        }
+
+        public AsylumVisitResult VisitReturn_value([NotNull] AsylumParser.Return_valueContext context)
+        {
+            return new AsylumVisitResult() {
+                CodeStatement = new ReturnStatement(context.expression().Accept(this).Expression)
+            };
+        }
+
     }
 
 }

@@ -38,6 +38,7 @@ namespace StraitJacket.Constructs {
                 throw new System.NotImplementedException();
             }
             CodeStatements.BlockTerminated = true;
+            CodeStatements.ReturnedValue = comp;
             return comp;
 
         }
