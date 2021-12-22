@@ -33,27 +33,32 @@ namespace StraitJacket.Constructs {
                 case Operator.Gt:
                 case Operator.Le:
                 case Operator.Ge:
-                    if (Inputs[0].ReturnType().Equals(Inputs[1].ReturnType())) { // Matching type.
-                        InputTypes = Inputs[0].ReturnType();
-                    } else if (Inputs[0].ReturnType().CanImplicitlyCastTo(Inputs[1].ReturnType())) { // Left can cast to right.
-                        ExpressionCast cast = new ExpressionCast(Inputs[0], Inputs[1].ReturnType());
-                        cast.ResolveTypes();
-                        Inputs[0] = cast;
-                        InputTypes = Inputs[1].ReturnType();
-                    } else if (Inputs[1].ReturnType().CanImplicitlyCastTo(Inputs[0].ReturnType())) { // Right can cast to left.
-                        ExpressionCast cast = new ExpressionCast(Inputs[1], Inputs[0].ReturnType());
-                        cast.ResolveTypes();
-                        Inputs[1] = cast;
-                        InputTypes = Inputs[0].ReturnType();
-                    } else if (false) { // Custom operator defined. TODO!!!
-
-                    } else { // Can't cast!
-                        throw new System.Exception("No valid casting conversion!");
-                    }
+                    GenerateCastsIfNeeded2();
                     RetType = new VarTypeSimplePrimitive(SimplePrimitives.Bool);
                     break;
                 default:
                     throw new System.NotImplementedException("Operator return type not implemented!");
+            }
+        }
+
+        // Generate casts when needed for two inputs.
+        private void GenerateCastsIfNeeded2() {
+            if (Inputs[0].ReturnType().Equals(Inputs[1].ReturnType())) { // Matching type.
+                InputTypes = Inputs[0].ReturnType();
+            } else if (Inputs[0].ReturnType().CanImplicitlyCastTo(Inputs[1].ReturnType())) { // Left can cast to right.
+                ExpressionCast cast = new ExpressionCast(Inputs[0], Inputs[1].ReturnType());
+                cast.ResolveTypes();
+                Inputs[0] = cast;
+                InputTypes = Inputs[1].ReturnType();
+            } else if (Inputs[1].ReturnType().CanImplicitlyCastTo(Inputs[0].ReturnType())) { // Right can cast to left.
+                ExpressionCast cast = new ExpressionCast(Inputs[1], Inputs[0].ReturnType());
+                cast.ResolveTypes();
+                Inputs[1] = cast;
+                InputTypes = Inputs[0].ReturnType();
+            } else if (false) { // Custom operator defined. TODO!!!
+
+            } else { // Can't cast!
+                throw new System.Exception("No valid casting conversion!");
             }
         }
 

@@ -50,7 +50,7 @@ namespace StraitJacket.Constructs {
             
             // Compile condition.
             LLVMValueRef conditionCheck = ConditionCheck.Compile(mod, builder, param).Val;
-            builder.BuildCondBr(ConditionCheck.Compile(mod, builder, param).Val, then, other == null ? cont : other);
+            builder.BuildCondBr(conditionCheck, then, other == null ? cont : other);
 
             // Compile then.
             builder.PositionAtEnd(then);

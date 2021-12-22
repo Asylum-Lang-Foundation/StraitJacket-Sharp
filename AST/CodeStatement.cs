@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
@@ -81,10 +82,20 @@ namespace StraitJacket.AST {
             Expression ifCond = context.expression()[0].Accept(this).Expression;
             CodeStatements thenBlock = context.code_body()[0].Accept(this).CodeStatements;
             CodeStatements elseBlock = null;
+            int numStats = context.code_body().Length;
             if (context.ELSE() != null) {
-                //elseBlock = 
-            } else if (context.ELIF() != null) {
-                
+                elseBlock = context.code_body().Last().Accept(this).CodeStatements;
+            }
+            if (context.ELIF() != null) {
+                for (int i = context.code_body().Length - 2; i >= 1; i--) {
+                    var bakElse = elseBlock;
+                    elseBlock = new CodeStatements();
+                    elseBlock.Statements.Add(new Condition(
+                        context.expression()[i].Accept(this).Expression,
+                        context.code_body()[i].Accept(this).CodeStatements,
+                        bakElse
+                    ));
+                }
             }
             return new AsylumVisitResult() {
                 CodeStatement = new Condition(ifCond, thenBlock, elseBlock)
