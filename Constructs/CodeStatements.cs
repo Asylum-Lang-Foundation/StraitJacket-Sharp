@@ -27,9 +27,7 @@ namespace StraitJacket.Constructs {
         // Compile declarations.
         public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             foreach (var s in Statements) {
-                if (s as VariableDefinition != null) {
-                    (s as VariableDefinition).CompileDeclaration(mod, builder, param);
-                }
+                s.CompileDeclarations(mod, builder, param);
             }
         }
 

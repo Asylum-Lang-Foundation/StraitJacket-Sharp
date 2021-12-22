@@ -61,16 +61,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitDoWhileLoopStatement([NotNull] AsylumParser.DoWhileLoopStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitDo_while_loop([NotNull] AsylumParser.Do_while_loopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitEnumEntryData([NotNull] AsylumParser.EnumEntryDataContext context)
         {
             throw new System.NotImplementedException();
@@ -172,11 +162,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitForEachLoop([NotNull] AsylumParser.ForEachLoopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitForLoopStatement([NotNull] AsylumParser.ForLoopStatementContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -321,11 +306,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitTraditionalForLoop([NotNull] AsylumParser.TraditionalForLoopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitTypeImplementsExprAnd([NotNull] AsylumParser.TypeImplementsExprAndContext context)
         {
             throw new System.NotImplementedException();
@@ -457,11 +437,6 @@ namespace StraitJacket.AST {
         }
         
         public AsylumVisitResult VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context)
         {
             throw new System.NotImplementedException();
         }

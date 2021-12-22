@@ -37,6 +37,11 @@ namespace StraitJacket.Constructs {
             }
         }
 
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            Then.CompileDeclarations(mod, builder, param);
+            Else.CompileDeclarations(mod, builder, param);
+        }
+
         // Compile the conditional branch.
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
 

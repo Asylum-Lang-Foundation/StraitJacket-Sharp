@@ -133,6 +133,74 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitDoWhileLoopStatement([NotNull] AsylumParser.DoWhileLoopStatementContext context)
+        {
+            return context.do_while_loop().Accept(this);
+        }
+
+        public AsylumVisitResult VisitDo_while_loop([NotNull] AsylumParser.Do_while_loopContext context)
+        {
+            var body = context.code_body().Accept(this).CodeStatements;
+            var expr = context.expression().Accept(this).Expression;
+            body.Statements.Add(new Condition(
+                expr,
+                new CodeStatements(),
+                new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
+            ) { OverrideElseReturn = true });
+            return new AsylumVisitResult() {
+                CodeStatement = new Loop(body)
+            };
+        }
+
+        public AsylumVisitResult VisitForLoopStatement([NotNull] AsylumParser.ForLoopStatementContext context)
+        {
+            return context.for_loop().Accept(this);
+        }
+
+        public AsylumVisitResult VisitTraditionalForLoop([NotNull] AsylumParser.TraditionalForLoopContext context)
+        {
+            CodeStatements beforeLoop = null;
+            if (context.variable_assignment() != null) {
+                beforeLoop = new CodeStatements() { Statements = new List<ICompileable>() { context.variable_assignment().Accept(this).CodeStatement } };
+            } else if (context.variable_declaration() != null) {
+                beforeLoop = new CodeStatements() { Statements = new List<ICompileable>() { context.variable_declaration().Accept(this).CodeStatement } };
+            }
+            var cond = context.expression()[0].Accept(this).Expression;
+            var after = context.expression()[1].Accept(this).Expression;
+            var body = context.code_body().Accept(this).CodeStatements;
+            body.Statements.Insert(0, new Condition(
+                cond,
+                new CodeStatements(),
+                new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
+            ) { OverrideElseReturn = true });
+            body.Statements.Add(after);
+            return new AsylumVisitResult() {
+                CodeStatement = new Loop(body, beforeLoop)
+            };
+        }
+
+        public AsylumVisitResult VisitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context)
+        {
+            CodeStatements beforeLoop = null;
+            if (context.variable_assignment() != null) {
+                beforeLoop = new CodeStatements() { Statements = new List<ICompileable>() { context.variable_assignment().Accept(this).CodeStatement } };
+            } else if (context.variable_declaration() != null) {
+                beforeLoop = new CodeStatements() { Statements = new List<ICompileable>() { context.variable_declaration().Accept(this).CodeStatement } };
+            }
+            var cond = context.expression()[0].Accept(this).Expression;
+            var after = context.expression()[1].Accept(this).Expression;
+            var body = context.code_body().Accept(this).CodeStatements;
+            body.Statements.Insert(0, new Condition(
+                cond,
+                new CodeStatements(),
+                new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
+            ) { OverrideElseReturn = true });
+            body.Statements.Add(after);
+            return new AsylumVisitResult() {
+                CodeStatement = new Loop(body, beforeLoop)
+            };
+        }
+
     }
 
 }

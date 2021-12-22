@@ -39,7 +39,7 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public void CompileDeclaration(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             foreach (var v in Variables) {
                 v.LLVMValue = builder.BuildAlloca(v.Type.GetLLVMType(), "SJ_Define_" + v.Name);
             }

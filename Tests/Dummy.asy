@@ -1,5 +1,3 @@
-int i = 0;
-while (i < 3) {
-    println("Hi!");
-    i = (int)llvm("add", i, (int)1);
+for (int i = 1; i < 4; i = (int)llvm("add", i, (int)1)) {
+    printf("%d\n", i);
 }

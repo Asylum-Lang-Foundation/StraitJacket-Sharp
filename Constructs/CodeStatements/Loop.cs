@@ -21,18 +21,23 @@ namespace StraitJacket.Constructs {
 
         // Resolve variables.
         public void ResolveVariables() {
+            if (RunBeforeLoop != null) RunBeforeLoop.ResolveVariables();
             LoopStack.Push(this);
             Body.ResolveVariables();
             LoopStack.Pop();
-            if (RunBeforeLoop != null) RunBeforeLoop.ResolveVariables();
         }
 
         // Resolve types.
         public void ResolveTypes() {
+            if (RunBeforeLoop != null) RunBeforeLoop.ResolveTypes();
             LoopStack.Push(this);
             Body.ResolveTypes();
             LoopStack.Pop();
-            if (RunBeforeLoop != null) RunBeforeLoop.ResolveTypes();
+        }
+
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            if (RunBeforeLoop != null) RunBeforeLoop.CompileDeclarations(mod, builder, param);
+            Body.CompileDeclarations(mod, builder, param);
         }
 
         // Compile the loop.
