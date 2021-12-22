@@ -21,13 +21,17 @@ namespace StraitJacket.Constructs {
 
         // Resolve variables.
         public void ResolveVariables() {
+            LoopStack.Push(this);
             Body.ResolveVariables();
+            LoopStack.Pop();
             if (RunBeforeLoop != null) RunBeforeLoop.ResolveVariables();
         }
 
         // Resolve types.
         public void ResolveTypes() {
+            LoopStack.Push(this);
             Body.ResolveTypes();
+            LoopStack.Pop();
             if (RunBeforeLoop != null) RunBeforeLoop.ResolveTypes();
         }
 

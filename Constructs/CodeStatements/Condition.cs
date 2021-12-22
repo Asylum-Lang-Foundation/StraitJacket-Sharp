@@ -7,6 +7,8 @@ namespace StraitJacket.Constructs {
         public Expression ConditionCheck;
         public CodeStatements Then;
         public CodeStatements Else;
+        public bool OverrideThenReturn;
+        public bool OverrideElseReturn;
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
@@ -55,13 +57,13 @@ namespace StraitJacket.Constructs {
             // Compile then.
             builder.PositionAtEnd(then);
             Then.Compile(mod, builder, param);
-            builder.BuildBr(cont);
+            if (!OverrideThenReturn) builder.BuildBr(cont);
 
             // Compile else.
             if (other != null) { 
                 builder.PositionAtEnd(other);
                 Else.Compile(mod, builder, param);
-                builder.BuildBr(cont);
+                if (!OverrideElseReturn) builder.BuildBr(cont);
             }
 
             // Resume compiling at the continuation.
