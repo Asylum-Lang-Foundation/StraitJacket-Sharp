@@ -15,9 +15,6 @@ namespace StraitJacket.Constructs {
         // Make sure we are ready to compile.
         public void PrepareForCompilation() {
 
-            // Make sure declarations are in entry block.
-            MoveVariableDefinitions();
-
             // Turn variable and function call names into actual function calls.
             ResolveVariables();
 
@@ -26,11 +23,6 @@ namespace StraitJacket.Constructs {
 
             // Ready!
             CompilationReady = true;
-
-        }
-
-        // Make it so the definition of a variable and its assignment are separate. Definitions must be in the entry block for alloca to be optimized.
-        private void MoveVariableDefinitions() {
 
         }
 

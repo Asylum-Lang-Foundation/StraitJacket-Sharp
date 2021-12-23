@@ -30,6 +30,8 @@ namespace StraitJacket.Constructs {
             throw new NotImplementedException();
         }
 
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {}
+
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             throw new NotImplementedException();
         }

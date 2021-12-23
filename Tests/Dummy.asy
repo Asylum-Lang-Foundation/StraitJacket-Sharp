@@ -1,3 +1,7 @@
-int a = 3;
-int b = 4;
-printf("%d\n", (u32)llvm("add", a, b));
+for (int i = 0; i < 7; i = (int)llvm("add", i, (int)1)) {
+    if (i < 2) {
+        println("Skipped!");
+        continue;
+    }
+    println("Hi!");
+}

@@ -39,17 +39,23 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public void CompileDeclaration(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             foreach (var v in Variables) {
                 v.LLVMValue = builder.BuildAlloca(v.Type.GetLLVMType(), "SJ_Define_" + v.Name);
             }
         }
 
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
+
+            // Compile store expressions.
             foreach (var e in GeneratedExpressions) {
                 e.Compile(mod, builder, param);
             }
             return new ReturnValue();
+            
         }
 
     }

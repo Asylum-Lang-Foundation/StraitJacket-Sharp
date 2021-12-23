@@ -16,16 +16,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitBreakStatement([NotNull] AsylumParser.BreakStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitBreak_statement([NotNull] AsylumParser.Break_statementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitCaseDefault([NotNull] AsylumParser.CaseDefaultContext context)
         {
             throw new System.NotImplementedException();
@@ -37,11 +27,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitChildren(IRuleNode node)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitCode_body([NotNull] AsylumParser.Code_bodyContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -62,16 +47,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitConstructor_with_initializers([NotNull] AsylumParser.Constructor_with_initializersContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitDoWhileLoopStatement([NotNull] AsylumParser.DoWhileLoopStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitDo_while_loop([NotNull] AsylumParser.Do_while_loopContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -126,11 +101,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitExprComparison([NotNull] AsylumParser.ExprComparisonContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitExprEqualityComparison([NotNull] AsylumParser.ExprEqualityComparisonContext context)
         {
             throw new System.NotImplementedException();
@@ -152,11 +122,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitExprOr([NotNull] AsylumParser.ExprOrContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -191,11 +156,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitForLoopStatement([NotNull] AsylumParser.ForLoopStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitFunction_property([NotNull] AsylumParser.Function_propertyContext context)
         {
             throw new System.NotImplementedException();
@@ -207,16 +167,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitGeneric_specifier([NotNull] AsylumParser.Generic_specifierContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitIfStatement([NotNull] AsylumParser.IfStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitIf_statement([NotNull] AsylumParser.If_statementContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -237,16 +187,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitLabel([NotNull] AsylumParser.LabelContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitLoop([NotNull] AsylumParser.LoopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitLoopStatement([NotNull] AsylumParser.LoopStatementContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -316,16 +256,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitReturnStatement([NotNull] AsylumParser.ReturnStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitReturn_value([NotNull] AsylumParser.Return_valueContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitStructAccess([NotNull] AsylumParser.StructAccessContext context)
         {
             throw new System.NotImplementedException();
@@ -352,11 +282,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitTerminal(ITerminalNode node)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitTraditionalForLoop([NotNull] AsylumParser.TraditionalForLoopContext context)
         {
             throw new System.NotImplementedException();
         }
@@ -486,37 +411,12 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitWhileLoopStatement([NotNull] AsylumParser.WhileLoopStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitWhile_loop([NotNull] AsylumParser.While_loopContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitCast_definition([NotNull] AsylumParser.Cast_definitionContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public AsylumVisitResult VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitTraditionalForLoopNoParens([NotNull] AsylumParser.TraditionalForLoopNoParensContext context)
         {
             throw new System.NotImplementedException();
         }
 
         public AsylumVisitResult VisitForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitContinue_statement([NotNull] AsylumParser.Continue_statementContext context)
         {
             throw new System.NotImplementedException();
         }

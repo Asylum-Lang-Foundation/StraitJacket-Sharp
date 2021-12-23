@@ -21,7 +21,14 @@ namespace StraitJacket.Constructs {
             ReturnValue.ResolveTypes();
         }
 
+        public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {}
+
         public ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+
+            // Only compile if not dead.
+            if (CodeStatements.BlockTerminated) return null;
+
+            // Return a value.
             ReturnValue comp = ReturnValue.Compile(mod, builder, param);
             if (comp.ReturnType == ReturnValueType.Void) {
                 builder.BuildRetVoid();
@@ -30,7 +37,10 @@ namespace StraitJacket.Constructs {
             } else if (comp.ReturnType == ReturnValueType.NestedValues) {
                 throw new System.NotImplementedException();
             }
+            CodeStatements.BlockTerminated = true;
+            CodeStatements.ReturnedValue = comp;
             return comp;
+
         }
 
     }

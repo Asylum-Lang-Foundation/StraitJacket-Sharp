@@ -56,6 +56,9 @@ namespace StraitJacket.Constructs {
         // Resolve type names into references, also evaluate function overloads.
         void ResolveTypes();
 
+        // Compile declarations.
+        void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
+
         // Compile the item.
         ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
 
