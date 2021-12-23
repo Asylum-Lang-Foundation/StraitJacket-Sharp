@@ -25,6 +25,7 @@ namespace StraitJacket.Constructs {
 
         public override void ResolveTypes() {
             // TODO: TOCALL MUST KNOW ABOUT PARAMETERS TO SELECT CORRECT FUNCTION!!!
+            LValue = false;
             Parameters.ResolveTypes();
             ToCall.ResolveTypes();
             if (ToCall as ExpressionVariable != null) {
