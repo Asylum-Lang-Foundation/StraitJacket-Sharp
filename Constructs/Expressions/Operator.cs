@@ -36,6 +36,16 @@ namespace StraitJacket.Constructs {
                     GenerateCastsIfNeeded2();
                     RetType = new VarTypeSimplePrimitive(SimplePrimitives.Bool);
                     break;
+                case Operator.AddressOf:
+                    RetType = new VarTypePointer(Inputs[0].ReturnType());
+                    break;
+                case Operator.Dereference:
+                    if (Inputs[0].ReturnType().Type != VarTypeEnum.Pointer) {
+                        throw new System.Exception("Can't take the de-reference of a non-pointer!");
+                    } else {
+                        RetType = (Inputs[0].ReturnType() as VarTypePointer).PointedTo;
+                    }
+                    break;
                 default:
                     throw new System.NotImplementedException("Operator return type not implemented!");
             }
@@ -94,8 +104,14 @@ namespace StraitJacket.Constructs {
                             Inputs[0].Compile(mod, builder, param).Val,
                             Inputs[1].Compile(mod, builder, param).Val,
                             "SJ_ICompare_LT")
-                        ); 
+                        );
                     }
+                case Operator.AddressOf:
+                    return new ReturnValue(builder.BuildGEP(
+                        (Inputs[0] as ExpressionVariable).CompileToStoreTo(mod, builder, param).Val,
+                        new LLVMValueRef[] { LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, 0) },
+                        "SJ_AddrOf"
+                    ));
             }
             throw new System.NotImplementedException("Operator has not been implemented yet!");
         }
