@@ -266,11 +266,6 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitStruct_definition([NotNull] AsylumParser.Struct_definitionContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitSwitchCaseStatement([NotNull] AsylumParser.SwitchCaseStatementContext context)
         {
             throw new System.NotImplementedException();
@@ -332,11 +327,6 @@ namespace StraitJacket.AST {
         }
 
         public AsylumVisitResult VisitUniversalNamespace([NotNull] AsylumParser.UniversalNamespaceContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitUniversalStruct([NotNull] AsylumParser.UniversalStructContext context)
         {
             throw new System.NotImplementedException();
         }

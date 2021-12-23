@@ -15,6 +15,19 @@ namespace StraitJacket.AST {
             return null;
         }
 
+        public AsylumVisitResult VisitStruct_definition([NotNull] AsylumParser.Struct_definitionContext context)
+        {
+            List<VarType> members = new List<VarType>(); // NOT WORKING!!!
+            foreach (var e in context.struct_entry()) {
+                e.Accept()
+            }
+            CTX.CurrentScope.AddType(context.IDENTIFIER().GetText(), new VarTypeStruct(
+                CTX.CurrentScope,
+                context.IDENTIFIER().GetText(),
+                members
+            ));
+        }
+
         public AsylumVisitResult VisitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context)
         {
             return context.primitives().Accept(this);
