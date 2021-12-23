@@ -173,9 +173,8 @@ namespace StraitJacket.AST {
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
             ));
-            body.Statements.Add(after);
             return new AsylumVisitResult() {
-                CodeStatement = new Loop(body, beforeLoop)
+                CodeStatement = new Loop(body, beforeLoop, new CodeStatements() { Statements = new List<ICompileable>() { after } })
             };
         }
 
@@ -195,9 +194,8 @@ namespace StraitJacket.AST {
                 new CodeStatements(),
                 new CodeStatements() { Statements = new List<ICompileable>() { new Break(1) } }
             ));
-            body.Statements.Add(after);
             return new AsylumVisitResult() {
-                CodeStatement = new Loop(body, beforeLoop)
+                CodeStatement = new Loop(body, beforeLoop, new CodeStatements() { Statements = new List<ICompileable>() { after } })
             };
         }
 
@@ -217,6 +215,11 @@ namespace StraitJacket.AST {
             };
         }
 
+        public AsylumVisitResult VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context)
+        {
+            return context.continue_statement().Accept(this);
+        }
+
         public AsylumVisitResult VisitReturnStatement([NotNull] AsylumParser.ReturnStatementContext context)
         {
             return context.return_value().Accept(this);
@@ -226,6 +229,13 @@ namespace StraitJacket.AST {
         {
             return new AsylumVisitResult() {
                 CodeStatement = new ReturnStatement(context.expression().Accept(this).Expression)
+            };
+        }
+
+        public AsylumVisitResult VisitContinue_statement([NotNull] AsylumParser.Continue_statementContext context)
+        {
+            return new AsylumVisitResult() {
+                CodeStatement = new Continue(1)
             };
         }
 

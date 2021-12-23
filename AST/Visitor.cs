@@ -415,18 +415,8 @@ namespace StraitJacket.AST {
         {
             throw new System.NotImplementedException();
         }
-        
-        public AsylumVisitResult VisitContinueStatement([NotNull] AsylumParser.ContinueStatementContext context)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public AsylumVisitResult VisitForEachLoopNoParens([NotNull] AsylumParser.ForEachLoopNoParensContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitContinue_statement([NotNull] AsylumParser.Continue_statementContext context)
         {
             throw new System.NotImplementedException();
         }
