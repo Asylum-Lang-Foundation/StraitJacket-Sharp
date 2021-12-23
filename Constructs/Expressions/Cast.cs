@@ -21,6 +21,7 @@ namespace StraitJacket.Constructs {
 
         public override void ResolveTypes() {
             ToCast.ResolveTypes();
+            LValue = ToCast.LValue;
             SrcType = ToCast.ReturnType();
             if (!SrcType.CanCastTo(DestType)) {
                 throw new System.Exception("BAD CAST!!!");

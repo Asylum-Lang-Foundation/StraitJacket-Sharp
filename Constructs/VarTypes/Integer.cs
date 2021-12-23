@@ -14,8 +14,6 @@ namespace StraitJacket.Constructs {
             BitWidth = bitWidth;
         }
 
-        public override bool RequiresLoad() => true;
-
         protected override LLVMTypeRef LLVMType() {
             return LLVMTypeRef.CreateInt(BitWidth);
         }

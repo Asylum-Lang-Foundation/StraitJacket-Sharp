@@ -1,4 +1,4 @@
 int a = 3;
-int* b = &a;
+int* b = &(&a);
 //(*b) = 7;
-printf("%x\n", b);
+printf("0x%x\n", b);

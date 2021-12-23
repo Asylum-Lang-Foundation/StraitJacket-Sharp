@@ -66,14 +66,6 @@ namespace StraitJacket.Constructs {
         }
 
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            if (!Resolved.Type.RequiresLoad() || Resolved.NoLoad || Resolved.Type.Constant) {
-                return new ReturnValue(Resolved.LLVMValue);
-            } else {
-                return new ReturnValue(builder.BuildLoad(Resolved.LLVMValue, "SJ_LoadVar_" + Resolved.Name));
-            }
-        }
-
-        public ReturnValue CompileToStoreTo(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             return new ReturnValue(Resolved.LLVMValue);
         }
 

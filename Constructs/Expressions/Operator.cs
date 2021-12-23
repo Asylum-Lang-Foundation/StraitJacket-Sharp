@@ -33,10 +33,13 @@ namespace StraitJacket.Constructs {
                 case Operator.Gt:
                 case Operator.Le:
                 case Operator.Ge:
+                    LValue = false;
                     GenerateCastsIfNeeded2();
                     RetType = new VarTypeSimplePrimitive(SimplePrimitives.Bool);
                     break;
                 case Operator.AddressOf:
+                    if (!Inputs[0].LValue) throw new System.Exception("Can't take the address of a non-lvalue!");
+                    LValue = false;
                     RetType = new VarTypePointer(Inputs[0].ReturnType());
                     break;
                 case Operator.Dereference:
@@ -88,7 +91,7 @@ namespace StraitJacket.Constructs {
             // This doesn't make sense.
         }
 
-        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) { // TODO: LOAD L-VALUES!!!
             switch (Operator) {
                 case Operator.Lt:
                     if (InputTypes.IsFloatingPoint()) {
@@ -108,7 +111,7 @@ namespace StraitJacket.Constructs {
                     }
                 case Operator.AddressOf:
                     return new ReturnValue(builder.BuildGEP(
-                        (Inputs[0] as ExpressionVariable).CompileToStoreTo(mod, builder, param).Val,
+                        Inputs[0].Compile(mod, builder, param).Val,
                         new LLVMValueRef[] { LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, 0) },
                         "SJ_AddrOf"
                     ));

@@ -88,9 +88,6 @@ namespace StraitJacket.Constructs {
             return GottenType;
         }
 
-        // Retrieve the LLVM value. Some types require a load, others can just return itself.
-        public abstract bool RequiresLoad();
-
         // If the type is floating point.
         public bool IsFloatingPoint() {
             var val = this as VarTypeSimplePrimitive;
