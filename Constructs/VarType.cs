@@ -124,6 +124,30 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
+        // If type can be implicitly casted to another. TODO: CUSTOM CONVERSIONS!!!
+        public virtual bool CanImplicitlyCastTo(VarType other) {
+            if (other.Type == VarTypeEnum.Custom) return CanImplicitlyCastTo((other as VarTypeCustom).Resolved);
+            return other.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object)) || Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object));
+        }
+
+        // If type can be casted to another.
+        public virtual bool CanCastTo(VarType other) {
+            if (other.Type == VarTypeEnum.Custom) return CanCastTo((other as VarTypeCustom).Resolved);
+            return other.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object)) || Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object));
+        }
+
+        // Cast to another type. TODO!!!
+        public virtual ReturnValue CastTo(ReturnValue srcVal, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder) {
+            if (destType.Type == VarTypeEnum.Custom) return CastTo(srcVal, (destType as VarTypeCustom).Resolved, mod, builder);
+            if (destType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object)) || Equals(new VarTypeSimplePrimitive(SimplePrimitives.Object))) {
+                return srcVal;
+            } else {
+                return null;
+            }
+        }
+
+        /*
+
         // If type can be implicitly casted to another.
         public bool CanImplicitlyCastTo(VarType other) {
             return CanCastTo(other); // TODO!!!
@@ -235,7 +259,7 @@ namespace StraitJacket.Constructs {
             // TODO: Implement some kind of "implementation definition" that has a list of all the functions of a type.
             return null;
 
-        }
+        } */
 
         public bool Equals(VarType x, VarType y) {
             if (x.Type != y.Type) return false;

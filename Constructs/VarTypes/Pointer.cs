@@ -19,6 +19,7 @@ namespace StraitJacket.Constructs {
         }
 
         public override bool Equals(object obj) {
+            if (obj is VarTypeCustom) return Equals((obj as VarTypeCustom).Resolved);
             if (obj is VarTypePointer) {
                 var i = obj as VarTypePointer;
                 if (i.Constant != Constant) return false;

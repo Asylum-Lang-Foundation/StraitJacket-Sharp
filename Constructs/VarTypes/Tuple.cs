@@ -36,6 +36,7 @@ namespace StraitJacket.Constructs {
         }
 
         public override bool Equals(object obj) {
+            if (obj is VarTypeCustom) return Equals((obj as VarTypeCustom).Resolved);
             if (obj is VarTypeTuple) {
                 var i = obj as VarTypeTuple;
                 if (i.Constant != Constant) return false;

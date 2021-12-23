@@ -72,8 +72,8 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public override bool Equals(object obj)
-        {
+        public override bool Equals(object obj) {
+            if (obj is VarTypeCustom) return Equals((obj as VarTypeCustom).Resolved);
             if (obj is VarTypeSimplePrimitive) {
                 var i = obj as VarTypeSimplePrimitive;
                 if (i.Constant != Constant) return false;
@@ -85,8 +85,7 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             HashCode hash = new HashCode();
             hash.Add(Type);
             hash.Add(Constant);

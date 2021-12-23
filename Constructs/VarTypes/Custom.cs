@@ -29,6 +29,18 @@ namespace StraitJacket.Constructs {
             return Resolved.GetLLVMType();
         }
 
+        public override bool CanImplicitlyCastTo(VarType other) {
+            return Resolved.CanImplicitlyCastTo(other);
+        }
+
+        public override bool CanCastTo(VarType other) {
+            return Resolved.CanCastTo(other);
+        }
+
+        public override ReturnValue CastTo(ReturnValue srcVal, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder) {
+            return Resolved.CastTo(srcVal, destType, mod, builder);
+        }
+
         public override bool Equals(object obj) {
             return Resolved.Equals(obj);
         }
