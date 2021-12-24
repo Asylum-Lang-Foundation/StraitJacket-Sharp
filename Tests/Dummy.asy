@@ -1,4 +1,3 @@
-int a = 3;
-int* b = &a;
-(*b) = 7;
-printf("%d\n", a);
+for (int i = 1; i < 8; i = (int)llvm("add", i, (int)1)) {
+    printf("%d\n", i);
+}

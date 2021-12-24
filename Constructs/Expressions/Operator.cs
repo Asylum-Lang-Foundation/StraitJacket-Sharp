@@ -91,30 +91,31 @@ namespace StraitJacket.Constructs {
             Inputs[0].StorePlural(src, dest, srcType, destType, mod, builder, param);
         }
 
-        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) { // TODO: LOAD L-VALUES!!!
+        public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            LLVMValueRef v1, v2;
             switch (Operator) {
                 case Operator.Lt:
+                    v1 = Inputs[0].Compile(mod, builder, param).Val;
+                    if (Inputs[0].LValue) v1 = builder.BuildLoad(v1, "SJ_Load");
+                    v2 = Inputs[1].Compile(mod, builder, param).Val;
+                    if (Inputs[1].LValue) v2 = builder.BuildLoad(v1, "SJ_Load");
                     if (InputTypes.IsFloatingPoint()) {
                         return new ReturnValue(
                             builder.BuildFCmp(LLVMRealPredicate.LLVMRealOLT,
-                            Inputs[0].Compile(mod, builder, param).Val,
-                            Inputs[1].Compile(mod, builder, param).Val,
+                            v1,
+                            v2,
                             "SJ_FCompare_LT")
                         );
                     } else {
                         return new ReturnValue(
                             builder.BuildICmp(InputTypes.IsUnsigned() ? LLVMIntPredicate.LLVMIntULT : LLVMIntPredicate.LLVMIntSLT,
-                            Inputs[0].Compile(mod, builder, param).Val,
-                            Inputs[1].Compile(mod, builder, param).Val,
+                            v1,
+                            v2,
                             "SJ_ICompare_LT")
                         );
                     }
                 case Operator.AddressOf:
-                    return new ReturnValue(builder.BuildGEP(
-                        Inputs[0].Compile(mod, builder, param).Val,
-                        new LLVMValueRef[] { LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, 0) },
-                        "SJ_AddressOf"
-                    ));
+                    return Inputs[0].Compile(mod, builder, param);
                 case Operator.Dereference:
                     return new ReturnValue(builder.BuildLoad(
                         Inputs[0].Compile(mod, builder, param).Val,
