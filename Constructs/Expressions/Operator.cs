@@ -83,12 +83,12 @@ namespace StraitJacket.Constructs {
             return RetType;
         }
 
-        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            // This doesn't make sense.
+        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            Inputs[0].StoreSingle(src, dest, srcType, destType, mod, builder, param);
         }
 
-        public override void StoreSingle(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            // This doesn't make sense.
+        public override void StorePlural(ReturnValue src, ReturnValue dest, VarType srcType, VarType destType, LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
+            Inputs[0].StorePlural(src, dest, srcType, destType, mod, builder, param);
         }
 
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) { // TODO: LOAD L-VALUES!!!
@@ -113,7 +113,12 @@ namespace StraitJacket.Constructs {
                     return new ReturnValue(builder.BuildGEP(
                         Inputs[0].Compile(mod, builder, param).Val,
                         new LLVMValueRef[] { LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, 0) },
-                        "SJ_AddrOf"
+                        "SJ_AddressOf"
+                    ));
+                case Operator.Dereference:
+                    return new ReturnValue(builder.BuildLoad(
+                        Inputs[0].Compile(mod, builder, param).Val,
+                        "SJ_Dereference"
                     ));
             }
             throw new System.NotImplementedException("Operator has not been implemented yet!");
