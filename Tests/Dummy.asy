@@ -1,3 +1,10 @@
-for (int i = 1; i < 8; i = (int)llvm("add", i, (int)1)) {
-    printf("%d\n", i);
+fn add(int a, int b) -> int {
+    a = (int)llvm("add", a, b);
+    //println();
+    a
 }
+
+int a = 3;
+int b = 7;
+int c = (add(a, b));
+printf("%d\n", c);

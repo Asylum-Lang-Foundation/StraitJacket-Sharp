@@ -26,6 +26,9 @@ namespace StraitJacket.Constructs {
             } else {
                 throw new System.NotImplementedException();
             }
+            if (Resolved.Type == null || Resolved.Type.GetLLVMType().Kind == LLVMTypeKind.LLVMFunctionTypeKind) {
+                LValue = false;
+            }
         }
 
         public Variable GetResolved => Resolved;
