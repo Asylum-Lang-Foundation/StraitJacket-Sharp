@@ -88,19 +88,20 @@ namespace StraitJacket.Constructs {
             // We must compile the function if it actually has a body of course.
             if (!Extern) {
 
-                // Convert the parameters to LLVM values.
-                for (int i = 0; i < Parameters.Count; i++) {
-                    if (Parameters[i].Value.Type.Variadic) break;
-                    Parameters[i].Value.LLVMValue = LLVMVal.Params[i];
-                    Parameters[i].Value.NoLoad = true;
-                }
-
                 // Add the entry point of the function.
                 var block = LLVMBasicBlockRef.AppendInContext(mod.Context, LLVMVal, "entry");
                 builder.PositionAtEnd(block);
 
-                // Compile the function, and add a return statement if necessary.
+                // Convert the parameters to LLVM values.
                 Scope.PushFunction(this);
+                for (int i = 0; i < Parameters.Count; i++) {
+                    if (Parameters[i].Value.Type.Variadic) break;
+                    var val = builder.BuildAlloca(LLVMVal.Params[i].TypeOf, "SJ_Param_" + Parameters[i].Value.Name);
+                    builder.BuildStore(LLVMVal.Params[i], val);
+                    Parameters[i].Value.LLVMValue = val;
+                }
+
+                // Compile the function, and add a return statement if necessary.
                 Definition.CompileDeclarations(mod, builder, param);
                 Definition.Compile(mod, builder, param);
                 if (!CodeStatements.BlockTerminated && ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {

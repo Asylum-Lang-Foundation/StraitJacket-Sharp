@@ -33,7 +33,9 @@ namespace StraitJacket.Constructs {
             if (comp.ReturnType == ReturnValueType.Void) {
                 builder.BuildRetVoid();
             } else if (comp.ReturnType == ReturnValueType.Value) {
-                builder.BuildRet(comp.Val);
+                LLVMValueRef ret = comp.Val;
+                if (ReturnValue.LValue) ret = builder.BuildLoad(ret, "SJ_LoadRet");
+                builder.BuildRet(ret);
             } else if (comp.ReturnType == ReturnValueType.NestedValues) {
                 throw new System.NotImplementedException();
             }

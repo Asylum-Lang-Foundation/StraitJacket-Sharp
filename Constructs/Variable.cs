@@ -11,7 +11,6 @@ namespace StraitJacket.Constructs {
         public Scope Scope;
         public VarType Type;
         public LLVMValueRef LLVMValue;
-        public bool NoLoad = false;
     }
 
 }

@@ -73,20 +73,25 @@ namespace StraitJacket.Constructs {
             if (FunctionToCall.Inline) {
 
                 // Fix arguments.
+                Scope.PushFunction(FunctionToCall);
                 for (int i = 0; i < args.Length; i++) {
 
                     // Variadic.
                     if (i >= FunctionToCall.Parameters.Count || (i == FunctionToCall.Parameters.Count - 1 && FunctionToCall.Parameters.Last().Value.Type.Variadic)) {
                         FunctionToCall.Parameters.Last().VariadicArgs = new List<LLVMValueRef>();
-                        FunctionToCall.Parameters.Last().VariadicArgs.Add(args[i]);
-                        FunctionToCall.Parameters.Last().Value.NoLoad = true;
+                        var val = builder.BuildAlloca(args[i].TypeOf, "SJ_Param_Variadic_" + i);
+                        builder.BuildStore(val, args[i]);
+                        FunctionToCall.Parameters.Last().VariadicArgs.Add(val);
                     } else {
-                        FunctionToCall.Parameters[i].Value.LLVMValue = args[i];
-                        FunctionToCall.Parameters[i].Value.NoLoad = true;
+                        var val = builder.BuildAlloca(args[i].TypeOf, "SJ_Param_" + FunctionToCall.Parameters[i].Value.Name);
+                        builder.BuildStore(val, args[i]);
+                        FunctionToCall.Parameters[i].Value.LLVMValue = val;
                     }
 
                 }
-                return FunctionToCall.Definition.Compile(mod, builder, param);
+                var ret = FunctionToCall.Definition.Compile(mod, builder, param);
+                Scope.PopFunction();
+                return ret;
 
             }
 
