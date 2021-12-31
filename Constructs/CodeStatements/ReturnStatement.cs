@@ -14,11 +14,11 @@ namespace StraitJacket.Constructs {
         }
 
         public void ResolveVariables() {
-            ReturnValue.ResolveVariables();
+            if (ReturnValue != null) ReturnValue.ResolveVariables();
         }
 
         public void ResolveTypes() {
-            ReturnValue.ResolveTypes();
+            if (ReturnValue != null) ReturnValue.ResolveTypes();
         }
 
         public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {}
@@ -29,9 +29,18 @@ namespace StraitJacket.Constructs {
             if (CodeStatements.BlockTerminated) return null;
 
             // Return a value.
+            if (ReturnValue == null) {
+                builder.BuildRetVoid();
+                CodeStatements.BlockTerminated = true;
+                CodeStatements.ReturnedValue = new ReturnValue();
+                return CodeStatements.ReturnedValue;
+            }
             ReturnValue comp = ReturnValue.Compile(mod, builder, param);
             if (comp.ReturnType == ReturnValueType.Void) {
                 builder.BuildRetVoid();
+                CodeStatements.BlockTerminated = true;
+                CodeStatements.ReturnedValue = new ReturnValue();
+                return CodeStatements.ReturnedValue;
             } else if (comp.ReturnType == ReturnValueType.Value) {
                 LLVMValueRef ret = comp.Val;
                 if (ReturnValue.LValue) ret = builder.BuildLoad(ret, "SJ_LoadRet");

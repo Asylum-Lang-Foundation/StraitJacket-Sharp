@@ -6,6 +6,7 @@ namespace StraitJacket.Builder {
     // Asylum program builder.
     public partial class Builder {
         Dictionary<string, Constructs.AST> ASTs = new Dictionary<string, Constructs.AST>();
+        CodeStatements CurrStatements;
 
     }
 
