@@ -15,6 +15,7 @@ namespace StraitJacket.Builder {
     // Asylum program builder.
     public partial class Builder {
         Stack<IfStatementContext> IfStack = new Stack<IfStatementContext>();
+        Stack<CodeStatements> LoopStack = new Stack<CodeStatements>();
         IfStatementContext CurrIf;
 
         // Build a code statement.
@@ -85,6 +86,65 @@ namespace StraitJacket.Builder {
                 elseBlock
             ));
 
+        }
+
+        // Start a loop.
+        public void BeginLoop() {
+            LoopStack.Push(CurrStatements);
+            CurrStatements = new CodeStatements();
+        }
+
+        // End a loop.
+        public void EndLoop() {
+            if (LoopStack.Count <= 0) throw new System.Exception("Can't end a loop while not in one!");
+            Loop l = new Loop(CurrStatements);
+            CurrStatements = LoopStack.Pop();
+        }
+
+        // Start a while loop.
+        public void BeginWhileLoop(Expression condition) {
+            BeginLoop();
+            BeginIf(condition);
+            Else();
+            Code(new Break(1));
+            EndIf();
+        }
+
+        // End a while loop.
+        public void EndWhileLoop(Expression condition) {
+            EndLoop();
+        }
+
+        // Start a do while loop.
+        public void BeginDoWhileLoop() {
+            BeginLoop();
+        }
+
+        // End a do while loop.
+        public void EndDoWhileLoop(Expression condition) {
+            BeginIf(condition);
+            Else();
+            Code(new Break(1));
+            EndIf();
+            EndLoop();
+        }
+
+        // Start a for loop.
+        public void BeginForLoop(ICompileable statement, Expression condition) {
+            if (statement != null) Code(statement);
+            BeginLoop();
+            if (condition != null) {
+                BeginIf(condition);
+                Else();
+                Code(new Break(1));
+                EndIf();
+            }
+        }
+
+        // End a for loop.
+        public void EndForLoop(Expression after) {
+            if (after != null) Code(after);
+            EndLoop();
         }
         
     }
