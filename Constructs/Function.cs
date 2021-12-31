@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -7,17 +8,18 @@ using LLVMSharp.Interop;
 namespace StraitJacket.Constructs {
 
     // A modifier.
+    [Flags]
     public enum Modifier {
-        Public,
-        ProtectedInternal,
-        PrivateProtected,
-        Private,
-        Protected,
-        Internal,
-        Static,
-        Inline,
-        Async,
-        Unsafe
+        Public = 0b1,
+        ProtectedInternal = 0b110,
+        PrivateProtected = 0b1010,
+        Private = 0b1000,
+        Protected = 0b10,
+        Internal = 0b100,
+        Static = 0b10000,
+        Inline = 0b100000,
+        Async = 0b1000000,
+        Unsafe = 0b10000000
     }
 
     // Function definition.
