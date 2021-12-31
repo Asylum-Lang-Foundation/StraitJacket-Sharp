@@ -52,7 +52,7 @@ namespace StraitJacket.Builder {
             if (CurrFunction == null) throw new System.Exception("No function to end!");
 
             // Cleanup.
-            CurrStatements = null;
+            CurrStatements = TopLevel;
             AST.Universals.Add(CurrFunction);
             CurrFunction = null;
             ExitScope();
