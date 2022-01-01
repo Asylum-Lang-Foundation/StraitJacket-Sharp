@@ -9,6 +9,14 @@ namespace StraitJacket.Builder {
         CodeStatements TopLevel = new CodeStatements();
         CodeStatements CurrStatements;
 
+        // Create a new builder.
+        public Builder() {
+            // Idk what code to put here.
+            
+        }
+
+        // Compile the code.
+
     }
 
 }
