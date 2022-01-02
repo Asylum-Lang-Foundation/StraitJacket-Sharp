@@ -107,6 +107,7 @@ namespace StraitJacket.Constructs {
                 if (!CodeStatements.BlockTerminated && ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) {
                     builder.BuildRetVoid();
                 }
+                LLVMVal.VerifyFunction(LLVMVerifierFailureAction.LLVMPrintMessageAction);
                 Scope.PopFunction();
 
             }

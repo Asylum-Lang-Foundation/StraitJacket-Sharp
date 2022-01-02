@@ -73,24 +73,24 @@ namespace StraitJacket.Constructs {
             if (FunctionToCall.Inline) {
 
                 // Fix arguments.
-                Scope.PushFunction(FunctionToCall);
+                //Scope.PushFunction(FunctionToCall);
                 for (int i = 0; i < args.Length; i++) {
 
                     // Variadic.
                     if (i >= FunctionToCall.Parameters.Count || (i == FunctionToCall.Parameters.Count - 1 && FunctionToCall.Parameters.Last().Value.Type.Variadic)) {
                         FunctionToCall.Parameters.Last().VariadicArgs = new List<LLVMValueRef>();
                         var val = builder.BuildAlloca(args[i].TypeOf, "SJ_Param_Variadic_" + i);
-                        builder.BuildStore(val, args[i]);
+                        builder.BuildStore(args[i], val);
                         FunctionToCall.Parameters.Last().VariadicArgs.Add(val);
                     } else {
                         var val = builder.BuildAlloca(args[i].TypeOf, "SJ_Param_" + FunctionToCall.Parameters[i].Value.Name);
-                        builder.BuildStore(val, args[i]);
+                        builder.BuildStore(args[i], val);
                         FunctionToCall.Parameters[i].Value.LLVMValue = val;
                     }
 
                 }
                 var ret = FunctionToCall.Definition.Compile(mod, builder, param);
-                Scope.PopFunction();
+                //Scope.PopFunction();
                 return ret;
 
             }
@@ -109,7 +109,7 @@ namespace StraitJacket.Constructs {
                         funcToCall = FunctionToCall.ExternedLLVMVals[currFunc.ModulePath];
                     }
                 }
-                return new ReturnValue(builder.BuildCall(funcToCall, args, "SJ_Call" + FunctionToCall.ToString()));
+                return new ReturnValue(builder.BuildCall(funcToCall, args));
             }
 
         }

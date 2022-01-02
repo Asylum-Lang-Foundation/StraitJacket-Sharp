@@ -1,6 +1,5 @@
 fn add(int a, int b) -> int {
     a = (int)llvm("add", a, b);
-    //println();
     a
 }
 
