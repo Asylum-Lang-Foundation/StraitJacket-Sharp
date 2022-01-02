@@ -132,12 +132,12 @@ namespace StraitJacket {
 
             ProgramBuilder b = new ProgramBuilder(visitor.CTX.UniversalAST, visitor.CTX.CurrentScope, visitor.scopeNum);
             b.BeginFile("Dummy.asy");
-            b.Code(new ExpressionCall(
-                new ExpressionVariable(new VariableOrFunction() { Path = "println", Scope = b.Scope() }),
-                new ExpressionComma(new List<Expression>() {
-                    new ExpressionConstStringPtr("Hello World!")
-                })
-            ));
+            b.BeginForLoop(
+                b.VariableDefinition(new ExpressionConstInt(false, 0), b.Variable(b.VarTypeCustom("int"), "i")),
+                new ExpressionOperator(new List<Expression>() { b.ExpressionVariable("i"), new ExpressionConstInt(false, 3) }, Operator.Lt)
+            );
+            b.Code(new ExpressionCall(b.ExpressionVariable("printf"), b.Multiple(new ExpressionConstStringPtr("%d\n"), b.ExpressionVariable("i"))));
+            b.EndForLoop();
             b.EndFile();
             return b.Compile();
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using StraitJacket.Constructs;
 
 namespace StraitJacket.Builder {
@@ -146,6 +147,11 @@ namespace StraitJacket.Builder {
         public void EndForLoop(Expression after) {
             if (after != null) Code(after);
             EndLoop();
+        }
+
+        // Multiple expressions.
+        public ExpressionComma Multiple(params Expression[] expressions) {
+            return new ExpressionComma(expressions.ToList());
         }
         
     }
