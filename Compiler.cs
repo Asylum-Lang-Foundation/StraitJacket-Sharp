@@ -4,6 +4,7 @@ using System.IO;
 using Antlr4.Runtime;
 using LLVMSharp.Interop;
 using StraitJacket.AST;
+using StraitJacket.Builder;
 using StraitJacket.Constructs;
 
 /*
@@ -95,6 +96,53 @@ namespace StraitJacket {
                 Environment.Exit(0);
             }
             files.Add(filePath);
+        }
+
+        public Dictionary<string, LLVMModuleRef> BuilderTest(CompilationFlags flags) {
+
+            // For each mode.
+            foreach (VisitMode mode in Enum.GetValues(typeof(VisitMode))) {
+
+                // Compile EASL.
+                visitor.CTX.UniversalMode = true;
+                visitor.CTX.ModuleName = "EASL";
+                VisitFile(compilerRoot + "/EASL/Types.asy", mode);
+                VisitFile(compilerRoot + "/EASL/Console.asy", mode);
+                //VisitFile(compilerRoot + "/EASL/Unsigned.asy", mode);
+                if (flags.UseSTDC) {
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
+                        VisitFile(f, mode);
+                    }
+                } else {
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
+                        VisitFile(f, mode);
+                    }
+                }
+                if (flags.UseSTDCPP) {
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP")) {
+                        VisitFile(f, mode);
+                    }
+                } else {
+                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP-ASYLUM")) {
+                        VisitFile(f, mode);
+                    }
+                }
+                if (mode != VisitMode.GetTypes) visitor.CTX.UniversalMode = false;
+            }
+
+            Builder.Builder b = new Builder.Builder(visitor.CTX.UniversalAST, visitor.CTX.CurrentScope, visitor.scopeNum);
+            b.BeginFile("Dummy.asy");
+            b.BeginFunction("main", new VarTypeSimplePrimitive(SimplePrimitives.Void), new List<VarParameter>());
+            b.Code(new ExpressionCall(
+                new ExpressionVariable(new VariableOrFunction() { Path = "println", Scope = b.Scope() }),
+                new ExpressionComma(new List<Expression>() {
+                    new ExpressionConstStringPtr("Hello World!")
+                })
+            ));
+            b.EndFunction();
+            b.EndFile();
+            return b.Compile();
+
         }
 
         // Go through the compilation process.

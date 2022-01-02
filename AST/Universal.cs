@@ -8,7 +8,7 @@ namespace StraitJacket.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
         public BuildContext CTX = new BuildContext();
-        int scopeNum = 0;
+        public int scopeNum = 0;
 
         public AsylumVisitResult VisitInit([NotNull] AsylumParser.InitContext context)
         {

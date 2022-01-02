@@ -5,8 +5,8 @@ namespace StraitJacket.Builder {
 
     // Asylum program builder.
     public partial class Builder {
-        Scope CurrScope = new Scope() { Name = "" };
-        int ScopeNum = 0;
+        Scope CurrScope;
+        int ScopeNum;
 
         // Enter a subset of a scope, be it a function, if statement, namespace, etc.
         private void EnterScope(string name, bool allowReEnter = false) {
@@ -27,10 +27,11 @@ namespace StraitJacket.Builder {
             
             // Scope doesn't exist already, so add it.
             else {
+                var parent = CurrScope;
                 CurrScope.Children.Add(name, new Scope());
                 CurrScope = CurrScope.Children[name];
                 CurrScope.Name = name;
-                CurrScope.Parent = CurrScope;
+                CurrScope.Parent = parent;
             }
 
         }

@@ -18,7 +18,7 @@ namespace StraitJacket.Builder {
         }
 
         // Stop appending to a source file.
-        public void EndFile(string endPath) {
+        public void EndFile() {
             FileCheck();
             CurrFile = null;
             AST = null;

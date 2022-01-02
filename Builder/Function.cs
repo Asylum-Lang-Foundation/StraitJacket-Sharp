@@ -40,9 +40,10 @@ namespace StraitJacket.Builder {
 
             // Init function.
             fn.Type = new VarTypeFunction(returnType, parameters.Select(x => x.Value.Type).ToList());
+            Scope().AddFunction(fn.Name, fn.ToString(), fn);
             EnterScope("%FN%_" + fn.ToString());
-            fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
             fn.Definition = new CodeStatements();
+            CurrFunction = fn;
             CurrStatements = fn.Definition;
 
         }

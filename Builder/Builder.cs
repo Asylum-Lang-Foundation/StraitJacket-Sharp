@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using StraitJacket.Constructs;
+using LLVMSharp.Interop;
 
 namespace StraitJacket.Builder {
 
@@ -10,12 +11,24 @@ namespace StraitJacket.Builder {
         CodeStatements CurrStatements;
 
         // Create a new builder.
-        public Builder() {
-            // Idk what code to put here.
-            
+        public Builder(Constructs.AST easl, Scope easlScope, int scopeNum) {
+            ASTs.Add("EASL", easl);
+            CurrScope = easlScope;
+            ScopeNum = scopeNum;
+            CurrStatements = TopLevel;
         }
 
         // Compile the code.
+        public Dictionary<string, LLVMModuleRef> Compile() {
+            Dictionary<string, LLVMModuleRef> ret = new Dictionary<string, LLVMModuleRef>();
+            foreach (var s in ASTs.Keys) {
+                ASTs[s].PrepareForCompilation();
+                var mod = ASTs[s].Compile(s, "");
+                if (!s.Equals("EASL")) mod.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
+                ret.Add(s, mod);
+            }
+            return ret;
+        }
 
     }
 
