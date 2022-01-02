@@ -5,7 +5,7 @@ using StraitJacket.Constructs;
 namespace StraitJacket.Builder {
 
     // Asylum program builder.
-    public partial class Builder {
+    public partial class ProgramBuilder {
         Function CurrFunction = null;
 
         // Begin a function. TODO: ATTRIBUTES, MODIFIERS, GENERICS!!!

@@ -130,16 +130,14 @@ namespace StraitJacket {
                 if (mode != VisitMode.GetTypes) visitor.CTX.UniversalMode = false;
             }
 
-            Builder.Builder b = new Builder.Builder(visitor.CTX.UniversalAST, visitor.CTX.CurrentScope, visitor.scopeNum);
+            ProgramBuilder b = new ProgramBuilder(visitor.CTX.UniversalAST, visitor.CTX.CurrentScope, visitor.scopeNum);
             b.BeginFile("Dummy.asy");
-            b.BeginFunction("main", new VarTypeSimplePrimitive(SimplePrimitives.Void), new List<VarParameter>());
             b.Code(new ExpressionCall(
                 new ExpressionVariable(new VariableOrFunction() { Path = "println", Scope = b.Scope() }),
                 new ExpressionComma(new List<Expression>() {
                     new ExpressionConstStringPtr("Hello World!")
                 })
             ));
-            b.EndFunction();
             b.EndFile();
             return b.Compile();
 

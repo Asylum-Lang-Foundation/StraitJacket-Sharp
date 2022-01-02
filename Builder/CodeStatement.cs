@@ -13,13 +13,14 @@ namespace StraitJacket.Builder {
     }
 
     // Asylum program builder.
-    public partial class Builder {
+    public partial class ProgramBuilder {
         Stack<IfStatementContext> IfStack = new Stack<IfStatementContext>();
         Stack<CodeStatements> LoopStack = new Stack<CodeStatements>();
         IfStatementContext CurrIf;
 
         // Build a code statement.
         public void Code(ICompileable statement) {
+            if (CurrStatements == null) throw new System.Exception("Can not have top-level statements across multiple files!");
             CurrStatements.Statements.Add(statement);
         }
 

@@ -5,13 +5,13 @@ using LLVMSharp.Interop;
 namespace StraitJacket.Builder {
 
     // Asylum program builder.
-    public partial class Builder {
+    public partial class ProgramBuilder {
         Dictionary<string, Constructs.AST> ASTs = new Dictionary<string, Constructs.AST>();
         CodeStatements TopLevel = new CodeStatements();
         CodeStatements CurrStatements;
 
         // Create a new builder.
-        public Builder(Constructs.AST easl, Scope easlScope, int scopeNum) {
+        public ProgramBuilder(Constructs.AST easl, Scope easlScope, int scopeNum) {
             ASTs.Add("EASL", easl);
             CurrScope = easlScope;
             ScopeNum = scopeNum;
@@ -21,6 +21,9 @@ namespace StraitJacket.Builder {
         // Compile the code.
         public Dictionary<string, LLVMModuleRef> Compile() {
             Dictionary<string, LLVMModuleRef> ret = new Dictionary<string, LLVMModuleRef>();
+            if (TopLevel.Statements.Count > 0) {
+                ASTs[TopLevelFile].TopLevel = TopLevel;
+            }
             foreach (var s in ASTs.Keys) {
                 ASTs[s].PrepareForCompilation();
                 var mod = ASTs[s].Compile(s, "");
