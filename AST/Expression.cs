@@ -165,6 +165,20 @@ namespace StraitJacket.AST {
             if (context.variable_type() != null) {
                 Expression ret = new ExpressionCast(context.expression().Accept(this).Expression, context.variable_type().Accept(this).VariableType);
                 return new AsylumVisitResult() { Expression = ret };
+            } else if (context.OP_ADDRESS_OF() != null) {
+                return new AsylumVisitResult() {
+                    Expression = new ExpressionOperator(
+                        new List<Expression>() { context.expression().Accept(this).Expression },
+                        Operator.AddressOf
+                    )
+                };
+            } else if (context.OP_MUL() != null) {
+                return new AsylumVisitResult() {
+                    Expression = new ExpressionOperator(
+                        new List<Expression>() { context.expression().Accept(this).Expression },
+                        Operator.Dereference
+                    )
+                };
             }
             // TODO: OTHERS!!!
             var err = context.GetText();

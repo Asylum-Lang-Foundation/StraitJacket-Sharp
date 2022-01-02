@@ -34,8 +34,6 @@ namespace StraitJacket.Constructs {
             Primitive = type;
         }
 
-        public override bool RequiresLoad() => true;
-
         protected override LLVMTypeRef LLVMType() {
             switch (Primitive) {
                 case SimplePrimitives.ConstString:

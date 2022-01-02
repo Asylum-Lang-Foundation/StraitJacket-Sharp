@@ -30,7 +30,7 @@ namespace StraitJacket.Constructs {
         }
 
         // Resolve types for internal expressions, and figure out the return type.
-        public override void ResolveTypes() { 
+        public override void ResolveTypes() {
             List<VarType> memberTypes = new List<VarType>();
             foreach (var e in Expressions) {
                 e.ResolveTypes();
@@ -96,7 +96,9 @@ namespace StraitJacket.Constructs {
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             List<ReturnValue> rets = new List<ReturnValue>();
             foreach (var e in Expressions) {
-                rets.Add(e.Compile(mod, builder, param));
+                var val = e.Compile(mod, builder, param);
+                if (e.LValue) val = new ReturnValue(builder.BuildLoad(val.Val, "SJ_LoadVal")); // Load if needed as with all L values.
+                rets.Add(val);
             }
             return new ReturnValue(rets);
         }

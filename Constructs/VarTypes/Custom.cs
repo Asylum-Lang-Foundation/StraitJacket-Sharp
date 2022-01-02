@@ -23,8 +23,6 @@ namespace StraitJacket.Constructs {
             ToResolve = toResolve;
         }
 
-        public override bool RequiresLoad() => Resolved.RequiresLoad();
-
         protected override LLVMTypeRef LLVMType() {
             return Resolved.GetLLVMType();
         }

@@ -16,6 +16,10 @@ namespace StraitJacket.Constructs {
             };
         }
 
+        public override void ResolveTypes() {
+            LValue = false;
+        }
+
         public override VarType ReturnType() {
             return new VarTypeInteger(Val.ForceSigned, Val.MinBits);
         }

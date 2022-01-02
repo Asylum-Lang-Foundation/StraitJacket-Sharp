@@ -14,8 +14,6 @@ namespace StraitJacket.Constructs {
             FractionWidth = fractionWidth;
         }
 
-        public override bool RequiresLoad() => true;
-
         protected override LLVMTypeRef LLVMType() {
             return LLVMTypeRef.CreateInt(WholeWidth + FractionWidth);
         }

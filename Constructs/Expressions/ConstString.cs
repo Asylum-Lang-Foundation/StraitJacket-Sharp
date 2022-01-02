@@ -12,6 +12,10 @@ namespace StraitJacket.Constructs {
             Str = str;
         }
 
+        public override void ResolveTypes() {
+            LValue = false;
+        }
+
         public override VarType ReturnType() {
             return new VarTypeSimplePrimitive(SimplePrimitives.ConstString);
         }

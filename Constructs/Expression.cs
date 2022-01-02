@@ -142,6 +142,7 @@ namespace StraitJacket.Constructs {
     // Expression. TODO: Improve how context is shared throughout expressions.
     public abstract class Expression : ICompileable {
         public ExpressionType Type;
+        public bool LValue = true;
         public ExpressionResolutionContext Ctx = new ExpressionResolutionContext();
         public FileContext FileContext;
 

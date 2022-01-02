@@ -12,8 +12,6 @@ namespace StraitJacket.Constructs {
             ReferencedTo = referencedTo;
         }
 
-        public override bool RequiresLoad() => true;
-
         protected override LLVMTypeRef LLVMType() {
             return LLVMTypeRef.CreatePointer(ReferencedTo.GetLLVMType(), 0);
         }
