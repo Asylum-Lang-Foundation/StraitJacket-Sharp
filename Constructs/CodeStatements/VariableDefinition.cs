@@ -3,7 +3,7 @@ using LLVMSharp.Interop;
 
 namespace StraitJacket.Constructs {
     
-    // Variable definition.
+    // Variable definition. TODO: GET DEFAULT INITIALIZER EXPRESSION!!!
     public class VariableDefinition : ICompileable {
         public List<Variable> Variables = new List<Variable>();
         public Expression Definition;
@@ -17,23 +17,25 @@ namespace StraitJacket.Constructs {
             // Split into individual expressions.
             Variables = variables;
             Definition = definition;
-            foreach (var v in variables) {
-                GeneratedExpressions.Add(
-                    new ExpressionStore(Definition, new ExpressionVariable(
-                            new VariableOrFunction() { Scope = v.Scope, Path = v.Name })));
+            if (Definition != null) {
+                foreach (var v in variables) {
+                    GeneratedExpressions.Add(
+                        new ExpressionStore(Definition, new ExpressionVariable(
+                                new VariableOrFunction() { Scope = v.Scope, Path = v.Name })));
+                }
             }
 
         }
 
         public void ResolveVariables() {
-            Definition.ResolveVariables();
+            if (Definition != null) Definition.ResolveVariables();
             foreach (var e in GeneratedExpressions) {
                 e.ResolveVariables();
             }
         }
 
         public void ResolveTypes() {
-            Definition.ResolveTypes();
+            if (Definition != null) Definition.ResolveTypes();
             foreach (var e in GeneratedExpressions) {
                 e.ResolveTypes();
             }

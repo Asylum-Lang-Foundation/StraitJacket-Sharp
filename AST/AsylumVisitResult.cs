@@ -19,6 +19,7 @@ namespace StraitJacket.AST {
         public Variable Variable;
         public VariableOrFunction VariableOrFunction;
         public VarType VariableType;
+        public List<VarType> VariableTypes;
     }
 
 }
