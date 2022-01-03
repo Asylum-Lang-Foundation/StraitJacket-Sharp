@@ -102,6 +102,7 @@ namespace StraitJacket.Builder {
             if (LoopStack.Count <= 0) throw new System.Exception("Can't end a loop while not in one!");
             Loop l = new Loop(CurrStatements);
             CurrStatements = LoopStack.Pop();
+            Code(l);
         }
 
         // Start a while loop.
@@ -114,7 +115,7 @@ namespace StraitJacket.Builder {
         }
 
         // End a while loop.
-        public void EndWhileLoop(Expression condition) {
+        public void EndWhileLoop() {
             EndLoop();
         }
 

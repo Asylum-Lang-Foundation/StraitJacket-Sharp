@@ -7,42 +7,32 @@ namespace StraitJacket.Constructs {
     public class Loop : ICompileable {
         public static Stack<Loop> LoopStack = new Stack<Loop>();
         public CodeStatements Body;
-        public CodeStatements RunBeforeLoop;
-        public CodeStatements ContinueCode;
         public LLVMBasicBlockRef BodyBlock;
         public LLVMBasicBlockRef BreakBlock;
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
 
-        public Loop(CodeStatements body, CodeStatements runBeforeLoop = null, CodeStatements continueCode = null) {
+        public Loop(CodeStatements body) {
             Body = body;
-            RunBeforeLoop = runBeforeLoop;
-            ContinueCode = continueCode;
         }
 
         // Resolve variables.
         public void ResolveVariables() {
-            if (RunBeforeLoop != null) RunBeforeLoop.ResolveVariables();
             LoopStack.Push(this);
             Body.ResolveVariables();
-            if (ContinueCode != null) ContinueCode.ResolveVariables();
             LoopStack.Pop();
         }
 
         // Resolve types.
         public void ResolveTypes() {
-            if (RunBeforeLoop != null) RunBeforeLoop.ResolveTypes();
             LoopStack.Push(this);
             Body.ResolveTypes();
-            if (ContinueCode != null) ContinueCode.ResolveTypes();
             LoopStack.Pop();
         }
 
         public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            if (RunBeforeLoop != null) RunBeforeLoop.CompileDeclarations(mod, builder, param);
             Body.CompileDeclarations(mod, builder, param);
-            ContinueCode.CompileDeclarations(mod, builder, param);
         }
 
         // Compile the loop.
@@ -56,7 +46,6 @@ namespace StraitJacket.Constructs {
             BreakBlock = LLVMBasicBlockRef.AppendInContext(mod.Context, Scope.PeekCurrentFunction.LLVMVal, "SJ_LoopBreak");
 
             // Build a jump into the body block.
-            if (RunBeforeLoop != null) RunBeforeLoop.Compile(mod, builder, param);
             if (!CodeStatements.BlockTerminated) builder.BuildBr(BodyBlock);
 
             // Necessary for breaks to occur.
@@ -65,7 +54,6 @@ namespace StraitJacket.Constructs {
             // Build the body block.
             builder.PositionAtEnd(BodyBlock);
             Body.Compile(mod, builder, param);
-            if (!CodeStatements.BlockTerminated && ContinueCode != null) ContinueCode.Compile(mod, builder, param);
             if (!CodeStatements.BlockTerminated) builder.BuildBr(BodyBlock);
 
             // Continue at the end block.
