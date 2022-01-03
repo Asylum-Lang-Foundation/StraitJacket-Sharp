@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using StraitJacket.Constructs;
 using LLVMSharp.Interop;
+using System.Linq;
 
 namespace StraitJacket.Builder {
 
@@ -9,6 +10,13 @@ namespace StraitJacket.Builder {
         Dictionary<string, Constructs.AST> ASTs = new Dictionary<string, Constructs.AST>();
         CodeStatements TopLevel = new CodeStatements();
         CodeStatements CurrStatements;
+
+        // Create a new builder, for compiling EASL or EASL is not used.
+        public ProgramBuilder() {
+            CurrScope = new Scope() { Name = "" };
+            ScopeNum = 0;
+            CurrStatements = TopLevel;
+        }
 
         // Create a new builder.
         public ProgramBuilder(Constructs.AST easl, Scope easlScope, int scopeNum) {
@@ -31,6 +39,13 @@ namespace StraitJacket.Builder {
                 ret.Add(s, mod);
             }
             return ret;
+        }
+
+        // Get output variables for making a new builder.
+        public void GetEASLOutVars(out Constructs.AST easl, out Scope easlScope, out int scopeNum) {
+            easl = ASTs.Values.ElementAt(0);
+            easlScope = CurrScope;
+            scopeNum = ScopeNum;
         }
 
     }

@@ -49,37 +49,23 @@ namespace StraitJacket {
             visitor = new Visitor();
         }
 
-        // Visit mode for the AST.
-        public enum VisitMode {
-
-            // Scan for typedefs and struct definitions.
-            GetTypes,
-
-            // Scan for functions, calls, expressions, etc.
-            GetCode
-
-        }
-
         // Visit a file.
-        private Constructs.AST VisitFile(Stream s, VisitMode mode) {
+        private void VisitFile(Stream s) {
             AntlrInputStream input = new AntlrInputStream(s);
             AsylumLexer lexer = new AsylumLexer(input);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             AsylumParser parser = new AsylumParser(commonTokenStream);
-            visitor.CTX.VisitMode = mode;
             var initContext = parser.init();
-            return visitor.VisitInit(initContext)?.AST;
+            visitor.VisitInit(initContext);
         }
 
         // Visit a file to be compiled.
-        private Constructs.AST VisitFile(string s, VisitMode mode) {
-            Constructs.AST ret;
+        private void VisitFile(string s) {
             using (StreamReader fileStream = new StreamReader(s)) {
                 ErrorHandler.CurrentFileName = s;
-                ret = VisitFile(fileStream.BaseStream, mode);
+                VisitFile(fileStream.BaseStream);
                 ErrorHandler.CurrentFileName = "NULL FILE";
             }
-            return ret;
         }
 
         // Set root folder.
@@ -98,126 +84,57 @@ namespace StraitJacket {
             files.Add(filePath);
         }
 
-        public Dictionary<string, LLVMModuleRef> BuilderTest(CompilationFlags flags) {
-
-            // For each mode.
-            foreach (VisitMode mode in Enum.GetValues(typeof(VisitMode))) {
-
-                // Compile EASL.
-                visitor.CTX.UniversalMode = true;
-                visitor.CTX.ModuleName = "EASL";
-                VisitFile(compilerRoot + "/EASL/Types.asy", mode);
-                VisitFile(compilerRoot + "/EASL/Console.asy", mode);
-                //VisitFile(compilerRoot + "/EASL/Unsigned.asy", mode);
-                if (flags.UseSTDC) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
-                        VisitFile(f, mode);
-                    }
-                } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
-                        VisitFile(f, mode);
-                    }
-                }
-                if (flags.UseSTDCPP) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP")) {
-                        VisitFile(f, mode);
-                    }
-                } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP-ASYLUM")) {
-                        VisitFile(f, mode);
-                    }
-                }
-                if (mode != VisitMode.GetTypes) visitor.CTX.UniversalMode = false;
-            }
-
-            ProgramBuilder b = new ProgramBuilder(visitor.CTX.UniversalAST, visitor.CTX.CurrentScope, visitor.scopeNum);
-            b.BeginFile("Dummy.asy");
-            b.BeginForLoop(
-                b.VariableDefinition(new ExpressionConstInt(false, 0), b.Variable(b.VarTypeCustom("int"), "i")),
-                new ExpressionOperator(new List<Expression>() { b.ExpressionVariable("i"), new ExpressionConstInt(false, 3) }, Operator.Lt)
-            );
-            b.Code(new ExpressionCall(b.ExpressionVariable("printf"), b.Multiple(new ExpressionConstStringPtr("%d\n"), b.ExpressionVariable("i"))));
-            b.EndForLoop();
-            b.EndFile();
-            return b.Compile();
-
-        }
-
         // Go through the compilation process.
         public void Compile(CompilationFlags flags) {
 
-            // For each mode.
-            foreach (VisitMode mode in Enum.GetValues(typeof(VisitMode))) {
-
-                // Compile EASL.
-                visitor.CTX.UniversalMode = true;
-                visitor.CTX.ModuleName = "EASL";
-                VisitFile(compilerRoot + "/EASL/Types.asy", mode);
-                VisitFile(compilerRoot + "/EASL/Console.asy", mode);
-                //VisitFile(compilerRoot + "/EASL/Unsigned.asy", mode);
-                if (flags.UseSTDC) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
-                        VisitFile(f, mode);
-                    }
-                } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
-                        VisitFile(f, mode);
-                    }
+            // Compile EASL.
+            visitor.Builder.BeginFile("EASL");
+            VisitFile(compilerRoot + "/EASL/Types.asy");
+            VisitFile(compilerRoot + "/EASL/Console.asy");
+            //VisitFile(compilerRoot + "/EASL/Unsigned.asy", mode);
+            if (flags.UseSTDC) {
+                foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C")) {
+                    VisitFile(f);
                 }
-                if (flags.UseSTDCPP) {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP")) {
-                        VisitFile(f, mode);
-                    }
-                } else {
-                    foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP-ASYLUM")) {
-                        VisitFile(f, mode);
-                    }
+            } else {
+                foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/C-ASYLUM")) {
+                    VisitFile(f);
                 }
-                if (mode != VisitMode.GetTypes) visitor.CTX.UniversalMode = false;
-
-                // Compile our modules.
-                if (mode != VisitMode.GetCode) {
-
-                    // Just scan for each file.
-                    foreach (var s in files) {
-                        visitor.CTX.ModuleName = rootFolder + "/" + s;
-                        VisitFile(rootFolder + "/" + s, mode);
-                    }
-
-                } else {
-
-                    // Do the universal AST for EASL.
-                    var univAST = visitor.CTX.UniversalAST;
-                    univAST.PrepareForCompilation();
-                    LLVMModuleRef univMod = univAST.Compile("EASL", rootFolder);
-                    //univMod.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
-                    univMod.WriteBitcodeToFile(rootFolder + "/obj/EASL.bc");
-
-                    // Now it's time to do the actual compiling.
-                    foreach (var s in files) {
-
-                        // Fetch the AST, then do the necessary resolutions/adjustments.
-                        visitor.CTX.ModuleName = rootFolder + "/" + s;
-                        var ast = VisitFile(rootFolder + "/" + s, mode);
-                        ast.PrepareForCompilation();
-
-                        // Make sure no error was encountered.
-                        if (!ErrorHandler.Valid) return;
-
-                        // Compile the file and output to a file.
-                        LLVMModuleRef mod = ast.Compile(s, rootFolder);
-                        mod.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
-                        Directory.CreateDirectory(rootFolder + "/obj/" + Path.GetDirectoryName(s));
-                        mod.WriteBitcodeToFile(rootFolder + "/obj/" + Path.GetFileNameWithoutExtension(s) + ".bc");
-
-                    }
-
+            }
+            if (flags.UseSTDCPP) {
+                foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP")) {
+                    VisitFile(f);
                 }
+            } else {
+                foreach (var f in Directory.EnumerateFiles(compilerRoot + "EASL/STD/CPP-ASYLUM")) {
+                    VisitFile(f);
+                }
+            }
+
+            // Build each file.
+            visitor.Builder.EndFile();
+            foreach (var s in files) {
+
+                // Visiting.
+                visitor.Builder.BeginFile(rootFolder + "/" + s);
+                VisitFile(rootFolder + "/" + s);
+                visitor.Builder.EndFile();
 
             }
 
-            // Optimize and link executable.
-            // TODO!!!
+            // Make sure no error was encountered.
+            if (!ErrorHandler.Valid) return;
+
+            // Time to compile.
+            var compiled = visitor.Builder.Compile();
+            compiled["EASL"].WriteBitcodeToFile(rootFolder + "/obj/EASL.bc");
+            foreach (var s in files) {
+                Directory.CreateDirectory(rootFolder + "/obj/" + Path.GetDirectoryName(s));
+                LLVMModuleRef mod = compiled[rootFolder + "/" + s];
+                mod.WriteBitcodeToFile(rootFolder + "/obj/" + Path.GetFileNameWithoutExtension(s) + ".bc");
+            }
+
+            // TODO: OPTIMIZE AND LINK!!!
 
         }
 

@@ -43,6 +43,11 @@ namespace StraitJacket.Builder {
             return new VarTypeCustom(VariableOrFunction(path));
         }
 
+        // Shortcut a type definition.
+        public void Typedef(VarType oldType, string newType) {
+            Scope().AddType(newType, oldType);
+        }
+
     }
 
 }

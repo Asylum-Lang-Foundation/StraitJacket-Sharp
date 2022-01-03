@@ -11,7 +11,7 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitTypedef_definition([NotNull] AsylumParser.Typedef_definitionContext context)
         {
-            CTX.CurrentScope.AddType(context.IDENTIFIER().GetText(), context.variable_type().Accept(this).VariableType);
+            Builder.Typedef(context.variable_type().Accept(this).VariableType, context.IDENTIFIER().GetText());
             return null;
         }
 
@@ -149,7 +149,7 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVarTypeThis([NotNull] AsylumParser.VarTypeThisContext context)
         {
             return new AsylumVisitResult() {
-                VariableType = CTX.Implementation.Type
+                VariableType = Builder.ThisType()
             };
         }
 

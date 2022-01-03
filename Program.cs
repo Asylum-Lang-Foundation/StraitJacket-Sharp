@@ -20,10 +20,8 @@ namespace StraitJacket {
             CompilationFlags flags = GetFlags(args);
             Compiler c = new Compiler();
             c.SetRootFolder(flags.RootDir);
-            //AddFilesToCompile(c, args);
-            //c.Compile(flags);
-            var ret = c.BuilderTest(flags);
-            ret["Dummy.asy"].WriteBitcodeToFile("Tests/obj/Dummy.bc");
+            AddFilesToCompile(c, args);
+            c.Compile(flags);
 
         }
 

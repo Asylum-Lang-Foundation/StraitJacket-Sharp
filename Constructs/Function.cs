@@ -10,6 +10,7 @@ namespace StraitJacket.Constructs {
     // A modifier.
     [Flags]
     public enum Modifier {
+        None = 0b0,
         Public = 0b1,
         ProtectedInternal = 0b110,
         PrivateProtected = 0b1010,

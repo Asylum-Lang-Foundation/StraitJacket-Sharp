@@ -7,6 +7,7 @@ namespace StraitJacket.Builder {
     // Asylum program builder.
     public partial class ProgramBuilder {
         Function CurrFunction = null;
+        VarType CurrImplementation = null;
 
         // Begin a function. TODO: ATTRIBUTES, MODIFIERS, GENERICS!!!
         public void BeginFunction(string name, VarType returnType, List<VarParameter> parameters) {
@@ -89,6 +90,12 @@ namespace StraitJacket.Builder {
             // Finished.
             fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
 
+        }
+
+        // This type.
+        public VarType ThisType() {
+            if (CurrImplementation == null) throw new System.Exception("Currently not in an implementation block!");
+            return CurrImplementation;
         }
 
     }
