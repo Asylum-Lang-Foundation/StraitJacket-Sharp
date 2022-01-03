@@ -46,7 +46,7 @@ namespace StraitJacket.Constructs {
         }
 
         // A store operation has no return type.
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return new VarTypeSimplePrimitive(SimplePrimitives.Void);
         }
 

@@ -49,6 +49,14 @@ namespace StraitJacket.Constructs {
                         RetType = (Inputs[0].ReturnType() as VarTypePointer).PointedTo;
                     }
                     break;
+                case Operator.Member:
+                    var eee = Inputs[0].ReturnType();
+                    if (Inputs[0].ReturnType().Type != VarTypeEnum.Tuple) {
+                        throw new System.Exception("Can't take the member of an expression that doesn't result in a tuple or struct!");
+                    }
+                    if (Inputs[1] as ExpressionConstStringPtr == null) throw new System.Exception("Can only take the member of using a constant string pointer!");
+                    RetType = (Inputs[0].ReturnType() as VarTypeStruct).GetMemberType((Inputs[1] as ExpressionConstStringPtr).Str);
+                    break;
                 default:
                     throw new System.NotImplementedException("Operator return type not implemented!");
             }
@@ -79,7 +87,7 @@ namespace StraitJacket.Constructs {
             return false;
         }
 
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return RetType;
         }
 
@@ -120,6 +128,14 @@ namespace StraitJacket.Constructs {
                     return new ReturnValue(builder.BuildLoad(
                         Inputs[0].Compile(mod, builder, param).Val,
                         "SJ_Dereference"
+                    ));
+                case Operator.Member:
+                    v1 = Inputs[0].Compile(mod, builder, param).Val;
+                    string member = (Inputs[1] as ExpressionConstStringPtr).Str;
+                    return new ReturnValue(builder.BuildStructGEP(
+                        v1,
+                        (Inputs[0].ReturnType() as VarTypeStruct).CalcIdx(member),
+                        "SJ_Member_" + member
                     ));
             }
             throw new System.NotImplementedException("Operator has not been implemented yet!");

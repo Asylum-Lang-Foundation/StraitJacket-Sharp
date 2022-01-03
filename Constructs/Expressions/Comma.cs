@@ -40,7 +40,7 @@ namespace StraitJacket.Constructs {
         }
 
         // Get the return type.
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return RetType;
         }
 

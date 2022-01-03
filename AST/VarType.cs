@@ -15,6 +15,36 @@ namespace StraitJacket.AST {
             return null;
         }
 
+        // TODO: IMPLEMENTS, PROPERTIES!!!
+        public AsylumVisitResult VisitStruct_definition([NotNull] AsylumParser.Struct_definitionContext context)
+        {
+            //List<VarTypeStr> typeImplements = context.type_implements().Accept(this).VariableTypes;
+            if (context.access_modifier() != null) {
+                Builder.PushModifier(context.access_modifier().Accept(this).Modifier);
+            }
+            Builder.BeginStruct(context.IDENTIFIER().GetText(), new VarTypeStruct[] {});
+            if (context.access_modifier() != null) {
+                Builder.PopModifier();
+            }
+            foreach (var e in context.struct_entry()) {
+                e.Accept(this);
+            }
+            Builder.EndStruct();
+            return null;
+        }
+
+        public AsylumVisitResult VisitStructAccess([NotNull] AsylumParser.StructAccessContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitStructData([NotNull] AsylumParser.StructDataContext context)
+        {
+            VarParameter param = context.variable_parameter().Accept(this).Parameter;
+            Builder.StructEntry(param.Value.Type, param.Value.Name);
+            return null;
+        }
+
         public AsylumVisitResult VisitVarTypePrimitive([NotNull] AsylumParser.VarTypePrimitiveContext context)
         {
             return context.primitives().Accept(this);

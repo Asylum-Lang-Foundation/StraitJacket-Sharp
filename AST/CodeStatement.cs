@@ -53,6 +53,15 @@ namespace StraitJacket.AST {
             throw new System.NotImplementedException();
         }
 
+        public AsylumVisitResult VisitVariableDeclareWithoutInitializer([NotNull] AsylumParser.VariableDeclareWithoutInitializerContext context)
+        {
+            List<Variable> variables = new List<Variable>();
+            var parameter = context.variable_parameter().Accept(this).Parameter;
+            variables.Add(parameter.Value);
+            Builder.Code(Builder.VariableDefinition(null, variables.ToArray()));
+            return null;
+        }
+
         public AsylumVisitResult VisitVariableDeclareWithInitializerExpr([NotNull] AsylumParser.VariableDeclareWithInitializerExprContext context)
         {
             List<Variable> variables = new List<Variable>();

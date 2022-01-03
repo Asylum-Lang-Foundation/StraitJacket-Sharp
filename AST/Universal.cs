@@ -35,6 +35,11 @@ namespace StraitJacket.AST {
             return context.typedef_definition().Accept(this);
         }
 
+        public AsylumVisitResult VisitUniversalStruct([NotNull] AsylumParser.UniversalStructContext context)
+        {
+            return context.struct_definition().Accept(this);
+        }
+
         public AsylumVisitResult VisitUniversalImplementation([NotNull] AsylumParser.UniversalImplementationContext context)
         {
             throw new System.NotImplementedException();

@@ -106,8 +106,9 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVariable_or_function([NotNull] AsylumParser.Variable_or_functionContext context)
         {
             VariableOrFunction ret = new VariableOrFunction();
+            ret.Path = "";
             for (int i = 0; i < context.IDENTIFIER().Length; i++) {
-                ret.Path = context.IDENTIFIER()[i].GetText() + ".";
+                ret.Path += context.IDENTIFIER()[i].GetText() + ".";
             }
             if (context.primitives() != null) {
                 ret.Path = context.primitives().GetText();
@@ -150,8 +151,7 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitPrimary_expression([NotNull] AsylumParser.Primary_expressionContext context)
         {
             if (context.variable_or_function() != null) {
-                Expression ret = new ExpressionVariable(context.variable_or_function().Accept(this).VariableOrFunction);
-                return new AsylumVisitResult() { Expression = ret };
+                return new AsylumVisitResult() { Expression = VariableOrFuncToExpression(context.variable_or_function().Accept(this).VariableOrFunction) };
             } else if (context.function_call() != null) {
                 return new AsylumVisitResult() { Expression = context.function_call().Accept(this).Expression };
             }
@@ -196,6 +196,21 @@ namespace StraitJacket.AST {
             Number n = GetInteger(context.INTEGER());
             Expression ret = new ExpressionConstInt(n.ForceSigned, n.ValueWhole);
             return new AsylumVisitResult() { Expression = ret };
+        }
+
+        // Convert a variable or function expression into using an operator.
+        public Expression VariableOrFuncToExpression(VariableOrFunction v) {
+            Expression ret;
+            string[] subs = v.Path.Split('.');
+            v.Path = subs[0];
+            ret = new ExpressionVariable(v);
+            for (int i = 1; i < subs.Length; i++) {
+                ret = new ExpressionOperator(new List<Expression>() {
+                    ret,
+                    new ExpressionConstStringPtr(subs[i])
+                }, Operator.Member);
+            }
+            return ret;
         }
 
         // TODO: NEGATIVE UNSIGNED!
