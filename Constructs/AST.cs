@@ -55,7 +55,7 @@ namespace StraitJacket.Constructs {
                 main.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
                 main.Parameters = new List<VarParameter>();
                 main.Definition = TopLevel;
-                main.ModulePath = rootFolder + "/" + modName;
+                main.ModulePath = modName;
                 Universals.Add(main);
             }
             foreach (var u in Universals) {

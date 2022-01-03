@@ -69,7 +69,8 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitExpressionStatement([NotNull] AsylumParser.ExpressionStatementContext context)
         {
-            return new AsylumVisitResult() { CodeStatement = context.expression().Accept(this).Expression };
+            Builder.Code(context.expression().Accept(this).Expression);
+            return null;
         }
 
         public AsylumVisitResult VisitExprComma([NotNull] AsylumParser.ExprCommaContext context)
@@ -105,7 +106,6 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitVariable_or_function([NotNull] AsylumParser.Variable_or_functionContext context)
         {
             VariableOrFunction ret = new VariableOrFunction();
-            ret.Scope = CTX.CurrentScope;
             for (int i = 0; i < context.IDENTIFIER().Length; i++) {
                 ret.Path = context.IDENTIFIER()[i].GetText() + ".";
             }
@@ -113,7 +113,7 @@ namespace StraitJacket.AST {
                 ret.Path = context.primitives().GetText();
             }
             if (context.primitives() == null) ret.Path = ret.Path.Substring(0, ret.Path.Length - 1);
-            return new AsylumVisitResult() { VariableOrFunction = ret };
+            return new AsylumVisitResult() { VariableOrFunction = Builder.VariableOrFunction(ret.Path) };
         }
 
         public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)

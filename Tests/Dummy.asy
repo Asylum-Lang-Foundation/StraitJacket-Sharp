@@ -1,9 +1,7 @@
-fn add(int a, int b) -> int {
-    a = (int)llvm("add", a, b);
-    a
+for (int i = 0; i < 7; i = (int)llvm("add", i, (int)1)) {
+    if (i < 2) {
+        println("Skipped!");
+        continue;
+    }
+    println("Hi!");
 }
-
-int a = 3;
-int b = 7;
-int c = (add(a, b));
-printf("%d\n", c);

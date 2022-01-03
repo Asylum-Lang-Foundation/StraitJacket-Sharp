@@ -12,48 +12,40 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitExtern_function_definition([NotNull] AsylumParser.Extern_function_definitionContext context)
         {
 
-            // New function.
-            Function fn = new Function();
-            fn.Extern = true;
-            fn.Name = context.IDENTIFIER().GetText();
-            fn.Scope = CTX.CurrentScope;
-            fn.Scope.AddFunction(fn.Name, fn.Name, fn); // No mangling.
-            fn.ModulePath = CTX.ModuleName;
-            EnterScope("%FN%_" + fn.Name);
-
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
 
             }
 
             // Get modifiers.
-            // TODO: ACCESS MODIFIERS!!!
+            Modifier modifier = Modifier.None;
             foreach (var p in context.extern_function_property()) {
                 var res = p.Accept(this);
                 if (res == null) continue;
-                if (res.Modifier == Modifier.Async) fn.Async = true;
-                else if (res.Modifier == Modifier.Static) fn.Static = true;
+                modifier |= res.Modifier;
             }
 
             // Get parameters.
+            List<VarParameter> parameters;
             if (context.variable_arguments() != null) {
-                fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                parameters = context.variable_arguments().Accept(this).Parameters;
             } else {
-                fn.Parameters = new List<VarParameter>();
+                parameters = new List<VarParameter>();
             }
     
             // Get return type.
+            VarType returnType;
             if (context.variable_type() != null) {
-                fn.ReturnType = context.variable_type().Accept(this).VariableType;
+                returnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
+                returnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Finished.
-            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
-            ExitScope();
-            return new AsylumVisitResult() { Function = fn };
+            Builder.PushModifier(modifier);
+            Builder.ExternFunction(context.IDENTIFIER().GetText(), returnType, parameters);
+            Builder.PopModifier();
+            return null;
 
         }
 
@@ -76,67 +68,55 @@ namespace StraitJacket.AST {
         public AsylumVisitResult VisitFunction_definition([NotNull] AsylumParser.Function_definitionContext context)
         {
 
-            // New function.
-            Function fn = new Function();
-            fn.Name = context.IDENTIFIER().GetText();
-            fn.Scope = CTX.CurrentScope;
-            fn.ModulePath = CTX.ModuleName;
-
             // Get attributes. TODO!!!
             foreach (var a in context.attribute()) {
 
             }
 
             // GET MODIFIERS TODO!!!
+            Modifier modifier = Modifier.None;
             foreach (var p in context.function_property()) {
-                if (p.INLINE() != null) fn.Inline = true;
+                if (p.INLINE() != null) modifier |= Modifier.Inline;
             }
 
             // GENERICS TODO!!!
 
             // Get parameters.
+            List<VarParameter> parameters;
             if (context.variable_arguments() != null) {
-                fn.Parameters = context.variable_arguments().Accept(this).Parameters;
-                if (fn.Parameters.Count() > 0 && fn.Parameters.Last().Value.Type.Variadic) { fn.Variadic = true; } // Variadic check.
+                parameters = context.variable_arguments().Accept(this).Parameters;
             } else {
-                fn.Parameters = new List<VarParameter>();
+                parameters = new List<VarParameter>();
             }
     
             // Get return type.
+            VarType returnType;
             if (context.variable_type() != null) {
-                fn.ReturnType = context.variable_type().Accept(this).VariableType;
+                returnType = context.variable_type().Accept(this).VariableType;
             } else {
-                fn.ReturnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
+                returnType = new VarTypeSimplePrimitive(SimplePrimitives.Void);
             }
 
             // Get code.
-            fn.Type = new VarTypeFunction(fn.ReturnType, fn.Parameters.Select(x => x.Value.Type).ToList());
-            EnterScope("%FN%_" + fn.ToString());
-            fn.Scope.AddFunction(fn.Name, fn.ToString(), fn);
+            Builder.PushModifier(modifier);
+            Builder.BeginFunction(context.IDENTIFIER().GetText(), returnType, parameters);
+            Builder.PopModifier();
+            CodeStatements definition = null;
             if (context.expression() != null) {
-                if (fn.ReturnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) { // Hack for accidentally returning a value instead of void which is illegal.
-                    fn.Definition = new CodeStatements() {
-                        Statements = new List<ICompileable>() {
-                            context.expression().Accept(this).Expression
-                        }
-                    };
+                if (returnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) { // Hack for accidentally returning a value instead of void which is illegal.
+                    Builder.Code(context.expression().Accept(this).Expression);
                 } else {
-                    fn.Definition = new CodeStatements() {
-                        Statements = new List<ICompileable>() {
-                            new ReturnStatement(context.expression().Accept(this).Expression)
-                        }
-                    };
+                    Builder.Code(new ReturnStatement(context.expression().Accept(this).Expression));
                 }
             } else if (context.code_statement() != null) {
-                fn.Definition = new CodeStatements();
                 foreach (var c in context.code_statement()) {
-                    fn.Definition.Statements.Add(c.Accept(this).CodeStatement);
+                    c.Accept(this); // Add code statements.
                 }
             }
 
-            // Return function.
-            ExitScope();
-            return new AsylumVisitResult() { Function = fn };
+            // Finish.
+            Builder.EndFunction();
+            return null;
 
         }
 

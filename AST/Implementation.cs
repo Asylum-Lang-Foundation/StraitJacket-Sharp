@@ -10,7 +10,8 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitImplementation_definition([NotNull] AsylumParser.Implementation_definitionContext context)
         {
-            var ret = new Implementation();
+            throw new System.NotImplementedException();
+            /*var ret = new Implementation();
             ret.Type = CTX.CurrentScope.ResolveType(context.variable_or_function().Accept(this).VariableOrFunction);
             if (context.variable_type() != null) {
                 ret.InterfaceToImplement = context.variable_type().Accept(this).VariableType;
@@ -22,35 +23,39 @@ namespace StraitJacket.AST {
             }
             ExitScope();
             CTX.Implementation = null;
-            return new AsylumVisitResult() { Implementation = ret };
+            return new AsylumVisitResult() { Implementation = ret };*/
         }
 
         public AsylumVisitResult VisitImplementationEntryCast([NotNull] AsylumParser.ImplementationEntryCastContext context)
         {
-            var ret = context.cast_definition().Accept(this).Function;
+            throw new System.NotImplementedException();
+            /*var ret = context.cast_definition().Accept(this).Function;
             //CTX.Implementation.cast.Add(ret.Name, ret); // TODO: PROPER NAME MANGLING!!!
-            return null;
+            return null;*/
         }
 
         public AsylumVisitResult VisitImplementationEntryConstructor([NotNull] AsylumParser.ImplementationEntryConstructorContext context)
         {
-            var ret = context.constructor_definition().Accept(this).Function;
+            throw new System.NotImplementedException();
+            /*var ret = context.constructor_definition().Accept(this).Function;
             CTX.Implementation.Functions.Add(ret.ToString(), ret);
-            return null;
+            return null;*/
         }
 
         public AsylumVisitResult VisitImplementationEntryFunction([NotNull] AsylumParser.ImplementationEntryFunctionContext context)
         {
-            var ret = context.function_definition().Accept(this).Function;
+            throw new System.NotImplementedException();
+            /*var ret = context.function_definition().Accept(this).Function;
             CTX.Implementation.Functions.Add(ret.ToString(), ret);
-            return null;
+            return null;*/
         }
 
         public AsylumVisitResult VisitImplementationEntryOperator([NotNull] AsylumParser.ImplementationEntryOperatorContext context)
         {
-            var ret = context.operator_definition().Accept(this).Function;
+            throw new System.NotImplementedException();
+            /*var ret = context.operator_definition().Accept(this).Function;
             CTX.Implementation.Operators.Add(ret.Operator, ret);
-            return null;
+            return null;*/
         }
 
     }

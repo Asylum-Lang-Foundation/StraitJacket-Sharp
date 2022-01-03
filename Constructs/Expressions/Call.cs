@@ -99,7 +99,7 @@ namespace StraitJacket.Constructs {
             else {
                 Function currFunc = Scope.PeekCurrentFunction;
                 LLVMValueRef funcToCall = null;
-                if (FunctionToCall.ModulePath.Equals(currFunc.ModulePath)) {
+                if (FunctionToCall.Extern || FunctionToCall.ModulePath.Equals(currFunc.ModulePath)) {
                     funcToCall = FunctionToCall.LLVMVal;
                 } else {
                     if (!FunctionToCall.ModulePath.Equals(currFunc.ModulePath) && !FunctionToCall.Inline) {
