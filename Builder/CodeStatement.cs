@@ -66,13 +66,14 @@ namespace StraitJacket.Builder {
             if (IfStack.Count <= 0) throw new System.Exception("Can't end an if statement while not in one!");
 
             // Fix the stack.
-            IfStatementContext c = new IfStatementContext();
-            CurrIf = IfStack.Pop();
+            IfStatementContext c = CurrIf;
             CurrStatements = c.BakStatements;
+            CurrIf = IfStack.Pop();
 
             // Build the conditional.
             CodeStatements thenBlock = c.Then;
             CodeStatements elseBlock = c.Else;
+            c.ElseIfContext.Reverse();
             foreach (var elif in c.ElseIfContext) {
                 var bakElse = elseBlock;
                 elseBlock = new CodeStatements();

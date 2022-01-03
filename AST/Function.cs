@@ -104,29 +104,17 @@ namespace StraitJacket.AST {
             CodeStatements definition = null;
             if (context.expression() != null) {
                 if (returnType.Equals(new VarTypeSimplePrimitive(SimplePrimitives.Void))) { // Hack for accidentally returning a value instead of void which is illegal.
-                    definition = new CodeStatements() {
-                        Statements = new List<ICompileable>() {
-                            context.expression().Accept(this).Expression
-                        }
-                    };
+                    Builder.Code(context.expression().Accept(this).Expression);
                 } else {
-                    definition = new CodeStatements() {
-                        Statements = new List<ICompileable>() {
-                            new ReturnStatement(context.expression().Accept(this).Expression)
-                        }
-                    };
+                    Builder.Code(new ReturnStatement(context.expression().Accept(this).Expression));
                 }
             } else if (context.code_statement() != null) {
-                definition = new CodeStatements();
                 foreach (var c in context.code_statement()) {
-                    definition.Statements.Add(c.Accept(this).CodeStatement);
+                    c.Accept(this); // Add code statements.
                 }
             }
 
             // Finish.
-            foreach (var s in definition.Statements) {
-                Builder.Code(s);
-            }
             Builder.EndFunction();
             return null;
 

@@ -11,12 +11,10 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitCode_body([NotNull] AsylumParser.Code_bodyContext context)
         {
-            CodeStatements ret = new CodeStatements();
-            ret.Statements = new List<ICompileable>();
             foreach (var c in context.code_statement()) {
-                ret.Statements.Add(c.Accept(this).CodeStatement);
+                c.Accept(this);
             }
-            return new AsylumVisitResult() { CodeStatements = ret };
+            return null;
         }
 
         public AsylumVisitResult VisitVariableDeclarationStatement([NotNull] AsylumParser.VariableDeclarationStatementContext context)
@@ -61,10 +59,9 @@ namespace StraitJacket.AST {
             foreach (var p in context.variable_parameter()) {
                 var parameter = p.Accept(this).Parameter;
                 variables.Add(parameter.Value);
-                parameter.Value.Scope.AddVar(parameter.Value.Name, parameter.Value);
             }
-            VariableDefinition ret = new VariableDefinition(variables, context.expression().Accept(this).Expression);
-            return new AsylumVisitResult() { CodeStatement = ret };
+            Builder.Code(Builder.VariableDefinition(context.expression().Accept(this).Expression, variables.ToArray()));
+            return null;
         }
 
         public AsylumVisitResult VisitVariableDeclareWithTupleInitializerExpr([NotNull] AsylumParser.VariableDeclareWithTupleInitializerExprContext context)
@@ -79,27 +76,20 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitIf_statement([NotNull] AsylumParser.If_statementContext context)
         {
-            Expression ifCond = context.expression()[0].Accept(this).Expression;
-            CodeStatements thenBlock = context.code_body()[0].Accept(this).CodeStatements;
-            CodeStatements elseBlock = null;
-            int numStats = context.code_body().Length;
-            if (context.ELSE() != null) {
-                elseBlock = context.code_body().Last().Accept(this).CodeStatements;
-            }
+            Builder.BeginIf(context.expression()[0].Accept(this).Expression);
+            context.code_body()[0].Accept(this);
+            int stats = context.code_body().Length;
+            bool h1 = context.ELSE() != null;
             if (context.ELIF() != null) {
-                for (int i = context.code_body().Length - 2; i >= 1; i--) {
-                    var bakElse = elseBlock;
-                    elseBlock = new CodeStatements();
-                    elseBlock.Statements.Add(new Condition(
-                        context.expression()[i].Accept(this).Expression,
-                        context.code_body()[i].Accept(this).CodeStatements,
-                        bakElse
-                    ));
+                for (int i = 1; i < context.code_body().Length - (context.ELSE() != null ? 1 : 0); i++) {
+                    Builder.ElseIf(context.expression()[i].Accept(this).Expression);
+                    context.code_body()[i].Accept(this);
                 }
             }
-            return new AsylumVisitResult() {
-                CodeStatement = new Condition(ifCond, thenBlock, elseBlock)
-            };
+            Builder.Else();
+            context.code_body().Last().Accept(this);
+            Builder.EndIf();
+            return null;
         }
 
         public AsylumVisitResult VisitLoopStatement([NotNull] AsylumParser.LoopStatementContext context)

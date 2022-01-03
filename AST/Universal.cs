@@ -47,9 +47,8 @@ namespace StraitJacket.AST {
 
         public AsylumVisitResult VisitUniversalTopLevelCode([NotNull] AsylumParser.UniversalTopLevelCodeContext context)
         {
-            var ret = context.code_statement().Accept(this);
-            Builder.Code(ret.CodeStatement);
-            return ret;
+            context.code_statement().Accept(this);
+            return null;
         }
 
     }

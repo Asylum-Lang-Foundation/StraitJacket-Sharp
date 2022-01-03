@@ -1,9 +1,12 @@
-fn add(int a, int b) -> int {
-    a = (int)llvm("add", a, b);
-    a
+int a = 7;
+if (a < 3) {
+    println("Smol.");
+} else if (a < 5) {
+    println("Medium.");
+} else if (a < 7) {
+    println("Largely Sized.");
+} else if (a < 9) {
+    println("Pretty Big.");
+} else {
+    println("Big Mama!");
 }
-
-int a = 3;
-int b = 7;
-int c = (add(a, b));
-printf("%d\n", c);
