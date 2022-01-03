@@ -18,7 +18,7 @@ namespace StraitJacket.Constructs {
             LValue = false;
         }
 
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return new VarTypeSimplePrimitive(Primitive);
         }
 

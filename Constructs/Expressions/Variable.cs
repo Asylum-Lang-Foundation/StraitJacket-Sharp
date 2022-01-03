@@ -33,7 +33,7 @@ namespace StraitJacket.Constructs {
 
         public Variable GetResolved => Resolved;
 
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return Resolved.Type;
         }
 

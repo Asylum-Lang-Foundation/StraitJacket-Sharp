@@ -28,7 +28,7 @@ namespace StraitJacket.Constructs {
             }
         }
 
-        public override VarType ReturnType() {
+        public override VarType GetReturnType() {
             return DestType;
         }
 

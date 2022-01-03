@@ -23,7 +23,7 @@ namespace StraitJacket.Builder {
             e.Var = new Variable();
             e.Var.Name = name;
             e.Var.Type = type;
-            if (CurrStruct.Entries.Where(x => x.Var.Name.Equals(name)).Count() > 0 || name.Equals("base") || name.Equals("bases")) {
+            if (CurrStruct.Entries.Where(x => x.Var.Name.Equals(name)).Count() > 0 || name.Equals("base") || name.Equals("bases") || name.Equals("this") || name.Equals("This")) {
                 throw new System.Exception("Variable with name " + name + " already exists in struct!");
             }
             CurrStruct.Entries.Add(e);
