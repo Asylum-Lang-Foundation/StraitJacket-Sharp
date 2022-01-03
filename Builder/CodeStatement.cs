@@ -98,9 +98,9 @@ namespace StraitJacket.Builder {
         }
 
         // End a loop.
-        public void EndLoop() {
+        public void EndLoop(Expression after = null) {
             if (LoopStack.Count <= 0) throw new System.Exception("Can't end a loop while not in one!");
-            Loop l = new Loop(CurrStatements);
+            Loop l = new Loop(CurrStatements, after != null ? new CodeStatements() { Statements = new List<ICompileable>() { after } } : null);
             CurrStatements = LoopStack.Pop();
             Code(l);
         }
@@ -147,8 +147,7 @@ namespace StraitJacket.Builder {
 
         // End a for loop.
         public void EndForLoop(Expression after) {
-            if (after != null) Code(after);
-            EndLoop();
+            EndLoop(after);
         }
 
         // Multiple expressions.

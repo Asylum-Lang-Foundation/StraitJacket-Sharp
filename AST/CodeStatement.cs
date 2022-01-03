@@ -84,8 +84,10 @@ namespace StraitJacket.AST {
                     context.code_body()[i].Accept(this);
                 }
             }
-            Builder.Else();
-            context.code_body().Last().Accept(this);
+            if (context.ELSE() != null) {
+                Builder.Else();
+                context.code_body().Last().Accept(this);
+            }
             Builder.EndIf();
             return null;
         }

@@ -38,6 +38,7 @@ namespace StraitJacket.Constructs {
             for (int i = 0; i < ContinueNum; i++) {
                 tmp.Push(Loop.LoopStack.Pop()); // Break out of this many loops.
             }
+            if (tmp.Peek().ContinueCode != null) tmp.Peek().ContinueCode.Compile(mod, builder, param);
             builder.BuildBr(tmp.Peek().BodyBlock); // Jump back to loop again.
             for (int i = 0; i < ContinueNum; i++) {
                 Loop.LoopStack.Push(tmp.Pop()); // Add the loops back to the stack.

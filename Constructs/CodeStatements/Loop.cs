@@ -7,20 +7,23 @@ namespace StraitJacket.Constructs {
     public class Loop : ICompileable {
         public static Stack<Loop> LoopStack = new Stack<Loop>();
         public CodeStatements Body;
+        public CodeStatements ContinueCode;
         public LLVMBasicBlockRef BodyBlock;
         public LLVMBasicBlockRef BreakBlock;
         public FileContext FileContext;
 
         public FileContext GetFileContext() => FileContext;
 
-        public Loop(CodeStatements body) {
+        public Loop(CodeStatements body, CodeStatements continueCode = null) {
             Body = body;
+            ContinueCode = continueCode;
         }
 
         // Resolve variables.
         public void ResolveVariables() {
             LoopStack.Push(this);
             Body.ResolveVariables();
+            if (ContinueCode != null) ContinueCode.ResolveVariables();
             LoopStack.Pop();
         }
 
@@ -28,11 +31,13 @@ namespace StraitJacket.Constructs {
         public void ResolveTypes() {
             LoopStack.Push(this);
             Body.ResolveTypes();
+            if (ContinueCode != null) ContinueCode.ResolveTypes();
             LoopStack.Pop();
         }
 
         public void CompileDeclarations(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
             Body.CompileDeclarations(mod, builder, param);
+            if (ContinueCode != null) ContinueCode.CompileDeclarations(mod, builder, param);
         }
 
         // Compile the loop.
@@ -54,6 +59,7 @@ namespace StraitJacket.Constructs {
             // Build the body block.
             builder.PositionAtEnd(BodyBlock);
             Body.Compile(mod, builder, param);
+            if (!CodeStatements.BlockTerminated && ContinueCode != null) ContinueCode.Compile(mod, builder, param);
             if (!CodeStatements.BlockTerminated) builder.BuildBr(BodyBlock);
 
             // Continue at the end block.
