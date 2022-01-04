@@ -4,7 +4,7 @@ using System.Linq;
 using StraitJacketLib.Constructs;
 
 // There is a lot that still needs to be done here, and __thiscall is not even implemented.
-namespace StraitJacket.AST {
+namespace Asylum.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
     

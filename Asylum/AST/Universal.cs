@@ -5,7 +5,7 @@ using LLVMSharp;
 using StraitJacketLib.Builder;
 using StraitJacketLib.Constructs;
 
-namespace StraitJacket.AST {
+namespace Asylum.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
         public ProgramBuilder Builder = new ProgramBuilder();

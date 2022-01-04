@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Antlr4.Runtime;
 using LLVMSharp.Interop;
-using StraitJacket.AST;
+using Asylum.AST;
 using StraitJacketLib;
 using StraitJacketLib.Builder;
 using StraitJacketLib.Constructs;
@@ -22,10 +22,10 @@ using StraitJacketLib.Constructs;
     8. Optimize & Link Code - Convert code to final executable after optimizing and linking. Either native executables or invokers are supported.
 
 */
-namespace StraitJacket {
+namespace Asylum {
 
     // Compilation flags.
-    public class CompilationFlags {
+    public class AsylumCompilationFlags {
 
         // Use the C standard library.
         public bool UseSTDC;
@@ -39,14 +39,14 @@ namespace StraitJacket {
     }
 
     // A compiler.
-    public class Compiler {
+    public class AsylumCompiler {
         Visitor visitor;
         string rootFolder;
         string compilerRoot = "./"; //AppContext.BaseDirectory;
         List<string> files = new List<string>();
 
         // Initialize the ANTLR4 visitor.
-        public Compiler() {
+        public AsylumCompiler() {
             visitor = new Visitor();
         }
 
@@ -86,7 +86,7 @@ namespace StraitJacket {
         }
 
         // Go through the compilation process.
-        public void Compile(CompilationFlags flags) {
+        public void Compile(AsylumCompilationFlags flags) {
 
             // Compile EASL.
             visitor.Builder.BeginFile("EASL");

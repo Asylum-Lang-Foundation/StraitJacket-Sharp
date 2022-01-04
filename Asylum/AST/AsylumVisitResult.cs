@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using StraitJacketLib.Constructs;
 
-namespace StraitJacket.AST {
+namespace Asylum.AST {
 
     // For storing information about the result.
     public class AsylumVisitResult {

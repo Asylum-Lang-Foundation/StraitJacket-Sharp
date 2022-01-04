@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Antlr4.Runtime;
 using LLVMSharp;
-using StraitJacket.AST;
+using Asylum;
+using Asylum.AST;
 using StraitJacketLib.Constructs;
 
 namespace StraitJacket {
@@ -17,8 +17,8 @@ namespace StraitJacket {
             }
             
             // Get flags, then compile.
-            CompilationFlags flags = GetFlags(args);
-            Compiler c = new Compiler();
+            AsylumCompilationFlags flags = GetFlags(args);
+            AsylumCompiler c = new AsylumCompiler();
             c.SetRootFolder(flags.RootDir);
             AddFilesToCompile(c, args);
             c.Compile(flags);
@@ -26,8 +26,8 @@ namespace StraitJacket {
         }
 
         // Interpret arguments.
-        public static CompilationFlags GetFlags(string[] args) {
-            CompilationFlags flags = new CompilationFlags() {
+        public static AsylumCompilationFlags GetFlags(string[] args) {
+            AsylumCompilationFlags flags = new AsylumCompilationFlags() {
                 UseSTDC = true,
                 UseSTDCPP = true,
                 RootDir = System.Environment.CurrentDirectory + "/Tests"
@@ -36,7 +36,7 @@ namespace StraitJacket {
         }
 
         // Get additional files to compile.
-        public static void AddFilesToCompile(Compiler c, string[] args) {
+        public static void AddFilesToCompile(AsylumCompiler c, string[] args) {
             // TODO!
             c.AddFile(args[0]);
         }

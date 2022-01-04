@@ -2,7 +2,7 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
 
-namespace StraitJacket.AST {
+namespace Asylum.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
 
