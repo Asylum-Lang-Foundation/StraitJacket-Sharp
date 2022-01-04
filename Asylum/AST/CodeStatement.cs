@@ -5,7 +5,7 @@ using Antlr4.Runtime.Tree;
 using LLVMSharp;
 using StraitJacketLib.Constructs;
 
-namespace StraitJacket.AST {
+namespace Asylum.AST {
 
     public partial class Visitor : IAsylumVisitor<AsylumVisitResult> {
 
