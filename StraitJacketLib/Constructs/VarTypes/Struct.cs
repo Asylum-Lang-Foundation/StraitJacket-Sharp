@@ -93,6 +93,11 @@ namespace StraitJacketLib.Constructs {
             throw new System.NotImplementedException();
         }
 
+        public override string ToString() {
+            throw new System.NotImplementedException();
+            //return base.ToString() + "";
+        }
+
     }
 
 }

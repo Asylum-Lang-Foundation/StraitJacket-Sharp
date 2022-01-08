@@ -61,6 +61,14 @@ namespace StraitJacketLib.Constructs {
             return hash.ToHashCode();
         }
 
+        public override string ToString() {
+            string ret = base.ToString() + "func<" + ReturnType;
+            foreach (var p in Parameters) {
+                ret += ", " + p.ToString();
+            }
+            return ret + ">";
+        }
+
     }
 
 }

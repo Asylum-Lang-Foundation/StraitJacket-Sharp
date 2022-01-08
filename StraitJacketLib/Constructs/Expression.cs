@@ -21,6 +21,10 @@ namespace StraitJacketLib.Constructs {
         public List<Variable> ResolveVariable() {
             return Scope.ResolveVariable(this);
         }
+
+        public override string ToString() {
+            return Path;
+        }
         
     }
 

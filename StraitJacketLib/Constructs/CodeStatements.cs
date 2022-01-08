@@ -40,6 +40,10 @@ namespace StraitJacketLib.Constructs {
             return CodeStatements.ReturnedValue;
         }
 
+        public override string ToString() {
+            return base.ToString();
+        }
+
     }
 
 }

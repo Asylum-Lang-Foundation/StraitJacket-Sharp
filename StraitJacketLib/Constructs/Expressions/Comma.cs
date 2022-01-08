@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LLVMSharp;
 using LLVMSharp.Interop;
 
@@ -101,6 +102,17 @@ namespace StraitJacketLib.Constructs {
                 rets.Add(val);
             }
             return new ReturnValue(rets);
+        }
+
+        public override string ToString() {
+            string ret = "(";
+            foreach (var e in Expressions) {
+                ret += e.ToString();
+                if (e != Expressions.Last()) {
+                    ret += ", ";
+                }
+            }
+            return ret + ")";
         }
 
     }

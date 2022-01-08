@@ -141,6 +141,10 @@ namespace StraitJacketLib.Constructs {
             throw new System.NotImplementedException("Operator has not been implemented yet!");
         }
 
+        public override string ToString() {
+            return "???";
+        }
+
     }
 
 }

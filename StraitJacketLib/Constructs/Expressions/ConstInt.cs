@@ -40,6 +40,10 @@ namespace StraitJacketLib.Constructs {
             return new ReturnValue(LLVMValueRef.CreateConstInt(ReturnType().GetLLVMType(), (ulong)Val.ValueWhole, Val.ForceSigned));
         }
 
+        public override string ToString() {
+            return Val.ValueWhole.ToString();
+        }
+
     }
 
 }

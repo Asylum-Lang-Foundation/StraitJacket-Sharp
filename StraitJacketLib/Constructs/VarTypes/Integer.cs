@@ -79,6 +79,10 @@ namespace StraitJacketLib.Constructs {
             return hash.ToHashCode();
         }
 
+        public override string ToString() {
+            return base.ToString() + (Signed ? "s" : "u") + BitWidth;
+        }
+
     }
 
 }

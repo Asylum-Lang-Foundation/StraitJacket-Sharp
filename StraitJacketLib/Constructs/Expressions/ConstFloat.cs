@@ -35,6 +35,10 @@ namespace StraitJacketLib.Constructs {
             return new ReturnValue(LLVMValueRef.CreateConstReal(LLVMTypeRef.Double, Val.ValueDecimal));
         }
 
+        public override string ToString() {
+            return Val.ValueDecimal + "f";
+        }
+
     }
 
 }

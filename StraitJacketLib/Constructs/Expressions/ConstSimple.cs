@@ -42,6 +42,10 @@ namespace StraitJacketLib.Constructs {
             throw new System.NotImplementedException("No defined constant value for simple primitive type: " + Primitive + "!");
         }
 
+        public override string ToString() {
+            return "(" + Val.ToString() + ")";
+        }
+
     }
 
 }

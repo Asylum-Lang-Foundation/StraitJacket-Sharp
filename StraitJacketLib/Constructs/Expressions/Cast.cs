@@ -51,6 +51,10 @@ namespace StraitJacketLib.Constructs {
             return SrcType.CastTo(ToCast.Compile(mod, builder, param), DestType, mod, builder);
         }
 
+        public override string ToString() {
+            return "((" + DestType + ")" + ToCast.ToString() + ")";
+        }
+
     }
 
 }

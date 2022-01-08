@@ -94,6 +94,63 @@ namespace StraitJacketLib.Constructs {
             return hash.ToHashCode();
         }
 
+        public override string ToString() {
+            string ret = base.ToString();
+            switch (Primitive) {
+                case SimplePrimitives.ConstString:
+                    ret += "string";
+                    break;
+                case SimplePrimitives.Bool:
+                    ret += "bool";
+                    break;
+                case SimplePrimitives.Half:
+                    ret += "f16";
+                    break;
+                case SimplePrimitives.Float:
+                    ret += "f32";
+                    break;
+                case SimplePrimitives.Double:
+                    ret += "f64";
+                    break;
+                case SimplePrimitives.Extended:
+                    ret += "f80";
+                    break;
+                case SimplePrimitives.Decimal:
+                    ret += "f128";
+                    break;
+                case SimplePrimitives.VariableLength:
+                    ret += "varlen";
+                    break;
+                case SimplePrimitives.Object:
+                    ret += "object";
+                    break;
+                case SimplePrimitives.Void:
+                    ret += "void";
+                    break;
+                case SimplePrimitives.Char:
+                    ret += "char";
+                    break;
+                case SimplePrimitives.WideChar:
+                    ret += "wchar";
+                    break;
+                case SimplePrimitives.UnsignedAny:
+                    ret += "unsigned";
+                    break;
+                case SimplePrimitives.SignedAny:
+                    ret += "signed";
+                    break;
+                case SimplePrimitives.FloatingAny:
+                    ret += "floating";
+                    break;
+                case SimplePrimitives.FixedAny:
+                    ret += "fixed";
+                    break;
+                default:
+                    throw new Exception("Can't get string for primitive type: " + Primitive.ToString());
+            }
+            return ret;
+        }
+
     }
 
 }
