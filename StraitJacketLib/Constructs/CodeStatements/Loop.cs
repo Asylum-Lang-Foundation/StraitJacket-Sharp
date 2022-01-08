@@ -74,6 +74,14 @@ namespace StraitJacketLib.Constructs {
 
         }
 
+        public override string ToString() {
+            string ret = "loop {\n";
+            ret += Body.ToString();
+            ret += "\n}";
+            if (ContinueCode != null) ret += " continue {\n" + ContinueCode.ToString() + "\n}";
+            return ret;
+        }
+
     }
 
 }

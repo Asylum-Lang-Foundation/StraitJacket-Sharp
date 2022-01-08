@@ -54,6 +54,12 @@ namespace StraitJacketLib.Constructs {
 
         }
 
+        public override string ToString() {
+            string ret = "return";
+            if (ReturnValue != null) ret += " " + ReturnValue.ToString();
+            return ret;
+        }
+
     }
 
 }

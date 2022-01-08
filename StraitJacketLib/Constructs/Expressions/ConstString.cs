@@ -36,6 +36,10 @@ namespace StraitJacketLib.Constructs {
             return new ReturnValue(builder.BuildGlobalStringPtr(Str, "SJ_ConstStr_" + Str));
         }
 
+        public override string ToString() {
+            return "\"" + Str.ToString()+ "\"";
+        }
+
     }
 
 }

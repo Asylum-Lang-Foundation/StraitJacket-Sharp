@@ -83,6 +83,14 @@ namespace StraitJacketLib.Constructs {
 
         }
 
+        public override string ToString() {
+            string ret = "if (" + ConditionCheck.ToString() + ")" + " {\n" + Then.ToString() + "\n}";
+            if (Else != null) {
+                ret += " else {\n" + Else.ToString() + "\n}";
+            }
+            return ret;
+        }
+
     }
 
 }

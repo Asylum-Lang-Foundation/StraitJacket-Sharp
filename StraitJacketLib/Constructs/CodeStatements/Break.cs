@@ -49,6 +49,9 @@ namespace StraitJacketLib.Constructs {
 
         }
 
+        public override string ToString() {
+            return "break " + BreakNum.ToString();
+        }
 
     }
 

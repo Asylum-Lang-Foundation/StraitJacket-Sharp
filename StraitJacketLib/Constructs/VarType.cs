@@ -71,7 +71,6 @@ namespace StraitJacketLib.Constructs {
         public bool Variadic;
         private bool TypeNotGotten = true;
         private LLVMTypeRef GottenType = null;
-        public override string ToString() => Mangler.MangleType(this);
 
         // Disallow external creation.
         protected VarType() {}
@@ -278,6 +277,16 @@ namespace StraitJacketLib.Constructs {
             else if (x.Type == VarTypeEnum.PrimitiveFunction) return ((VarTypeFunction)x).GetHashCode();
             else if (x.Type == VarTypeEnum.Tuple) return ((VarTypeTuple)x).GetHashCode();
             return 0;
+        }
+
+        public override string ToString() {
+            string ret = "";
+            if (Constant) ret += "const ";
+            if (Static) ret += "static ";
+            if (Volatile) ret += "volatile ";
+            if (Atomic) ret += "atomic ";
+            if (Variadic) ret += "variadic ";
+            return ret;
         }
 
     }

@@ -141,6 +141,22 @@ namespace StraitJacketLib.Constructs {
             throw new System.NotImplementedException("Operator has not been implemented yet!");
         }
 
+        public override string ToString() {
+            switch (Operator) {
+                case Operator.Add:
+                    return "(" + Inputs[0].ToString() + " + " + Inputs[1].ToString() + ")";
+                case Operator.Lt:
+                    return "(" + Inputs[0].ToString() + " < " + Inputs[1].ToString() + ")";
+                case Operator.AddressOf:
+                    return "(&" + Inputs[0].ToString() + ")";
+                case Operator.Dereference:
+                    return "(*" + Inputs[0].ToString() + ")";
+                case Operator.Member:
+                    return Inputs[0].ToString() + "." + (Inputs[1] as ExpressionConstStringPtr).Str;
+            }
+            return "???";
+        }
+
     }
 
 }

@@ -46,6 +46,10 @@ namespace StraitJacketLib.Constructs {
         public override int GetHashCode() {
             return Resolved.GetHashCode();
         }
+
+        public override string ToString() {
+            return m_Resolved == null ? ToResolve.ToString() : Resolved.ToString();
+        }
         
     }
 

@@ -72,6 +72,10 @@ namespace StraitJacketLib.Constructs {
             return new ReturnValue(Resolved.LLVMValue);
         }
 
+        public override string ToString() {
+            return ToResolve.ToString();
+        }
+
     }
 
 }

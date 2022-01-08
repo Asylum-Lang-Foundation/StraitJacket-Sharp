@@ -103,6 +103,10 @@ namespace StraitJacketLib.Constructs {
             return null;
             
         }
+
+        public override string ToString() {
+            return "(" + Dest.ToString() + " = " + Src.ToString() + ")";
+        }
         
     }
 

@@ -62,6 +62,17 @@ namespace StraitJacketLib.Constructs {
             return hash.ToHashCode();
         }
 
+        public override string ToString() {
+            string ret = base.ToString() + "(";
+            foreach (var m in Members) {
+                ret += m.ToString();
+                if (m != Members.Last()) {
+                    ret += ", ";
+                }
+            }
+            return ret + ")";
+        }
+
     }
 
 }

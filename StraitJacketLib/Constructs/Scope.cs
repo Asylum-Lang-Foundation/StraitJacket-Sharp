@@ -133,6 +133,14 @@ namespace StraitJacketLib.Constructs {
             CurrentFunction.Pop();
         }
 
+        // String path.
+        public override string ToString() {
+            string ret = "";
+            if (Parent != null && Parent.Name != "") ret = Parent.ToString() + ".";
+            if (Name != "") ret += Name + ".";
+            return ret;
+        }
+
     }
 
 }
