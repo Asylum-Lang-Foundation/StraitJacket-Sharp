@@ -62,9 +62,6 @@ namespace StraitJacketLib.Constructs {
         // Compile the item.
         ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param);
 
-        // Default to string.
-        string ToString() => ";";
-
     }
 
     // ICompileable, but for universal statements.

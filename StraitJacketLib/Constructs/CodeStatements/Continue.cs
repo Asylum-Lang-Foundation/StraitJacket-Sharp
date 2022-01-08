@@ -51,7 +51,7 @@ namespace StraitJacketLib.Constructs {
         }
 
         public override string ToString() {
-            return "continue " + ContinueNum.ToString() + base.ToString();
+            return "continue " + ContinueNum.ToString();
         }
 
     }

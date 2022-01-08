@@ -41,7 +41,11 @@ namespace StraitJacketLib.Constructs {
         }
 
         public override string ToString() {
-            return base.ToString();
+            string ret = "{\n";
+            foreach (var c in Statements) {
+                ret += c.ToString() + "\n";
+            }
+            return ret + "}";
         }
 
     }

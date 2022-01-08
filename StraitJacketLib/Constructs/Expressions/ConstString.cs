@@ -37,7 +37,7 @@ namespace StraitJacketLib.Constructs {
         }
 
         public override string ToString() {
-            return "\"" + Str + "\"";
+            return "\"" + Str.ToString()+ "\"";
         }
 
     }

@@ -50,7 +50,7 @@ namespace StraitJacketLib.Constructs {
         }
 
         public override string ToString() {
-            return "break " + BreakNum.ToString() + base.ToString();
+            return "break " + BreakNum.ToString();
         }
 
     }

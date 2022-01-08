@@ -94,8 +94,7 @@ namespace StraitJacketLib.Constructs {
         }
 
         public override string ToString() {
-            throw new System.NotImplementedException();
-            //return base.ToString() + "";
+            return Name;
         }
 
     }

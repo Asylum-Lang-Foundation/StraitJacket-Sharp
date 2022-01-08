@@ -29,6 +29,7 @@ namespace StraitJacketLib.Constructs {
         }
 
         public void ResolveVariables() {
+            var h = ToString();
             if (Definition != null) Definition.ResolveVariables();
             foreach (var e in GeneratedExpressions) {
                 e.ResolveVariables();
@@ -70,7 +71,7 @@ namespace StraitJacketLib.Constructs {
                 }
             }
             if (Definition != null) ret += " = " + Definition.ToString();
-            return ret + base.ToString();
+            return ret;
         }
 
     }
