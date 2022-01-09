@@ -74,11 +74,14 @@ namespace StraitJacketLib.Constructs {
         Lt,
         Ge,
         Le,
+        Cmp,
         Cond,
         Null,
         AssignEq,
         Is,
-        As
+        As,
+        Lambda,
+        Ternary
     }
 
     // Context for resolution.
