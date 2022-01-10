@@ -22,24 +22,6 @@ namespace Asylum.AST {
             return context.variable_declaration().Accept(this);
         }
 
-        public AsylumVisitResult VisitVariableDeclareWithInitializer([NotNull] AsylumParser.VariableDeclareWithInitializerContext context)
-        {
-            /*VariableDefinition ret = new VariableDefinition();
-            Expression expr = context.expression().Accept(this).Expression;
-            ret.Definition = expr;
-            ret.Variables = new List<Variable>();
-            foreach (var p in context.variable_parameter()) {
-                Variable v = new Variable();
-                v.Type = p.variable_type().Accept(this).VariableType;
-                v.Scope = CTX.CurrentScope;
-                v.Name = p.IDENTIFIER().GetText();
-                ret.Variables.Add(v);
-                CTX.CurrentScope.AddVar(v.Name, v);
-            }
-            return new AsylumVisitResult() { CodeStatement = ret };*/
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitVariableAssignmentNormal([NotNull] AsylumParser.VariableAssignmentNormalContext context)
         {
             /*VariableAssignment ret = new VariableAssignment();

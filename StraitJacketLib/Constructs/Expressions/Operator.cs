@@ -14,6 +14,12 @@ namespace StraitJacketLib.Constructs {
         public ExpressionOperator(List<Expression> inputs, Operator op) {
             Inputs = inputs;
             Operator = op;
+
+            // Compiler hack, convert variable expression to constant string if needed.
+            if (op == Operator.Member && Inputs[1] as ExpressionVariable != null) { 
+                Inputs[1] = new ExpressionConstStringPtr((Inputs[1] as ExpressionVariable).ToResolve.Path);
+            }
+            
         }
 
         public override void ResolveVariables() {

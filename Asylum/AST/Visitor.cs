@@ -76,81 +76,6 @@ namespace Asylum.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitExprAdditive([NotNull] AsylumParser.ExprAdditiveContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprAnd([NotNull] AsylumParser.ExprAndContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprBitAnd([NotNull] AsylumParser.ExprBitAndContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprBitOr([NotNull] AsylumParser.ExprBitOrContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprCode([NotNull] AsylumParser.ExprCodeContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprEqualityComparison([NotNull] AsylumParser.ExprEqualityComparisonContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprLambda([NotNull] AsylumParser.ExprLambdaContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprMultiplicative([NotNull] AsylumParser.ExprMultiplicativeContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprNullCheck([NotNull] AsylumParser.ExprNullCheckContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprOr([NotNull] AsylumParser.ExprOrContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprRange([NotNull] AsylumParser.ExprRangeContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprShift([NotNull] AsylumParser.ExprShiftContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprSubprimary([NotNull] AsylumParser.ExprSubprimaryContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprTernary([NotNull] AsylumParser.ExprTernaryContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AsylumVisitResult VisitExprXor([NotNull] AsylumParser.ExprXorContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitForEachLoop([NotNull] AsylumParser.ForEachLoopContext context)
         {
             throw new System.NotImplementedException();
@@ -346,11 +271,6 @@ namespace Asylum.AST {
             throw new System.NotImplementedException();
         }
 
-        public AsylumVisitResult VisitVariableDeclareWithTupleInitializer([NotNull] AsylumParser.VariableDeclareWithTupleInitializerContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public AsylumVisitResult VisitVarTypeArray([NotNull] AsylumParser.VarTypeArrayContext context)
         {
             throw new System.NotImplementedException();
@@ -402,6 +322,11 @@ namespace Asylum.AST {
         }
 
         public AsylumVisitResult VisitSwitchCaseNoParens([NotNull] AsylumParser.SwitchCaseNoParensContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitVarTypeReadOnly([NotNull] AsylumParser.VarTypeReadOnlyContext context)
         {
             throw new System.NotImplementedException();
         }

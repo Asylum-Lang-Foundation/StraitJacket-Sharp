@@ -49,6 +49,7 @@ namespace StraitJacketLib.Constructs {
         Mod,
         Exp,
         Range,
+        RangeEq,
         BitAnd,
         BitOr,
         BitXor,
@@ -57,6 +58,8 @@ namespace StraitJacketLib.Constructs {
         RShift,
         Pos,
         Neg,
+        PreInc,
+        PreDec,
         Inc,
         Dec,
         Member,
@@ -74,11 +77,16 @@ namespace StraitJacketLib.Constructs {
         Lt,
         Ge,
         Le,
+        Cmp,
         Cond,
         Null,
         AssignEq,
         Is,
-        As
+        As,
+        Lambda,
+        Ternary,
+        ArrayAccess,
+        FromLast
     }
 
     // Context for resolution.
