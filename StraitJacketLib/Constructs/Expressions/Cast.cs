@@ -21,7 +21,7 @@ namespace StraitJacketLib.Constructs {
 
         public override void ResolveTypes() {
             ToCast.ResolveTypes();
-            LValue = ToCast.LValue;
+            LValue = false;
             SrcType = ToCast.ReturnType();
             if (!SrcType.CanCastTo(DestType)) {
                 throw new System.Exception("BAD CAST!!!");
@@ -48,7 +48,9 @@ namespace StraitJacketLib.Constructs {
 
         // Compile the cast.
         public override ReturnValue Compile(LLVMModuleRef mod, LLVMBuilderRef builder, object param) {
-            return SrcType.CastTo(ToCast.Compile(mod, builder, param), DestType, mod, builder);
+            ReturnValue toCast = ToCast.Compile(mod, builder, param);
+            if (ToCast.LValue) toCast = new ReturnValue(builder.BuildLoad(toCast.Val, "SJ_Load"));
+            return SrcType.CastTo(toCast, DestType, mod, builder);
         }
 
         public override string ToString() {

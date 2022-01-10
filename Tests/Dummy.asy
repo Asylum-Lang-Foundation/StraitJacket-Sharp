@@ -12,4 +12,4 @@ TestStruct test;
 test.other.a = 5;
 test.a = 3;
 test.b = 7;
-printf("%d\n", test.other.a);
+printf("%d\n", (int)test.other.a);
