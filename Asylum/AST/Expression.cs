@@ -379,7 +379,7 @@ namespace Asylum.AST {
         public AsylumVisitResult VisitExprCast([NotNull] AsylumParser.ExprCastContext context)
         {
             return new AsylumVisitResult() { Expression = new ExpressionCast(
-                context.expression()[0].Accept(this).Expression,
+                context.expr_unary().Accept(this).Expression,
                 context.variable_type().Accept(this).VariableType
             )};
         }
