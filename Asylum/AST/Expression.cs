@@ -282,6 +282,256 @@ namespace Asylum.AST {
             return context.expr_multiplicative().Accept(this);
         }
 
+        public AsylumVisitResult VisitExprMultiplicative([NotNull] AsylumParser.ExprMultiplicativeContext context)
+        {
+            Operator op = Operator.Mul;
+            if (context.OP_DIV() != null) op = Operator.Div;
+            else if (context.OP_MOD() != null) op = Operator.Mod;
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_multiplicative().Accept(this).Expression,
+                context.expr_exponential().Accept(this).Expression
+            }, op)};
+        }
+
+        public AsylumVisitResult VisitExprVisitExponential([NotNull] AsylumParser.ExprVisitExponentialContext context)
+        {
+            return context.expr_exponential().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprExponential([NotNull] AsylumParser.ExprExponentialContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_exponential().Accept(this).Expression,
+                context.expr_range().Accept(this).Expression
+            }, Operator.Exp)};
+        }
+
+        public AsylumVisitResult VisitExprVisitRange([NotNull] AsylumParser.ExprVisitRangeContext context)
+        {
+            return context.expr_range().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprRange([NotNull] AsylumParser.ExprRangeContext context)
+        {
+            Operator op = Operator.Range;
+            if (context.OP_RANGE_EQ() != null) op = Operator.RangeEq;
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_range().Accept(this).Expression,
+                context.expr_unary().Accept(this).Expression
+            }, op)};
+        }
+
+        public AsylumVisitResult VisitExprVisitUnary([NotNull] AsylumParser.ExprVisitUnaryContext context)
+        {
+            return context.expr_unary().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprPos([NotNull] AsylumParser.ExprPosContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.Pos)};
+        }
+
+        public AsylumVisitResult VisitExprNeg([NotNull] AsylumParser.ExprNegContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.Neg)};
+        }
+
+        public AsylumVisitResult VisitExprNot([NotNull] AsylumParser.ExprNotContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.Not)};
+        }
+
+        public AsylumVisitResult VisitExprBitNot([NotNull] AsylumParser.ExprBitNotContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.BitNot)};
+        }
+
+        public AsylumVisitResult VisitExprPreIncrement([NotNull] AsylumParser.ExprPreIncrementContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.PreInc)};
+        }
+
+        public AsylumVisitResult VisitExprPreDecrement([NotNull] AsylumParser.ExprPreDecrementContext context)
+        {
+           return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.PreDec)};
+        }
+
+        public AsylumVisitResult VisitExprMemberAccessUnary([NotNull] AsylumParser.ExprMemberAccessUnaryContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.FromLast)};
+        }
+
+        // TODO: CAST DEST AS EXPRESSION!!!
+        public AsylumVisitResult VisitExprCast([NotNull] AsylumParser.ExprCastContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionCast(
+                context.expression()[0].Accept(this).Expression,
+                context.variable_type().Accept(this).VariableType
+            )};
+        }
+
+        public AsylumVisitResult VisitExprAwait([NotNull] AsylumParser.ExprAwaitContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprAddressOf([NotNull] AsylumParser.ExprAddressOfContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.AddressOf)};
+        }
+
+        public AsylumVisitResult VisitExprAsReference([NotNull] AsylumParser.ExprAsReferenceContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.AsAddress)};
+        }
+
+        public AsylumVisitResult VisitExprDereference([NotNull] AsylumParser.ExprDereferenceContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_unary().Accept(this).Expression
+            }, Operator.Dereference)};
+        }
+
+        public AsylumVisitResult VisitExprDefinedConstant([NotNull] AsylumParser.ExprDefinedConstantContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprVisitPrimary([NotNull] AsylumParser.ExprVisitPrimaryContext context)
+        {
+            return context.expr_primary().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprMemberAccess([NotNull] AsylumParser.ExprMemberAccessContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_primary().Accept(this).Expression,
+                context.expr_parenthesis().Accept(this).Expression
+            }, Operator.Member)};
+        }
+
+        public AsylumVisitResult VisitExprFunctionCall([NotNull] AsylumParser.ExprFunctionCallContext context)
+        {
+            List<Expression> parameters = new List<Expression>();
+            if (context.expression() != null) {
+                parameters.Add(context.expression().Accept(this).Expression);
+            }
+            return new AsylumVisitResult() { Expression = new ExpressionCall(
+                context.expr_primary().Accept(this).Expression,
+                new ExpressionComma(parameters)
+            )};
+        }
+
+        public AsylumVisitResult VisitExprArrayAccess([NotNull] AsylumParser.ExprArrayAccessContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_primary().Accept(this).Expression,
+                context.expression().Accept(this).Expression
+            }, Operator.ArrayAccess)};
+        }
+
+        public AsylumVisitResult VisitExprIncrement([NotNull] AsylumParser.ExprIncrementContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_primary().Accept(this).Expression
+            }, Operator.Inc)};
+        }
+
+        public AsylumVisitResult VisitExprDecrement([NotNull] AsylumParser.ExprDecrementContext context)
+        {
+            return new AsylumVisitResult() { Expression = new ExpressionOperator(new List<Expression>() {
+                context.expr_primary().Accept(this).Expression
+            }, Operator.Dec)};
+        }
+
+        public AsylumVisitResult VisitExprNew([NotNull] AsylumParser.ExprNewContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprTypeof([NotNull] AsylumParser.ExprTypeofContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprDefaultOf([NotNull] AsylumParser.ExprDefaultOfContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprDefault([NotNull] AsylumParser.ExprDefaultContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprNameof([NotNull] AsylumParser.ExprNameofContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprSizeof([NotNull] AsylumParser.ExprSizeofContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprStackAlloc([NotNull] AsylumParser.ExprStackAllocContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AsylumVisitResult VisitExprVisitParenthesis([NotNull] AsylumParser.ExprVisitParenthesisContext context)
+        {
+            return context.expr_parenthesis().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)
+        {
+            return context.expression().Accept(this); // This is just a container for the inside expression.
+        }
+
+        public AsylumVisitResult VisitExprVisitEnd([NotNull] AsylumParser.ExprVisitEndContext context)
+        {
+            return context.expr_end().Accept(this);
+        }
+
+        public AsylumVisitResult VisitExprVariable([NotNull] AsylumParser.ExprVariableContext context)
+        {
+            return new AsylumVisitResult() {
+                Expression = new ExpressionVariable(Builder.VariableOrFunction(context.IDENTIFIER().GetText()))
+            };
+        }
+
+        public AsylumVisitResult VisitExprInteger([NotNull] AsylumParser.ExprIntegerContext context)
+        {
+            Number n = GetInteger(context.INTEGER());
+            Expression ret = new ExpressionConstInt(n.ForceSigned, n.ValueWhole);
+            return new AsylumVisitResult() { Expression = ret };
+        }
+
+        public AsylumVisitResult VisitExprString([NotNull] AsylumParser.ExprStringContext context)
+        {
+            Expression ret = new ExpressionConstStringPtr(GetString(context.STRING()));
+            return new AsylumVisitResult() { Expression = ret };
+        }
+
         // TODO: GENERICS!!!
         public AsylumVisitResult VisitFunction_call([NotNull] AsylumParser.Function_callContext context)
         {
@@ -306,24 +556,6 @@ namespace Asylum.AST {
             }
             if (context.primitives() == null) ret.Path = ret.Path.Substring(0, ret.Path.Length - 1);
             return new AsylumVisitResult() { VariableOrFunction = Builder.VariableOrFunction(ret.Path) };
-        }
-
-        public AsylumVisitResult VisitExprParenthesis([NotNull] AsylumParser.ExprParenthesisContext context)
-        {
-            return context.expression().Accept(this); // This is just a container for the inside expression.
-        }
-
-        public AsylumVisitResult VisitExprString([NotNull] AsylumParser.ExprStringContext context)
-        {
-            Expression ret = new ExpressionConstStringPtr(GetString(context.STRING()));
-            return new AsylumVisitResult() { Expression = ret };
-        }
-
-        public AsylumVisitResult VisitExprInteger([NotNull] AsylumParser.ExprIntegerContext context)
-        {
-            Number n = GetInteger(context.INTEGER());
-            Expression ret = new ExpressionConstInt(n.ForceSigned, n.ValueWhole);
-            return new AsylumVisitResult() { Expression = ret };
         }
 
         // Convert a variable or function expression into using an operator.

@@ -12,15 +12,13 @@ namespace StraitJacketLib.Constructs {
     public enum Modifier {
         None = 0b0,
         Public = 0b1,
-        ProtectedInternal = 0b110,
-        PrivateProtected = 0b1010,
-        Private = 0b1000,
         Protected = 0b10,
-        Internal = 0b100,
-        Static = 0b10000,
-        Inline = 0b100000,
-        Async = 0b1000000,
-        Unsafe = 0b10000000
+        Private = 0b100,
+        PrivateProtected = 0b110,
+        Static = 0b1000,
+        Inline = 0b10000,
+        Async = 0b100000,
+        Unsafe = 0b1000000
     }
 
     // Function definition.
