@@ -8590,13 +8590,13 @@ public partial class AsylumParser : Parser {
 				case 1:
 					{
 					State = 1168;
-					expression();
+					variable_type(0);
 					}
 					break;
 				case 2:
 					{
 					State = 1169;
-					variable_type(0);
+					expression();
 					}
 					break;
 				}
@@ -8681,11 +8681,11 @@ public partial class AsylumParser : Parser {
 	}
 	public partial class ExprDefaultOfContext : Expr_primaryContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DEFAULT() { return GetToken(AsylumParser.DEFAULT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
-			return GetRuleContext<ExpressionContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public Variable_typeContext variable_type() {
 			return GetRuleContext<Variable_typeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ExprDefaultOfContext(Expr_primaryContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -8707,11 +8707,11 @@ public partial class AsylumParser : Parser {
 	}
 	public partial class ExprSizeofContext : Expr_primaryContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SIZEOF() { return GetToken(AsylumParser.SIZEOF, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
-			return GetRuleContext<ExpressionContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public Variable_typeContext variable_type() {
 			return GetRuleContext<Variable_typeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ExprSizeofContext(Expr_primaryContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -8902,11 +8902,11 @@ public partial class AsylumParser : Parser {
 	}
 	public partial class ExprTypeofContext : Expr_primaryContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TYPEOF() { return GetToken(AsylumParser.TYPEOF, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
-			return GetRuleContext<ExpressionContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public Variable_typeContext variable_type() {
 			return GetRuleContext<Variable_typeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ExprTypeofContext(Expr_primaryContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -9049,13 +9049,13 @@ public partial class AsylumParser : Parser {
 				case 1:
 					{
 					State = 1192;
-					expression();
+					variable_type(0);
 					}
 					break;
 				case 2:
 					{
 					State = 1193;
-					variable_type(0);
+					expression();
 					}
 					break;
 				}
@@ -9078,13 +9078,13 @@ public partial class AsylumParser : Parser {
 				case 1:
 					{
 					State = 1200;
-					expression();
+					variable_type(0);
 					}
 					break;
 				case 2:
 					{
 					State = 1201;
-					variable_type(0);
+					expression();
 					}
 					break;
 				}
@@ -9131,13 +9131,13 @@ public partial class AsylumParser : Parser {
 				case 1:
 					{
 					State = 1214;
-					expression();
+					variable_type(0);
 					}
 					break;
 				case 2:
 					{
 					State = 1215;
-					variable_type(0);
+					expression();
 					}
 					break;
 				}
@@ -13567,9 +13567,9 @@ public partial class AsylumParser : Parser {
 		'\x4A3', '\x5', '|', '?', '\x2', '\x48D', '\x48E', '\a', 'y', '\x2', '\x2', 
 		'\x48E', '\x4A3', '\x5', '|', '?', '\x2', '\x48F', '\x490', '\a', 'x', 
 		'\x2', '\x2', '\x490', '\x4A3', '\x5', '|', '?', '\x2', '\x491', '\x494', 
-		'\a', '\x6', '\x2', '\x2', '\x492', '\x495', '\x5', 'V', ',', '\x2', '\x493', 
-		'\x495', '\x5', '\x90', 'I', '\x2', '\x494', '\x492', '\x3', '\x2', '\x2', 
-		'\x2', '\x494', '\x493', '\x3', '\x2', '\x2', '\x2', '\x495', '\x496', 
+		'\a', '\x6', '\x2', '\x2', '\x492', '\x495', '\x5', '\x90', 'I', '\x2', 
+		'\x493', '\x495', '\x5', 'V', ',', '\x2', '\x494', '\x492', '\x3', '\x2', 
+		'\x2', '\x2', '\x494', '\x493', '\x3', '\x2', '\x2', '\x2', '\x495', '\x496', 
 		'\x3', '\x2', '\x2', '\x2', '\x496', '\x497', '\a', '\a', '\x2', '\x2', 
 		'\x497', '\x498', '\x5', 'V', ',', '\x2', '\x498', '\x4A3', '\x3', '\x2', 
 		'\x2', '\x2', '\x499', '\x49A', '\a', '*', '\x2', '\x2', '\x49A', '\x4A3', 
@@ -13590,14 +13590,14 @@ public partial class AsylumParser : Parser {
 		'\x4A5', '\b', '@', '\x1', '\x2', '\x4A5', '\x4C9', '\x5', '\x80', '\x41', 
 		'\x2', '\x4A6', '\x4A7', '\a', '\x44', '\x2', '\x2', '\x4A7', '\x4C9', 
 		'\x5', 'V', ',', '\x2', '\x4A8', '\x4A9', '\a', 'R', '\x2', '\x2', '\x4A9', 
-		'\x4AC', '\a', '\x6', '\x2', '\x2', '\x4AA', '\x4AD', '\x5', 'V', ',', 
-		'\x2', '\x4AB', '\x4AD', '\x5', '\x90', 'I', '\x2', '\x4AC', '\x4AA', 
-		'\x3', '\x2', '\x2', '\x2', '\x4AC', '\x4AB', '\x3', '\x2', '\x2', '\x2', 
-		'\x4AD', '\x4AE', '\x3', '\x2', '\x2', '\x2', '\x4AE', '\x4AF', '\a', 
-		'\a', '\x2', '\x2', '\x4AF', '\x4C9', '\x3', '\x2', '\x2', '\x2', '\x4B0', 
-		'\x4B1', '\a', '/', '\x2', '\x2', '\x4B1', '\x4B4', '\a', '\x6', '\x2', 
-		'\x2', '\x4B2', '\x4B5', '\x5', 'V', ',', '\x2', '\x4B3', '\x4B5', '\x5', 
-		'\x90', 'I', '\x2', '\x4B4', '\x4B2', '\x3', '\x2', '\x2', '\x2', '\x4B4', 
+		'\x4AC', '\a', '\x6', '\x2', '\x2', '\x4AA', '\x4AD', '\x5', '\x90', 'I', 
+		'\x2', '\x4AB', '\x4AD', '\x5', 'V', ',', '\x2', '\x4AC', '\x4AA', '\x3', 
+		'\x2', '\x2', '\x2', '\x4AC', '\x4AB', '\x3', '\x2', '\x2', '\x2', '\x4AD', 
+		'\x4AE', '\x3', '\x2', '\x2', '\x2', '\x4AE', '\x4AF', '\a', '\a', '\x2', 
+		'\x2', '\x4AF', '\x4C9', '\x3', '\x2', '\x2', '\x2', '\x4B0', '\x4B1', 
+		'\a', '/', '\x2', '\x2', '\x4B1', '\x4B4', '\a', '\x6', '\x2', '\x2', 
+		'\x4B2', '\x4B5', '\x5', '\x90', 'I', '\x2', '\x4B3', '\x4B5', '\x5', 
+		'V', ',', '\x2', '\x4B4', '\x4B2', '\x3', '\x2', '\x2', '\x2', '\x4B4', 
 		'\x4B3', '\x3', '\x2', '\x2', '\x2', '\x4B5', '\x4B6', '\x3', '\x2', '\x2', 
 		'\x2', '\x4B6', '\x4B7', '\a', '\a', '\x2', '\x2', '\x4B7', '\x4C9', '\x3', 
 		'\x2', '\x2', '\x2', '\x4B8', '\x4C9', '\a', '/', '\x2', '\x2', '\x4B9', 
@@ -13605,40 +13605,40 @@ public partial class AsylumParser : Parser {
 		'\x2', '\x4BB', '\x4BC', '\x5', 'V', ',', '\x2', '\x4BC', '\x4BD', '\a', 
 		'\a', '\x2', '\x2', '\x4BD', '\x4C9', '\x3', '\x2', '\x2', '\x2', '\x4BE', 
 		'\x4BF', '\a', 'L', '\x2', '\x2', '\x4BF', '\x4C2', '\a', '\x6', '\x2', 
-		'\x2', '\x4C0', '\x4C3', '\x5', 'V', ',', '\x2', '\x4C1', '\x4C3', '\x5', 
-		'\x90', 'I', '\x2', '\x4C2', '\x4C0', '\x3', '\x2', '\x2', '\x2', '\x4C2', 
-		'\x4C1', '\x3', '\x2', '\x2', '\x2', '\x4C3', '\x4C4', '\x3', '\x2', '\x2', 
-		'\x2', '\x4C4', '\x4C5', '\a', '\a', '\x2', '\x2', '\x4C5', '\x4C9', '\x3', 
-		'\x2', '\x2', '\x2', '\x4C6', '\x4C7', '\a', 'M', '\x2', '\x2', '\x4C7', 
-		'\x4C9', '\x5', 'V', ',', '\x2', '\x4C8', '\x4A4', '\x3', '\x2', '\x2', 
-		'\x2', '\x4C8', '\x4A6', '\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4A8', 
-		'\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4B0', '\x3', '\x2', '\x2', '\x2', 
-		'\x4C8', '\x4B8', '\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4B9', '\x3', 
-		'\x2', '\x2', '\x2', '\x4C8', '\x4BE', '\x3', '\x2', '\x2', '\x2', '\x4C8', 
-		'\x4C6', '\x3', '\x2', '\x2', '\x2', '\x4C9', '\x4E1', '\x3', '\x2', '\x2', 
-		'\x2', '\x4CA', '\x4CB', '\f', '\xE', '\x2', '\x2', '\x4CB', '\x4CC', 
-		'\a', '\x3', '\x2', '\x2', '\x4CC', '\x4E0', '\x5', '\x80', '\x41', '\x2', 
-		'\x4CD', '\x4CF', '\f', '\r', '\x2', '\x2', '\x4CE', '\x4D0', '\x5', 'T', 
-		'+', '\x2', '\x4CF', '\x4CE', '\x3', '\x2', '\x2', '\x2', '\x4CF', '\x4D0', 
-		'\x3', '\x2', '\x2', '\x2', '\x4D0', '\x4D1', '\x3', '\x2', '\x2', '\x2', 
-		'\x4D1', '\x4D3', '\a', '\x6', '\x2', '\x2', '\x4D2', '\x4D4', '\x5', 
-		'V', ',', '\x2', '\x4D3', '\x4D2', '\x3', '\x2', '\x2', '\x2', '\x4D3', 
-		'\x4D4', '\x3', '\x2', '\x2', '\x2', '\x4D4', '\x4D5', '\x3', '\x2', '\x2', 
-		'\x2', '\x4D5', '\x4E0', '\a', '\a', '\x2', '\x2', '\x4D6', '\x4D7', '\f', 
-		'\f', '\x2', '\x2', '\x4D7', '\x4D8', '\a', '\n', '\x2', '\x2', '\x4D8', 
-		'\x4D9', '\x5', 'V', ',', '\x2', '\x4D9', '\x4DA', '\a', '\f', '\x2', 
-		'\x2', '\x4DA', '\x4E0', '\x3', '\x2', '\x2', '\x2', '\x4DB', '\x4DC', 
-		'\f', '\v', '\x2', '\x2', '\x4DC', '\x4E0', '\a', '\x82', '\x2', '\x2', 
-		'\x4DD', '\x4DE', '\f', '\n', '\x2', '\x2', '\x4DE', '\x4E0', '\a', 'y', 
-		'\x2', '\x2', '\x4DF', '\x4CA', '\x3', '\x2', '\x2', '\x2', '\x4DF', '\x4CD', 
-		'\x3', '\x2', '\x2', '\x2', '\x4DF', '\x4D6', '\x3', '\x2', '\x2', '\x2', 
-		'\x4DF', '\x4DB', '\x3', '\x2', '\x2', '\x2', '\x4DF', '\x4DD', '\x3', 
-		'\x2', '\x2', '\x2', '\x4E0', '\x4E3', '\x3', '\x2', '\x2', '\x2', '\x4E1', 
-		'\x4DF', '\x3', '\x2', '\x2', '\x2', '\x4E1', '\x4E2', '\x3', '\x2', '\x2', 
-		'\x2', '\x4E2', '\x7F', '\x3', '\x2', '\x2', '\x2', '\x4E3', '\x4E1', 
-		'\x3', '\x2', '\x2', '\x2', '\x4E4', '\x4EA', '\x5', '\x82', '\x42', '\x2', 
-		'\x4E5', '\x4E6', '\a', '\x6', '\x2', '\x2', '\x4E6', '\x4E7', '\x5', 
-		'V', ',', '\x2', '\x4E7', '\x4E8', '\a', '\a', '\x2', '\x2', '\x4E8', 
+		'\x2', '\x4C0', '\x4C3', '\x5', '\x90', 'I', '\x2', '\x4C1', '\x4C3', 
+		'\x5', 'V', ',', '\x2', '\x4C2', '\x4C0', '\x3', '\x2', '\x2', '\x2', 
+		'\x4C2', '\x4C1', '\x3', '\x2', '\x2', '\x2', '\x4C3', '\x4C4', '\x3', 
+		'\x2', '\x2', '\x2', '\x4C4', '\x4C5', '\a', '\a', '\x2', '\x2', '\x4C5', 
+		'\x4C9', '\x3', '\x2', '\x2', '\x2', '\x4C6', '\x4C7', '\a', 'M', '\x2', 
+		'\x2', '\x4C7', '\x4C9', '\x5', 'V', ',', '\x2', '\x4C8', '\x4A4', '\x3', 
+		'\x2', '\x2', '\x2', '\x4C8', '\x4A6', '\x3', '\x2', '\x2', '\x2', '\x4C8', 
+		'\x4A8', '\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4B0', '\x3', '\x2', '\x2', 
+		'\x2', '\x4C8', '\x4B8', '\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4B9', 
+		'\x3', '\x2', '\x2', '\x2', '\x4C8', '\x4BE', '\x3', '\x2', '\x2', '\x2', 
+		'\x4C8', '\x4C6', '\x3', '\x2', '\x2', '\x2', '\x4C9', '\x4E1', '\x3', 
+		'\x2', '\x2', '\x2', '\x4CA', '\x4CB', '\f', '\xE', '\x2', '\x2', '\x4CB', 
+		'\x4CC', '\a', '\x3', '\x2', '\x2', '\x4CC', '\x4E0', '\x5', '\x80', '\x41', 
+		'\x2', '\x4CD', '\x4CF', '\f', '\r', '\x2', '\x2', '\x4CE', '\x4D0', '\x5', 
+		'T', '+', '\x2', '\x4CF', '\x4CE', '\x3', '\x2', '\x2', '\x2', '\x4CF', 
+		'\x4D0', '\x3', '\x2', '\x2', '\x2', '\x4D0', '\x4D1', '\x3', '\x2', '\x2', 
+		'\x2', '\x4D1', '\x4D3', '\a', '\x6', '\x2', '\x2', '\x4D2', '\x4D4', 
+		'\x5', 'V', ',', '\x2', '\x4D3', '\x4D2', '\x3', '\x2', '\x2', '\x2', 
+		'\x4D3', '\x4D4', '\x3', '\x2', '\x2', '\x2', '\x4D4', '\x4D5', '\x3', 
+		'\x2', '\x2', '\x2', '\x4D5', '\x4E0', '\a', '\a', '\x2', '\x2', '\x4D6', 
+		'\x4D7', '\f', '\f', '\x2', '\x2', '\x4D7', '\x4D8', '\a', '\n', '\x2', 
+		'\x2', '\x4D8', '\x4D9', '\x5', 'V', ',', '\x2', '\x4D9', '\x4DA', '\a', 
+		'\f', '\x2', '\x2', '\x4DA', '\x4E0', '\x3', '\x2', '\x2', '\x2', '\x4DB', 
+		'\x4DC', '\f', '\v', '\x2', '\x2', '\x4DC', '\x4E0', '\a', '\x82', '\x2', 
+		'\x2', '\x4DD', '\x4DE', '\f', '\n', '\x2', '\x2', '\x4DE', '\x4E0', '\a', 
+		'y', '\x2', '\x2', '\x4DF', '\x4CA', '\x3', '\x2', '\x2', '\x2', '\x4DF', 
+		'\x4CD', '\x3', '\x2', '\x2', '\x2', '\x4DF', '\x4D6', '\x3', '\x2', '\x2', 
+		'\x2', '\x4DF', '\x4DB', '\x3', '\x2', '\x2', '\x2', '\x4DF', '\x4DD', 
+		'\x3', '\x2', '\x2', '\x2', '\x4E0', '\x4E3', '\x3', '\x2', '\x2', '\x2', 
+		'\x4E1', '\x4DF', '\x3', '\x2', '\x2', '\x2', '\x4E1', '\x4E2', '\x3', 
+		'\x2', '\x2', '\x2', '\x4E2', '\x7F', '\x3', '\x2', '\x2', '\x2', '\x4E3', 
+		'\x4E1', '\x3', '\x2', '\x2', '\x2', '\x4E4', '\x4EA', '\x5', '\x82', 
+		'\x42', '\x2', '\x4E5', '\x4E6', '\a', '\x6', '\x2', '\x2', '\x4E6', '\x4E7', 
+		'\x5', 'V', ',', '\x2', '\x4E7', '\x4E8', '\a', '\a', '\x2', '\x2', '\x4E8', 
 		'\x4EA', '\x3', '\x2', '\x2', '\x2', '\x4E9', '\x4E4', '\x3', '\x2', '\x2', 
 		'\x2', '\x4E9', '\x4E5', '\x3', '\x2', '\x2', '\x2', '\x4EA', '\x81', 
 		'\x3', '\x2', '\x2', '\x2', '\x4EB', '\x4EF', '\a', '\x8E', '\x2', '\x2', 
