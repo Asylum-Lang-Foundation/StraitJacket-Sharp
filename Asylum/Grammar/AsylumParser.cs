@@ -8283,8 +8283,8 @@ public partial class AsylumParser : Parser {
 	}
 	public partial class ExprAwaitContext : Expr_unaryContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AWAIT() { return GetToken(AsylumParser.AWAIT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
-			return GetRuleContext<ExpressionContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public Expr_unaryContext expr_unary() {
+			return GetRuleContext<Expr_unaryContext>(0);
 		}
 		public ExprAwaitContext(Expr_unaryContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -8350,14 +8350,14 @@ public partial class AsylumParser : Parser {
 		}
 	}
 	public partial class ExprCastContext : Expr_unaryContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
-			return GetRuleContexts<ExpressionContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
-			return GetRuleContext<ExpressionContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public Expr_unaryContext expr_unary() {
+			return GetRuleContext<Expr_unaryContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public Variable_typeContext variable_type() {
 			return GetRuleContext<Variable_typeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ExprCastContext(Expr_unaryContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -8603,7 +8603,7 @@ public partial class AsylumParser : Parser {
 				State = 1172;
 				Match(T__4);
 				State = 1173;
-				expression();
+				expr_unary();
 				}
 				break;
 			case 10:
@@ -8613,7 +8613,7 @@ public partial class AsylumParser : Parser {
 				State = 1175;
 				Match(AWAIT);
 				State = 1176;
-				expression();
+				expr_unary();
 				}
 				break;
 			case 11:
@@ -13571,9 +13571,9 @@ public partial class AsylumParser : Parser {
 		'\x493', '\x495', '\x5', 'V', ',', '\x2', '\x494', '\x492', '\x3', '\x2', 
 		'\x2', '\x2', '\x494', '\x493', '\x3', '\x2', '\x2', '\x2', '\x495', '\x496', 
 		'\x3', '\x2', '\x2', '\x2', '\x496', '\x497', '\a', '\a', '\x2', '\x2', 
-		'\x497', '\x498', '\x5', 'V', ',', '\x2', '\x498', '\x4A3', '\x3', '\x2', 
+		'\x497', '\x498', '\x5', '|', '?', '\x2', '\x498', '\x4A3', '\x3', '\x2', 
 		'\x2', '\x2', '\x499', '\x49A', '\a', '*', '\x2', '\x2', '\x49A', '\x4A3', 
-		'\x5', 'V', ',', '\x2', '\x49B', '\x49C', '\a', 'k', '\x2', '\x2', '\x49C', 
+		'\x5', '|', '?', '\x2', '\x49B', '\x49C', '\a', 'k', '\x2', '\x2', '\x49C', 
 		'\x4A3', '\x5', '|', '?', '\x2', '\x49D', '\x49E', '\a', '\x85', '\x2', 
 		'\x2', '\x49E', '\x4A3', '\x5', '|', '?', '\x2', '\x49F', '\x4A0', '\a', 
 		'{', '\x2', '\x2', '\x4A0', '\x4A3', '\x5', '|', '?', '\x2', '\x4A1', 
